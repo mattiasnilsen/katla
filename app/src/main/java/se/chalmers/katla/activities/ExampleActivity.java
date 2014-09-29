@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import se.chalmers.katla.R;
+import se.chalmers.katla.eventBus.EventBus;
 import se.chalmers.katla.views.ExampleView;
 
 /**
@@ -23,6 +24,7 @@ public abstract class ExampleActivity extends Activity {
         view = (ExampleView) View.inflate(this, R.layout.example_view, null);
         view.setViewListener(viewListener);
         this.setContentView(view);
+        EventBus.getInstance().registerListener(view);
     }
 
     @Override
