@@ -40,6 +40,7 @@ public abstract class ExampleActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getInstance().removeListener(view);
     }
 
     /**
