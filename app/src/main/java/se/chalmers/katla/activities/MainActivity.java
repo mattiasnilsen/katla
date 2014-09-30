@@ -6,6 +6,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import se.chalmers.katla.R;
 
+/**
+ * @author Erik Norlander
+ * Created 2014-09-30
+ * Launcher activity for the Katla aplication.
+ */
 public class MainActivity extends Activity {
 
     @Override
