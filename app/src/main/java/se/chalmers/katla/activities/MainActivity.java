@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
         createSMSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sendMessageIntent = new Intent(this, SendMessage.class);
+                Intent sendMessageIntent = new Intent(MainActivity.this, SendMessage.class);
 
                 startActivity(sendMessageIntent);
             }
