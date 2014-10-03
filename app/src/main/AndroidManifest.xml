@@ -19,7 +19,8 @@
         </activity>
 
         <activity
-            android:name=".SendMessage"
+            android:name=".activities.SendMessage"
+            android:parentActivityName="se.chalmers.katla.activities.MainActivity"
             android:label="@string/title_activity_send_message" >
         </activity>
     </application>
