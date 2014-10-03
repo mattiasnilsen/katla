@@ -1,9 +1,13 @@
 package se.chalmers.katla.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
 import se.chalmers.katla.R;
 
 /**
@@ -13,10 +17,24 @@ import se.chalmers.katla.R;
  */
 public class MainActivity extends Activity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initiate the Button to create an SMS.
+        final Button createSMSButton = (Button)findViewById(R.id.button_createSMS);
+
+        // When button is pressed, start create SMS activity.
+        createSMSButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sendMessageIntent = new Intent(this, SendMessage.class);
+
+                startActivity(sendMessageIntent);
+            }
+        });
     }
 
 
