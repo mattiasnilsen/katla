@@ -1,4 +1,4 @@
-package se.chalmers.katla;
+package se.chalmers.katla.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import se.chalmers.katla.R;
 
 
 public class SendMessage extends Activity {
