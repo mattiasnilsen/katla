@@ -7,7 +7,7 @@ public interface IComposite {
 
     public String getText();
     public String getBaseText();
-    public String setBaseText();
+    public void setBaseText(String text);
 
 
 }
