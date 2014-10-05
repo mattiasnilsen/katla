@@ -36,10 +36,10 @@ public class messageView extends Activity implements GestureDetector.OnGestureLi
     }
 
     private void previousMessage(){
-        myText.setText(Model.getConversation.getPreviousMessage());
+        myText.setText("Modellen än inte skapad");//Model.getConversation.getPreviousMessage());
     }
     private void nextMessage(){
-        myText.setText(Model.getConversation.getNextMessage());
+        myText.setText("Modellen är än inte skapad ordenltigt");//Model.getConversation.getNextMessage());
     }
 
     @Override

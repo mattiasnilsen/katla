@@ -11,7 +11,7 @@ public interface IKatla {
      *
      * @return
      */
-    public Iterator<Categories> getCategories();
+    //public Iterator<Categories> getCategories();
 
     /**
      *
