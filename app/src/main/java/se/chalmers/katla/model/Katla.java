@@ -29,7 +29,7 @@ public class Katla implements IKatla {
 
     @Override
     public Iterator<ICategory> getCategories() {
-        return null;
+        return categories.listIterator();
     }
 
     @Override

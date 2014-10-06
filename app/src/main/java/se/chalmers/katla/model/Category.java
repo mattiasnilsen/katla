@@ -24,6 +24,6 @@ public class Category implements ICategory {
 
     @Override
     public Iterator<IComposite> getComposites() {
-        return null;
+        return composites.listIterator();
     }
 }
