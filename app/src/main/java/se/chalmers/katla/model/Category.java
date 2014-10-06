@@ -9,9 +9,11 @@ import java.util.List;
 public class Category implements ICategory {
     private String name;
     private List<IComposite> composites;
+
     public Category (String name){
         this.name = name;
     }
+
     @Override
     public String getName() {
         return name;
@@ -19,7 +21,20 @@ public class Category implements ICategory {
 
     @Override
     public void addComposite(IComposite composite) {
-        composites.add(composite);
+        if(!composites.contains(composite)) {
+            composites.add(composite);
+        }
+    }
+
+    @Override
+    public void removeComposite(IComposite composite) {
+        composites.remove(composite);
+    }
+
+    @Override
+    public void moveComposite(IComposite composite, int index) {
+        composites.remove(composite);
+        composites.add(index ,composite);
     }
 
     @Override
