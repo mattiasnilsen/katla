@@ -1,4 +1,4 @@
-package se.chalmers.katla;
+package se.chalmers.katla.views;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
+
+import se.chalmers.katla.R;
 
 //TODO: Swype rörelser samt plocka all information från modellens singleton.
 

@@ -1,12 +1,16 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-android:id="@+id/content"
-android:layout_width="match_parent"
-android:layout_height="match_parent" >
-
-<TextView style="?android:textAppearanceMedium"
-    android:padding="16dp"
-    android:lineSpacingMultiplier="1.2"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/hello_world" />
-</ScrollView>
+    android:layout_height="match_parent"
+    tools:context="se.chalmers.katla.views.BlankFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/fragment_blank"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="58dp"
+        android:text="Hello World"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</FrameLayout>

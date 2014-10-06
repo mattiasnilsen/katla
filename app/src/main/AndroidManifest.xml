@@ -30,7 +30,7 @@
             android:parentActivityName=".activities.MainActivity" >
         </activity>
         <activity
-            android:name=".messageView"
+            android:name=".views.messageView"
             android:label="@string/title_activity_message_view" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

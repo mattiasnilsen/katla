@@ -2,15 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="se.chalmers.katla.views.BlankFragment2">
+    tools:context="se.chalmers.katla.views.BlankFragment3">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/fragment_blank_fragment2"
+        android:id="@+id/fragment_blank_fragment3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="58dp"
-        android:text="Welcome to second page"
+        android:text="Welcome to third page"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </FrameLayout>

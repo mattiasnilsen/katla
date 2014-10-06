@@ -1,76 +1,69 @@
 package se.chalmers.katla.activities;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+
 import se.chalmers.katla.R;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import se.chalmers.katla.views.BlankFragment;
+import se.chalmers.katla.views.BlankFragment2;
+import se.chalmers.katla.views.BlankFragment3;
 
 public class SwipeMainActivity extends FragmentActivity implements ActionBar.TabListener{
-    ViewPager Tab, viewpager;
+    MyViewPager viewpager;
     PagerAdapter TabAdapter;
     ActionBar actionBar;
+    Fragment bf= new BlankFragment(), bf2 = new BlankFragment2(), bf3 = new BlankFragment3();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe_main);
         TabAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        viewpager = (ViewPager) findViewById(R.id.pager);
+        viewpager = (MyViewPager) findViewById(R.id.viewpager);
         viewpager.setAdapter(TabAdapter);
+        viewpager.setGestureDetector(new GestureDetector(this, new MyGestureListener(this)));
+
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-       
-        viewpager.setOnPageChangeListener(
+         viewpager.setOnPageChangeListener(
                 new ViewPager.SimpleOnPageChangeListener() {
                     @Override
                     public void onPageSelected(int position) {
-                        actionBar = getActionBar();
-                        actionBar.setSelectedNavigationItem(position);                    }
+                        actionBar.setSelectedNavigationItem(position);
+                    }
                 });
-        /*
-        viewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageSelected(int arg0) {
-                actionBar.setSelectedNavigationItem(arg0);
-            }
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-                // TODO Auto-generated method stub
-            }
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-                // TODO Auto-generated method stub
-            }
-        });
-        */
-       actionBar.addTab(actionBar.newTab().setText("ichi").setTabListener(this));
-       actionBar.addTab(actionBar.newTab().setText("niiii").setTabListener(this));
 
+       actionBar.addTab(actionBar.newTab().setText("sida ett").setTabListener(this));
+       actionBar.addTab(actionBar.newTab().setText("sida två").setTabListener(this));
+       actionBar.addTab(actionBar.newTab().setText("sida tre").setTabListener(this));
     }
 
 
     @Override
     public void onBackPressed() {
-        if (viewpager.getCurrentItem() == 0) {
+        super.onBackPressed();
+        /*if (viewpager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
         } else {
             // Otherwise, select the previous step.
             viewpager.setCurrentItem(viewpager.getCurrentItem() - 1);
-        }
+        }*/
     }
 
     @Override
@@ -88,7 +81,7 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
 
     }
 
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+       public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -96,19 +89,16 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
         @Override
         public Fragment getItem(int position) {
             switch (position){
-                case 0:
-                    return new BlankFragment();
-                case 1: return new BlankFragment2();
-
-                default: return new BlankFragment();
-
+                case 0: return bf;
+                case 1: return bf2;
+                case 2: return bf3;
+                default: return new Fragment();
             }
-
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
     }
 

@@ -1,13 +1,10 @@
-package se.chalmers.katla.activities;
+package se.chalmers.katla.views;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import se.chalmers.katla.R;
 
@@ -18,13 +15,13 @@ import se.chalmers.katla.R;
  * to handle interaction events.
  *
  */
-public class BlankFragment2 extends Fragment {
+public class BlankFragment3 extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_blank_fragment2, container, false);
+                R.layout.fragment_blank_fragment3, container, false);
 
         return rootView;
     }
