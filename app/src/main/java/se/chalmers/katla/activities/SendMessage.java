@@ -1,6 +1,8 @@
 package se.chalmers.katla.activities;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -16,7 +18,7 @@ import se.chalmers.katla.R;
 
 public class SendMessage extends Activity {
     SmsManager smsManager = SmsManager.getDefault();
-    Button sendBtn;
+    Button sendBtn, callNbrButton;
     EditText phoneNumber;
     EditText textMessage;
 
@@ -28,6 +30,23 @@ public class SendMessage extends Activity {
         sendBtn = (Button) findViewById(R.id.sendButton);
         phoneNumber = (EditText) findViewById(R.id.contact);
         textMessage = (EditText) findViewById(R.id.textMessage);
+
+        // Button to call the number in phoneNumber
+        callNbrButton = (Button) findViewById(R.id.call_button);
+        callNbrButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Call current number in phoneNumber textbox
+             */
+            @Override
+            public void onClick(View v) {
+                Intent callNbrIntent = new Intent(Intent.ACTION_CALL);
+                // According to documentation ACTION_CALL can not call emergancy numbers?
+                callNbrIntent.setData(Uri.parse("tel:" + phoneNumber.getText()));
+                startActivity(callNbrIntent);
+            }
+        });
+
+
 
         sendBtn.setOnClickListener( new View.OnClickListener(){
             /**
