@@ -8,7 +8,6 @@ import java.util.Iterator;
  */
 public interface IKatla {
 
-
     /**
      *
      * @return an iterator over the different composite categories
@@ -17,24 +16,36 @@ public interface IKatla {
 
     /**
      * Adds a category to the list of composite categories
-     * @param category the category you want to add
+     * @param category the category to add
      */
     public void addCategory(ICategory category);
 
     /**
-     *
+     * Removes a category from the list of composite categories
+     * @param category the category to remove
+     */
+    public void removeCategory(ICategory category);
+
+    /**
+     * Moves a category to a specific index
+     * @param category the category to move
+     * @param index the index to move to
+     */
+    public void moveCategory(ICategory category, int index);
+    /**
+     * Adds a string of text to the message
      * @param string that you want to add to the end of the message
      */
     public void addStringToMessage(String string);
 
     /**
-     *
+     * Gets the message
      * @return a string representation of the message
      */
     public String getMessage();
 
     /**
-     *
+     * Gets the selected phone number
      * @return a string representation of the selected phone number
      */
     public String getPhone();

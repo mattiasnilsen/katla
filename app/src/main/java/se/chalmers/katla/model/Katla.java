@@ -1,6 +1,10 @@
 package se.chalmers.katla.model;
 
 
+import android.telephony.SmsManager;
+import android.util.Log;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,7 +38,20 @@ public class Katla implements IKatla {
 
     @Override
     public void addCategory(ICategory category) {
+        if(!categories.contains(category)) {
+            categories.add(category);
+        }
+    }
 
+    @Override
+    public void removeCategory(ICategory category) {
+        categories.remove(category);
+    }
+
+    @Override
+    public void moveCategory(ICategory category, int index) {
+       categories.remove(category);
+       categories.add(index, category);
     }
 
     @Override
@@ -59,6 +76,6 @@ public class Katla implements IKatla {
 
     @Override
     public void sendMessage() {
-
+       //sendMessageService
     }
 }
