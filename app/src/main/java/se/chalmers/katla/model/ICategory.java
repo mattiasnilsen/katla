@@ -33,7 +33,7 @@ public interface ICategory {
     public void moveComposite(IComposite composite, int index);
 
     /**
-     *  Gets an interator over this categorys composites
+     *  Gets an iterator over this categorys composites
      * @return an iterator over this categorys composites
      */
     public Iterator<IComposite> getComposites();

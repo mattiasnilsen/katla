@@ -29,6 +29,9 @@ public class Katla implements IKatla {
 
     private Katla() {
         categories = new ArrayList<ICategory>();
+        for(int i = 0; i<5; i++){ //Adding some default categories
+          categories.add(new Category("Category " + i)); //TODO remove this when not needed
+        }
     }
 
     @Override
