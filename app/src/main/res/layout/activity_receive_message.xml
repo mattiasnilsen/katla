@@ -17,15 +17,18 @@
         android:layout_gravity="center_horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView" />
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/ic_launcher" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Kontakt"
-            android:id="@+id/textView2" />
+            android:id="@+id/textView2"
+            android:textSize="30dp"
+            android:textIsSelectable="false" />
     </LinearLayout>
 
     <ScrollView
@@ -33,36 +36,44 @@
         android:layout_height="162dp"
         android:id="@+id/scrollView"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.26">
+        android:layout_weight="1.01"
+        android:focusable="false"
+        android:fillViewport="false">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/textView" />
+            android:text="Här kan man skriva ett fint sms, som ska vara lätt att läsa från avstånd. Till och med om man använder glasögon som många här i världen faktiskt gör!"
+            android:id="@+id/textView"
+            android:textSize="30dp" />
     </ScrollView>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_height="wrap_content">
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton2" />
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:id="@+id/imageButton2"
+            android:src="@drawable/ic_launcher"
+            android:scaleType="fitCenter" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="115dp"
+            android:layout_height="115dp"
             android:id="@+id/callBtn"
+            android:layout_gravity="center_horizontal"
             android:src="@drawable/phoneicon"
-            android:layout_gravity="center_horizontal" />
+            android:scaleType="fitCenter" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton4" />
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:id="@+id/imageButton4"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_launcher"
+            android:scaleType="fitCenter" />
     </LinearLayout>
 </LinearLayout>
