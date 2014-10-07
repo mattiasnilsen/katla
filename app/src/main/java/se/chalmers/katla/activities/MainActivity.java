@@ -1,12 +1,16 @@
 package se.chalmers.katla.activities;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 import se.chalmers.katla.R;
 
@@ -35,6 +39,41 @@ public class MainActivity extends Activity {
                 startActivity(sendMessageIntent);
             }
         });
+
+
+
+
+        // Get the SMS-conversations
+        ContentResolver contentResolver = getContentResolver();
+        // Create the projection, i.e. the values we want to query from the database
+        final String[] projection = {"body","_id","thread_id","address","date"};
+        // The URL for the conversations
+        Uri uri = Uri.parse("content://mms-sms/conversations/");
+        // Create a cursor, i.e. a pointer to a row in the database
+        Cursor cursor = contentResolver.query(uri, projection, null, null, "date ASC");
+
+        // Move to the first row
+        if(cursor.moveToFirst()) {
+
+            // Get the indexes for the values we want for the conversationlist
+            int bodyIndex = cursor.getColumnIndex(projection[0]);
+            int _idIndex = cursor.getColumnIndex(projection[1]);
+            int thread_idIndex = cursor.getColumnIndex(projection[2]);
+            int addressIndex = cursor.getColumnIndex(projection[3]);
+            int dateIndex = cursor.getColumnIndex(projection[4]);
+             do {
+                 // Get the specific values
+                 String body = cursor.getString(bodyIndex);
+                 long id = cursor.getLong(_idIndex);
+                 long threadId = cursor.getLong(thread_idIndex);
+                 String address = cursor.getString(addressIndex);
+                 long date = cursor.getLong(dateIndex);
+
+
+             } while (cursor.moveToNext());
+        }
+        // Close cursor
+        cursor.close();
     }
 
 
