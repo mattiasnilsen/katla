@@ -6,7 +6,6 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-
         android:theme="@style/AppTheme" >
         <activity
             android:name=".activities.MainActivity"
@@ -17,23 +16,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.SendMessage"
-            android:parentActivityName="se.chalmers.katla.activities.MainActivity"
-            android:label="@string/title_activity_send_message" >
+            android:label="@string/title_activity_send_message"
+            android:parentActivityName=".activities.MainActivity" >
         </activity>
-
-          <activity
-             android:name=".messageView"
-             android:label="@string/title_activity_message_view" >
+        <activity
+            android:name=".messageView"
+            android:label="@string/title_activity_message_view" >
             <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
-          </activity>
-    </application>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ReceiveMessage"
+            android:label="@string/title_activity_receive_message" >
+        </activity>
+    </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
