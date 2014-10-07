@@ -62,8 +62,13 @@ public interface IKatla {
     public void saveData();
 
     /**
-     * Send message to selected contact or phone number.
+     * Send message to selected contact or phone number
      */
     public void sendMessage();
+
+    /**
+     * Calls the selected contact or phone number
+     */
+    public void phoneCall();
 
 }

@@ -86,4 +86,9 @@ public class Katla implements IKatla {
     public void sendMessage() {
        //sendMessageService
     }
+
+    @Override
+    public void phoneCall() {
+
+    }
 }
