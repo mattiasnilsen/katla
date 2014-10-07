@@ -45,6 +45,12 @@ public interface IKatla {
     public String getMessage();
 
     /**
+     * Sets the message
+     * @param string to set the message to
+     */
+    public void setMessage(String string);
+
+    /**
      * Gets the selected phone number
      * @return a string representation of the selected phone number
      */

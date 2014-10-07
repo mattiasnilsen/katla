@@ -15,8 +15,8 @@ import java.util.List;
 public class Katla implements IKatla {
 
     private static Katla ourInstance;
-    private String message = "";
-    private String phone = "";
+    private String message = "Satan Elite";
+    private String phone = "666 1337";
     private List<ICategory> categories;
 
     public static Katla getInstance() {
@@ -44,6 +44,11 @@ public class Katla implements IKatla {
         if(!categories.contains(category)) {
             categories.add(category);
         }
+    }
+
+    @Override
+    public void setMessage(String string) {
+        message = string;
     }
 
     @Override
