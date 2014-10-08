@@ -6,16 +6,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import se.chalmers.katla.R;
+import se.chalmers.katla.model.IKatla;
+import se.chalmers.katla.model.Katla;
 
 public class ReceiveMessage extends Activity {
-
+    IKatla model;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive_message);
-
+        model = Katla.getInstance();
     }
 
 
@@ -36,5 +39,12 @@ public class ReceiveMessage extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        TextView temp = (TextView)findViewById(R.id.contactRM);
+        temp.setText(model.getPhone());
     }
 }
