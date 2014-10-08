@@ -16,10 +16,6 @@ public class ReceiveMessage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive_message);
 
-       /* Drawable myIcon = getResources().getDrawable( R.drawable.phoneicon );
-        ImageView img= (ImageView) findViewById(R.id.callBtn);
-        img.setImageDrawable(myIcon);
-        img.setImageResource(R.drawable.phoneicon);*/
     }
 
 
