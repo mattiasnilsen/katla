@@ -11,8 +11,8 @@ import java.util.List;
 public class Katla implements IKatla {
 
     private static Katla ourInstance;
-    private String message = "";
-    private String phone = "";
+    private String message = "Satan Elite";
+    private String phone = "666 1337";
     private List<ICategory> categories;
 
     public static Katla getInstance() {
@@ -40,12 +40,30 @@ public class Katla implements IKatla {
 
     @Override
     public Iterator<ICategory> getCategories() {
-        return null;
+        return categories.listIterator();
     }
 
     @Override
     public void addCategory(ICategory category) {
+        if(!categories.contains(category)) {
+            categories.add(category);
+        }
+    }
 
+    @Override
+    public void setMessage(String string) {
+        message = string;
+    }
+
+    @Override
+    public void removeCategory(ICategory category) {
+        categories.remove(category);
+    }
+
+    @Override
+    public void moveCategory(ICategory category, int index) {
+       categories.remove(category);
+       categories.add(index, category);
     }
 
     @Override
@@ -70,6 +88,11 @@ public class Katla implements IKatla {
 
     @Override
     public void sendMessage() {
+       //sendMessageService
+    }
+
+    @Override
+    public void phoneCall() {
 
     }
 }
