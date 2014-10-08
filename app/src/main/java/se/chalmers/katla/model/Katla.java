@@ -1,6 +1,6 @@
 package se.chalmers.katla.model;
 
-
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +25,17 @@ public class Katla implements IKatla {
 
     private Katla() {
         categories = new ArrayList<ICategory>();
+        CompositesXmlParser parser = new CompositesXmlParser();
+
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("res/raw/composites.xml");
+        System.out.println(in);
+        try {
+            System.out.println(in.available());
+            parser.parse(in);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     @Override
