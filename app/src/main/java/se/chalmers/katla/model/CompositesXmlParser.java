@@ -17,6 +17,9 @@ import se.chalmers.katla.R;
  */
 public class CompositesXmlParser {
 
+    private final String COMPOSITE_TAG = "composite";
+    private final String CATEGORY_TAG = "category";
+
     public List parse(InputStream in)  throws XmlPullParserException, IOException{
         try {
             XmlPullParser parser = Xml.newPullParser();
@@ -30,23 +33,38 @@ public class CompositesXmlParser {
     }
 
     private List readComposites(XmlPullParser parser) throws XmlPullParserException, IOException {
-        List entries = new ArrayList();
+        List categories = new ArrayList<IComposite>();
         int eventType = parser.getEventType();
+
+        ICategory currentCategory = null;
+        IComposite currentComposite = null;
         while (eventType != XmlPullParser.END_DOCUMENT) {
-            if(eventType == XmlPullParser.START_DOCUMENT) {
-                System.out.println("Start document");
-            } else if(eventType == XmlPullParser.END_DOCUMENT) {
-                System.out.println("End document");
-            } else if(eventType == XmlPullParser.START_TAG) {
-                System.out.println("Start tag "+parser.getName());
+            if(eventType == XmlPullParser.START_TAG) {
+                if(parser.getName().equals(CATEGORY_TAG)) {
+                    if(currentCategory != null) {
+                        //TODO throw exception?
+                    } else {
+                        currentCategory = new Category(parser.getAttributeValue(0));
+                    }
+                } else if(parser.getName().equals(COMPOSITE_TAG)) {
+                    currentComposite = new Composite();
+                }
             } else if(eventType == XmlPullParser.END_TAG) {
-                System.out.println("End tag "+parser.getName());
+                if(parser.getName().equals(COMPOSITE_TAG) && currentComposite != null) {
+                    currentCategory.addComposite(currentComposite);
+                    currentComposite = null;
+                } else if(parser.getName().equals(CATEGORY_TAG)) {
+                    categories.add(currentCategory);
+                    currentCategory = null;
+                }
             } else if(eventType == XmlPullParser.TEXT) {
-                System.out.println("Text "+parser.getText());
+                if(currentComposite != null) {
+                    currentComposite.setBaseText(parser.getText());
+                }
             }
             eventType = parser.next();
         }
 
-        return entries;
+        return categories;
     }
 }
