@@ -1,3 +1,4 @@
+<<<<<<< Original
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="se.chalmers.katla" >
@@ -19,7 +20,7 @@
 
         <!-- BroadcastReciever that listens for incoming MMS messages -->
         <receiver
-            android:name=".MmsReciever"
+            android:name=".reciever.MmsReciever"
             android:permission="android.permission.BROADCAST_WAP_PUSH" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
@@ -49,7 +50,7 @@
 
         <!-- Sorvice that delivers messages from the phone "quick response" -->
         <service
-            android:name=".HeadlessSmsService"
+            android:name=".service.HeadlessSmsSendService"
             android:exported="true"
             android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE" >
             <intent-filter>
@@ -84,6 +85,12 @@
             android:enabled="true"
             android:exported="true" >
         </receiver>
+
+        <service
+            android:name=".service.HeadlessSmsSendService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -91,3 +98,15 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
 
 </manifest>
+
+=======
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <application>
+        <service android:name="se.chalmers.katla.service.HeadlessSmsSendService"
+            android:exported="false" >
+        </service>
+    </application>
+
+</manifest>
+>>>>>>> Added
