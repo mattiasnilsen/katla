@@ -13,21 +13,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import se.chalmers.katla.R;
+import se.chalmers.katla.model.IKatla;
+import se.chalmers.katla.model.Katla;
 
 
 public class SendMessage extends Activity {
-    public final int MAX_SMS_LENGTH = 160;
     SmsManager smsManager = SmsManager.getDefault();
     Button sendBtn, callNbrButton;
     EditText phoneNumber;
     EditText textMessage;
+    IKatla katlaInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        katlaInstance = Katla.getInstance();
+
         setContentView(R.layout.activity_send_message);
 
         sendBtn = (Button) findViewById(R.id.sendButton);
@@ -49,8 +51,6 @@ public class SendMessage extends Activity {
             }
         });
 
-
-
         sendBtn.setOnClickListener( new View.OnClickListener(){
             /**
              * specifies what happens when send button is clicked.
@@ -58,7 +58,7 @@ public class SendMessage extends Activity {
              */
             public void onClick(View v){
 
-                sendMessage(getMessage(),getContactNumber());
+            sendMessage(getMessage(),getContactNumber());
             }
         });
     }
@@ -90,57 +90,65 @@ public class SendMessage extends Activity {
      */
     public void sendMessage(String message, String contactNumber){
         Log.i("Send SMS", "");
+        katlaInstance.setPhone(contactNumber);
+        katlaInstance.setMessage(message);
 
-        if(!(message.length()> MAX_SMS_LENGTH)) {
-            try {
-                smsManager = SmsManager.getDefault();
-                if (smsManager != null) {
-                    smsManager.sendTextMessage(contactNumber, null, message, null, null);
-                    Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
-                }
-
-            } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "SMS failed, please try again.", Toast.LENGTH_LONG).show();
-                Log.e("Stack trace for failure", Log.getStackTraceString(e));
-            }
-        }else{
-            ArrayList<String> messageList = divideMessage(message);
-            smsManager.sendMultipartTextMessage(contactNumber, null, messageList,null,null);
-
+        if (katlaInstance.sendMessage()) {
+            Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "SMS failed, please try again.", Toast.LENGTH_LONG).show();
         }
-
-        //TODO pendng intents for delivery report m.m
-    }
-
-    /**
-     * Divides a long message into 160 character length chunks.
-     * @param message the long message to divide
-     * @return an arrayList containing the parts of the long message.
-     */
-    private ArrayList<String> divideMessage(String message){
-        ArrayList<String> list = null;
-        int index = 0;
-        while (index<message.length()){
-            list.add(message.substring(index, Math.min(index + MAX_SMS_LENGTH, message.length())));
-            index += MAX_SMS_LENGTH;
-        }
-        return list;
     }
 
     /**
      * gets the contact number specified by the user in the view
      * @return a string with the contact number
      */
-    public String getContactNumber(){
-            return phoneNumber.getText().toString();
-
+    private String getContactNumber(){
+        return phoneNumber.getText().toString();
     }
 
     /**
      * gets the message to be sent from the view
      * @return the message to be sent
      */
-    public String getMessage(){
+    private String getMessage(){
         return textMessage.getText().toString();
+    }
+
+    /**
+     * Sets the specified String as the string in textMessage field.
+     * @param s the String to be set as message.
+     */
+    private void setTextMessage(String s) {
+        textMessage.setText(s);
+    }
+
+    /**
+     * Sets the specified String as the phone number.
+     * @param s the String to be set as phone number.
+     */
+    private void setContactNumber(String s) {
+        phoneNumber.setText(s);
+    }
+
+    @Override
+    protected void onPause() {
+        katlaInstance.setMessage(getMessage());
+        katlaInstance.setPhone(getContactNumber());
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        katlaInstance = null;
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        this.setTextMessage(katlaInstance.getMessage());
+        this.setContactNumber(katlaInstance.getPhone());
+        super.onResume();
     }
 }
