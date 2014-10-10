@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import se.chalmers.katla.R;
+import se.chalmers.katla.model.IKatla;
+import se.chalmers.katla.model.Katla;
 
 
 public class SendMessage extends Activity {
@@ -21,10 +23,13 @@ public class SendMessage extends Activity {
     Button sendBtn, callNbrButton;
     EditText phoneNumber;
     EditText textMessage;
+    IKatla katlaInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        katlaInstance = Katla.getInstance();
+
         setContentView(R.layout.activity_send_message);
 
         sendBtn = (Button) findViewById(R.id.sendButton);
@@ -46,8 +51,6 @@ public class SendMessage extends Activity {
             }
         });
 
-
-
         sendBtn.setOnClickListener( new View.OnClickListener(){
             /**
              * specifies what happens when send button is clicked.
@@ -55,7 +58,7 @@ public class SendMessage extends Activity {
              */
             public void onClick(View v){
 
-                sendMessage(getMessage(),getContactNumber());
+            sendMessage(getMessage(),getContactNumber());
             }
         });
     }
@@ -87,38 +90,65 @@ public class SendMessage extends Activity {
      */
     public void sendMessage(String message, String contactNumber){
         Log.i("Send SMS", "");
+        katlaInstance.setPhone(contactNumber);
+        katlaInstance.setMessage(message);
 
-        try {
-            smsManager=SmsManager.getDefault();
-            if(smsManager != null){
-                smsManager.sendTextMessage(contactNumber, null, message, null, null );
-                Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
-            }
-
-        }catch (Exception e){
+        if (katlaInstance.sendMessage()) {
+            Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
+        } else {
             Toast.makeText(getApplicationContext(), "SMS failed, please try again.", Toast.LENGTH_LONG).show();
-            Log.e("Stack trace for failure", Log.getStackTraceString(e));
         }
-
-
-
-
     }
 
     /**
      * gets the contact number specified by the user in the view
      * @return a string with the contact number
      */
-    public String getContactNumber(){
-            return phoneNumber.getText().toString();
-
+    private String getContactNumber(){
+        return phoneNumber.getText().toString();
     }
 
     /**
      * gets the message to be sent from the view
      * @return the message to be sent
      */
-    public String getMessage(){
+    private String getMessage(){
         return textMessage.getText().toString();
+    }
+
+    /**
+     * Sets the specified String as the string in textMessage field.
+     * @param s the String to be set as message.
+     */
+    private void setTextMessage(String s) {
+        textMessage.setText(s);
+    }
+
+    /**
+     * Sets the specified String as the phone number.
+     * @param s the String to be set as phone number.
+     */
+    private void setContactNumber(String s) {
+        phoneNumber.setText(s);
+    }
+
+    @Override
+    protected void onPause() {
+        katlaInstance.setMessage(getMessage());
+        katlaInstance.setPhone(getContactNumber());
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        katlaInstance = null;
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        this.setTextMessage(katlaInstance.getMessage());
+        this.setContactNumber(katlaInstance.getPhone());
+        super.onResume();
     }
 }
