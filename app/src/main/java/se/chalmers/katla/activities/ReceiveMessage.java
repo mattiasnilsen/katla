@@ -1,16 +1,20 @@
 package se.chalmers.katla.activities;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.swedspot.automotiveapi.AutomotiveSignal;
 import android.swedspot.automotiveapi.AutomotiveSignalId;
 import android.swedspot.scs.data.SCSFloat;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 
 import com.swedspot.automotiveapi.AutomotiveFactory;
@@ -30,6 +34,41 @@ public class ReceiveMessage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive_message);
         model = Katla.getInstance();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+
+        LinearLayout btnBar = (LinearLayout)findViewById(R.id.buttonBarRM);
+        LayoutParams params = btnBar.getLayoutParams();
+        //params.height = size.y;
+        params.width = size.x;
+        params.height = size.x/3;
+
+
+
+        ImageButton callBtn = (ImageButton)findViewById(R.id.callBtnRM);
+        ImageButton replyBtn = (ImageButton)findViewById(R.id.replyBtnRM);
+        ImageButton ttsBtn = (ImageButton)findViewById(R.id.textToSpeechBtnRM);
+
+        params = callBtn.getLayoutParams();
+        params.width = size.x/3;
+        params.height = size.x/3;
+        params = replyBtn.getLayoutParams();
+        params.width = size.x/3;
+        params.height = size.x/3;
+        params = ttsBtn.getLayoutParams();
+        params.width = size.x/3;
+        params.height = size.x/3;
+
+        callBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                model.phoneCall();
+            }
+        });
 
         new AsyncTask() {      //Network operation must be run on separate thread than main thread
             @Override
@@ -60,6 +99,24 @@ public class ReceiveMessage extends Activity {
                 return null;
             }
         }.execute();
+
+        AutomotiveListener automotiveListener = new AutomotiveListener() {
+            @Override
+            public void receive(AutomotiveSignal automotiveSignal) {
+                System.out.println(automotiveSignal.getData().toString());
+            }
+
+            @Override
+            public void timeout(int i) {
+
+            }
+
+            @Override
+            public void notAllowed(int i) {
+
+            }
+        };
+
     }
 
 
