@@ -80,8 +80,9 @@ public interface IKatla {
 
     /**
      * Send message to selected contact or phone number
+     * @return <i>true</i> if the send was successful, <i>false</i> if it was not.
      */
-    public void sendMessage();
+    public boolean sendMessage();
 
     /**
      * Calls the selected contact or phone number
