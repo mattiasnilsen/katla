@@ -63,7 +63,7 @@ public class HeadlessSmsSendService extends IntentService {
     }
 
     private void sendAndStoreTextMessage(ContentResolver contentResolver, String[] destinations, String message){
-        SmsManager smsManager = SmsManager().getDefault();
+        SmsManager smsManager = SmsManager.getDefault();
 
         Uri smsSentUri = Uri.parse(SmsConstant.SMS_SENT_URI);
 

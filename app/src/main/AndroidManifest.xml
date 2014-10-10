@@ -1,4 +1,3 @@
-<<<<<<< Original
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="se.chalmers.katla" >
@@ -12,7 +11,10 @@
         <!-- BroadcastReciever that listens for incoimnig sMS messages -->
         <receiver
             android:name="reciever.SmsReciever"
-            android:permission="android.permission.BROADCAST_SMS" >
+            android:permission="android.permission.BROADCAST_SMS"
+
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_DELIVER" />
             </intent-filter>
@@ -21,7 +23,10 @@
         <!-- BroadcastReciever that listens for incoming MMS messages -->
         <receiver
             android:name=".reciever.MmsReciever"
-            android:permission="android.permission.BROADCAST_WAP_PUSH" >
+            android:permission="android.permission.BROADCAST_WAP_PUSH"
+
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
 
@@ -74,23 +79,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <receiver
-            android:name=".reciever.SmsReciever"
-            android:enabled="true"
-            android:exported="true" >
-        </receiver>
-        <receiver
-            android:name=".reciever.MmsReciever"
-            android:enabled="true"
-            android:exported="true" >
-        </receiver>
-
-        <service
-            android:name=".service.HeadlessSmsSendService"
-            android:enabled="true"
-            android:exported="true" >
-        </service>
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -98,15 +86,3 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
 
 </manifest>
-
-=======
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <application>
-        <service android:name="se.chalmers.katla.service.HeadlessSmsSendService"
-            android:exported="false" >
-        </service>
-    </application>
-
-</manifest>
->>>>>>> Added
