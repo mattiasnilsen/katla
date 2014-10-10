@@ -15,8 +15,18 @@ import java.util.List;
 public class Katla implements IKatla {
 
     private static Katla ourInstance;
-    private String message = "Satan Elite";
+    private String message = "Alla vill till himlen men få vill ju dö";
     private String phone = "666 1337";
+    private String contact = "Satan Elite";
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
     private List<ICategory> categories;
 
     public static Katla getInstance() {
@@ -75,6 +85,11 @@ public class Katla implements IKatla {
     @Override
     public String getPhone() {
         return phone;
+    }
+
+    @Override
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override

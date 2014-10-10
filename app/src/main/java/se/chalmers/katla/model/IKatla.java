@@ -7,6 +7,17 @@ import java.util.Iterator;
  * Created by Anton on 2014-10-03.
  */
 public interface IKatla {
+    /**
+     * Gets a string representation of the current contact
+     * @return current contact
+     */
+    public String getContact();
+
+    /**
+     * Sets the current contact
+     * @param contact
+     */
+    public void setContact(String contact);
 
     /**
      *
@@ -55,6 +66,12 @@ public interface IKatla {
      * @return a string representation of the selected phone number
      */
     public String getPhone();
+
+    /**
+     * Sets the phone number
+     * @param phone
+     */
+    public void setPhone(String phone);
 
     /**
      * Save the state of the application model
