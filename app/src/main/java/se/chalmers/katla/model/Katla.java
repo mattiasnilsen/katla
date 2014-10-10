@@ -1,9 +1,9 @@
 package se.chalmers.katla.model;
 
 
-import android.telephony.SmsManager;
-import android.util.Log;
-import android.widget.Toast;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -89,6 +89,11 @@ public class Katla implements IKatla {
 
     @Override
     public void phoneCall() {
-
+        //Does it work to make an activity to use startActivity method??
+        Activity activity = new Activity();
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        // According to documentation ACTION_CALL can not call emergency numbers?
+        intent.setData(Uri.parse("tel:" + phone));
+        activity.startActivity(intent);
     }
 }
