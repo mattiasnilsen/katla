@@ -1,5 +1,6 @@
 package se.chalmers.katla.model;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class Category implements ICategory {
     private List<IComposite> composites;
 
     public Category (String name){
+        this.composites = new ArrayList<IComposite>();
         this.name = name;
     }
 
