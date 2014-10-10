@@ -44,8 +44,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView2"
+                android:text="0739995218"
+                android:id="@+id/phoneRM"
                 android:textSize="30dp" />
 
         </LinearLayout>

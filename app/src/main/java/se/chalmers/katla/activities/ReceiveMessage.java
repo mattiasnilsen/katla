@@ -143,6 +143,8 @@ public class ReceiveMessage extends Activity {
     protected void onResume() {
         super.onResume();
         TextView temp = (TextView)findViewById(R.id.contactRM);
+        temp.setText(model.getContact());
+        temp = (TextView)findViewById(R.id.phoneRM);
         temp.setText(model.getPhone());
     }
 }
