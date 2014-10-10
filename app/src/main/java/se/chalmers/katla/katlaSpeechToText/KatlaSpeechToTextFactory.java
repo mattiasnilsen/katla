@@ -2,6 +2,7 @@ package se.chalmers.katla.katlaSpeechToText;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.speech.SpeechRecognizer;
 
 /**
  * Factory class for receiving a speech to text service.
@@ -13,7 +14,7 @@ public class KatlaSpeechToTextFactory {
      * @param context the context the app runs in.
      * @return a new AbstractKatlaSpeechToText.
      */
-    public static AbstractKatlaSpeechToText createKatlaSpeechToText(Context context) {
+    public static IKatlaSpeechToText createKatlaSpeechToText(Context context) {
         return new KatlaSpeechToText(context);
     }
 
@@ -24,8 +25,17 @@ public class KatlaSpeechToTextFactory {
      *                         speech to text to.
      * @return a new AbstractKatlaSpeechToText
      */
-    public static AbstractKatlaSpeechToText createKatlaSpeechToText(Context context,
+    public static IKatlaSpeechToText createKatlaSpeechToText(Context context,
                                                              ComponentName serviceComponent) {
         return new KatlaSpeechToText(context, serviceComponent);
+    }
+
+    /**
+     * Checks whether the speech to text service is available.
+     * @param context the context the app runs in.
+     * @return <i>false</i> if the service is not avilable, <i>true</i> if it is available.
+     */
+    public static boolean isRecognitionAvailable(Context context) {
+        return SpeechRecognizer.isRecognitionAvailable(context);
     }
 }

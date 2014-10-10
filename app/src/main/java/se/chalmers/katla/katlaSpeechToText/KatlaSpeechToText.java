@@ -9,7 +9,7 @@ import android.speech.SpeechRecognizer;
 /**
  * Created by Joel on 08/10/2014.
  */
-public class KatlaSpeechToText extends AbstractKatlaSpeechToText {
+public class KatlaSpeechToText implements IKatlaSpeechToText {
     private SpeechRecognizer sr;
 
     public KatlaSpeechToText(Context context) {
