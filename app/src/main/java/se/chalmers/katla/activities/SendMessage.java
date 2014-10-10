@@ -13,10 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import se.chalmers.katla.R;
 
 
 public class SendMessage extends Activity {
+    public final int MAX_SMS_LENGTH = 160;
     SmsManager smsManager = SmsManager.getDefault();
     Button sendBtn, callNbrButton;
     EditText phoneNumber;
@@ -88,21 +91,40 @@ public class SendMessage extends Activity {
     public void sendMessage(String message, String contactNumber){
         Log.i("Send SMS", "");
 
-        try {
-            smsManager=SmsManager.getDefault();
-            if(smsManager != null){
-                smsManager.sendTextMessage(contactNumber, null, message, null, null );
-                Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
-            }
+        if(!(message.length()> MAX_SMS_LENGTH)) {
+            try {
+                smsManager = SmsManager.getDefault();
+                if (smsManager != null) {
+                    smsManager.sendTextMessage(contactNumber, null, message, null, null);
+                    Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
+                }
 
-        }catch (Exception e){
-            Toast.makeText(getApplicationContext(), "SMS failed, please try again.", Toast.LENGTH_LONG).show();
-            Log.e("Stack trace for failure", Log.getStackTraceString(e));
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "SMS failed, please try again.", Toast.LENGTH_LONG).show();
+                Log.e("Stack trace for failure", Log.getStackTraceString(e));
+            }
+        }else{
+            ArrayList<String> messageList = divideMessage(message);
+            smsManager.sendMultipartTextMessage(contactNumber, null, messageList,null,null);
+
         }
 
+        //TODO pendng intents for delivery report m.m
+    }
 
-
-
+    /**
+     * Divides a long message into 160 character length chunks.
+     * @param message the long message to divide
+     * @return an arrayList containing the parts of the long message.
+     */
+    private ArrayList<String> divideMessage(String message){
+        ArrayList<String> list = null;
+        int index = 0;
+        while (index<message.length()){
+            list.add(message.substring(index, Math.min(index + MAX_SMS_LENGTH, message.length())));
+            index += MAX_SMS_LENGTH;
+        }
+        return list;
     }
 
     /**
