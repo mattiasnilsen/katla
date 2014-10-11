@@ -34,6 +34,10 @@
             android:name=".activities.ReceiveMessage"
             android:label="@string/title_activity_receive_message" >
         </activity>
+        <activity
+            android:name=".activities.TextToSpeechActivity"
+            android:label="@string/title_activity_text_to_speech" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
