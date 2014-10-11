@@ -84,14 +84,14 @@ public interface IKatlaTextToSpeech {
      * @param queueMode the queueing strategy i.e. QUEUE_ADD, QUEUE_FLUSH.
      * @param params parameters for the request i.e. KEY_PARAM_STREAM, KEY_PARAM_UTTERANCE_ID,
      *               KEY_PARAM_VOLUME, KEY_PARAM_PAN.
-     * @return
+     * @return <i>-1</i> if the operation is not successful, <i>0</i> if the operation is successful
      */
     public int playSilence(long durationInMs, int queueMode, HashMap<String,String> params);
 
     /**
      * Sets the text-to-speech language to the specified language.
      * @param locale the language to set.
-     * @return parameter describing the supoort status for the locale. 
+     * @return parameter describing the supoort status for the locale.
      */
     public int setLanguage(Locale locale);
 
