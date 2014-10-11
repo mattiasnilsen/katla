@@ -89,6 +89,13 @@ public interface IKatlaTextToSpeech {
     public int playSilence(long durationInMs, int queueMode, HashMap<String,String> params);
 
     /**
+     * Sets the text-to-speech language to the specified language.
+     * @param locale the language to set.
+     * @return parameter describing the supoort status for the locale. 
+     */
+    public int setLanguage(Locale locale);
+
+    /**
      * Gets if the text to speech synthesis is ready to use.
      * @return <i>false</i> if it is not ready, <i>true</i> if it is ready.
      */
