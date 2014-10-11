@@ -125,6 +125,14 @@ public class KatlaTextToSpeech implements TextToSpeech.OnInitListener, IKatlaTex
      * {@inheritDoc}
      */
     @Override
+    public int setLanguage(Locale locale) {
+        return ttsInstance.setLanguage(locale);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean readyToUse() {
         return isReadyToUse;
     }
