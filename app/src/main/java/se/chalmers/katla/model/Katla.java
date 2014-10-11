@@ -1,5 +1,8 @@
 package se.chalmers.katla.model;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,16 +27,15 @@ public class Katla implements IKatla {
 
 
     private Katla() {
-        categories = new ArrayList<ICategory>();
         CompositesXmlParser parser = new CompositesXmlParser();
-
         InputStream in = this.getClass().getClassLoader().getResourceAsStream("res/raw/composites.xml");
-        System.out.println(in);
+
         try {
-            System.out.println(in.available());
-            parser.parse(in);
-        }
-        catch (Exception e) {
+            categories = parser.parse(in);
+        } catch (IOException e) {
+            //TODO proper exception handling
+            System.out.println(e);
+        } catch (XmlPullParserException e) {
             System.out.println(e);
         }
     }
