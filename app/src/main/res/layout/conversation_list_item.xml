@@ -8,10 +8,13 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/address_view" />
+        android:id="@+id/address_view"
+        android:textStyle="bold" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/body_view" />
+        android:id="@+id/body_view"
+        android:textStyle="italic"
+        android:editable="false" />
 </LinearLayout>

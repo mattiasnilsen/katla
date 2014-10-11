@@ -125,9 +125,21 @@ public class MainActivity extends Activity {
             } else {
                 name.setText(number);
             }
+            name.setKeyListener(null);
 
             TextView bodyText = (TextView)view.findViewById(R.id.body_view);
-            bodyText.setText(cursor.getString(cursor.getColumnIndex("body")));
+            int bodyIndex = cursor.getColumnIndex("body");
+            String body = cursor.getString(bodyIndex);
+            int nbrOfCharShown = 25;
+            String showText;
+            if(body.length() > nbrOfCharShown) {
+                showText = body.substring(0,nbrOfCharShown) + "...";
+            } else {
+                showText = body;
+            }
+            showText = showText.replace("\n", " ");
+            bodyText.setText(showText);
+            bodyText.setKeyListener(null);
         }
 
         private String getContactDisplayNameByNumber(String number) {
