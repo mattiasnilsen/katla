@@ -3,6 +3,8 @@ package se.chalmers.katla.katlaSpeechToText;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
 
 /**
@@ -39,8 +41,53 @@ public class KatlaSpeechToText implements IKatlaSpeechToText {
      * {@inheritDoc}
      */
     @Override
-    public void setListener(KatlaRecognitionListener rl) {
-        sr.setRecognitionListener(rl);
+    public void setListener(final KatlaRecognitionListener rl) {
+        sr.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle bundle) {
+                rl.onReadyForSpeech(bundle);
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+                rl.onBeginningOfSpeech();
+            }
+
+            @Override
+            public void onRmsChanged(float v) {
+                rl.onRmsChanged(v);
+            }
+
+            @Override
+            public void onBufferReceived(byte[] bytes) {
+                rl.onBufferReceived(bytes);
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+                rl.onEndOfSpeech();
+            }
+
+            @Override
+            public void onError(int i) {
+                rl.onError(i);
+            }
+
+            @Override
+            public void onResults(Bundle bundle) {
+                rl.onResults(bundle);
+            }
+
+            @Override
+            public void onPartialResults(Bundle bundle) {
+                rl.onPartialResults(bundle);
+            }
+
+            @Override
+            public void onEvent(int i, Bundle bundle) {
+                rl.onEvent(i, bundle);
+            }
+        });
     }
 
     /**
