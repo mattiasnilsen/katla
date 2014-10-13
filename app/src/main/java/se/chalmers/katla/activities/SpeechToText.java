@@ -52,7 +52,7 @@ public class SpeechToText extends Activity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                sendMessage();
             }
         });
 
@@ -74,7 +74,7 @@ public class SpeechToText extends Activity {
 
         mainTextView = (TextView)findViewById(R.id.speechToTextMainText);
         secondaryTextView = (TextView)findViewById(R.id.speechToTextSecondText);
-        mainTextView.setText("");
+        mainTextView.setText(katlaInstance.getMessage());
         secondaryTextView.setText("To start speaking: press button!");
 
     }
@@ -92,6 +92,12 @@ public class SpeechToText extends Activity {
         }
     }
 
+    private void sendMessage() {
+        katlaInstance.setMessage(mainTextView.getText().toString());
+        // HUR HANTERA NÄR INTE KONTAKT VALD HÄR? Öppna kontakthanterare och mota input till model?
+        katlaInstance.sendMessage();
+    }
+
     @Override
     protected void onDestroy() {
         kstt.destroy();
@@ -101,7 +107,14 @@ public class SpeechToText extends Activity {
     @Override
     protected void onPause() {
         katlaInstance.setMessage(mainTextView.getText().toString());
+        kstt.cancel();
         super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        mainTextView.setText(katlaInstance.getMessage());
+        super.onResume();
     }
 
     @Override
