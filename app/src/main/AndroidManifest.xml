@@ -38,6 +38,10 @@
             android:name=".activities.TextToSpeechActivity"
             android:label="@string/title_activity_text_to_speech" >
         </activity>
+        <activity
+            android:name=".activities.SpeechToText"
+            android:label="@string/title_activity_speech_to_text" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

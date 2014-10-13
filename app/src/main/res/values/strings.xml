@@ -14,6 +14,7 @@
     <string name="Test">test</string>
     <string name="title_activity_receive_message">ReceiveMessage</string>
     <string name="title_activity_text_to_speech">TextToSpeechActivity</string>
-    <string name="text_to_speech_text">Hello! Welcome! To Katla speak synthesis. Hope you enjoy your time here as much as we've enjoyed ours at your place. Thank you for your service!"</string>
+    <string name="text_to_speech_text">Hello! Welcome! To Katla speak synthesis. Hope you enjoy your time here as much as we\'ve enjoyed ours at your place. Thank you for your service!"</string>
+    <string name="title_activity_speech_to_text">SpeechToText</string>
 
 </resources>
