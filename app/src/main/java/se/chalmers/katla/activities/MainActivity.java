@@ -39,7 +39,18 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Temp button to get to another view
+        final Button receiveSMSButton = (Button)findViewById(R.id.tempBtn);
 
+        // When button is pressed, start create SMS activity.
+        receiveSMSButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent receiveMessageIntent = new Intent(MainActivity.this, ReceiveMessage.class);
+
+                startActivity(receiveMessageIntent);
+            }
+        });
         // Initiate the Button to create an SMS.
         final Button createSMSButton = (Button)findViewById(R.id.button_createSMS);
 

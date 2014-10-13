@@ -1,0 +1,85 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="se.chalmers.katla.activities.ReceiveMessage"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:background="@android:color/darker_gray">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@android:color/holo_blue_bright"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/ic_launcher"
+            android:layout_weight="0.07" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anton Freudenthaler"
+            android:id="@+id/contactRM"
+            android:textSize="30dp"
+            android:textIsSelectable="false"
+            android:layout_gravity="left|center_vertical" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="162dp"
+        android:id="@+id/scrollView"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1.01"
+        android:focusable="false"
+        android:fillViewport="false">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Här kan man skriva ett fint sms, som ska vara lätt att läsa från avstånd. Till och med om man använder glasögon som många här i världen faktiskt gör!"
+            android:id="@+id/textView"
+            android:textSize="30dp"
+            android:background="@android:color/background_light" />
+    </ScrollView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:id="@+id/textToSpeechBtn"
+            android:src="@drawable/listenicon"
+            android:scaleType="fitCenter" />
+
+        <ImageButton
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:id="@+id/callBtn"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="fitCenter"
+            android:src="@drawable/phoneicon" />
+
+        <ImageButton
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:id="@+id/replyBtn"
+            android:adjustViewBounds="true"
+            android:src="@drawable/replyicon"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
+</LinearLayout>
