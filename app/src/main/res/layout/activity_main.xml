@@ -13,15 +13,26 @@
         android:layout_height="wrap_content"
         android:text="@string/button_create_sms"
         android:id="@+id/button_createSMS"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+
+        android:layout_alignParentBottom="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/conversationListView"
+        android:headerDividersEnabled="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/button_createSMS" />
+
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ReceiveSMS"
         android:id="@+id/tempBtn"
-        android:layout_above="@+id/button_createSMS"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>
