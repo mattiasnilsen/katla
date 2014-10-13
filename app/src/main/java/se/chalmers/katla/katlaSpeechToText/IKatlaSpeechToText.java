@@ -1,9 +1,8 @@
 package se.chalmers.katla.katlaSpeechToText;
 
-import android.content.Context;
+
 import android.content.Intent;
-import android.speech.RecognitionListener;
-import android.speech.SpeechRecognizer;
+
 
 /**
  * Created by Joel on 08/10/2014.
@@ -19,13 +18,11 @@ public abstract interface IKatlaSpeechToText {
      */
     public abstract void destroy();
 
-
-
     /**
      * Sets a listener on the speech to text service that will receive all callbacks
      * @param rl the listener to set on the serivce
      */
-    public abstract void setListener(RecognitionListener rl);
+    public abstract void setListener(KatlaRecognitionListener rl);
 
     /**
      * Starts listening for speech.

@@ -3,7 +3,6 @@ package se.chalmers.katla.katlaSpeechToText;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
 
 /**
@@ -40,7 +39,7 @@ public class KatlaSpeechToText implements IKatlaSpeechToText {
      * {@inheritDoc}
      */
     @Override
-    public void setListener(RecognitionListener rl) {
+    public void setListener(KatlaRecognitionListener rl) {
         sr.setRecognitionListener(rl);
     }
 
