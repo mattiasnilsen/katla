@@ -27,6 +27,7 @@ public class SpeechToText extends Activity {
 
     private TextView mainTextView;
     private TextView secondaryTextView;
+    private TextView contactTextView;
     private boolean isListening;
     
     @Override
@@ -60,7 +61,7 @@ public class SpeechToText extends Activity {
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                onRemoveButton();
             }
         });
 
@@ -68,14 +69,16 @@ public class SpeechToText extends Activity {
         changeInputButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // To composite screen
             }
         });
 
         mainTextView = (TextView)findViewById(R.id.speechToTextMainText);
         secondaryTextView = (TextView)findViewById(R.id.speechToTextSecondText);
+        contactTextView =(TextView)findViewById(R.id.speechToTextContactField);
         mainTextView.setText(katlaInstance.getMessage());
         secondaryTextView.setText("To start speaking: press button!");
+        contactTextView.setText(katlaInstance.getPhone());
 
     }
 
@@ -92,9 +95,32 @@ public class SpeechToText extends Activity {
         }
     }
 
+    private void onRemoveButton() {
+        String text = mainTextView.getText().toString();
+        text.trim();
+        mainTextView.setText(removeLastWord(text.length(), text));
+    }
+
+    private String removeLastWord(int i, String text) {
+        if (text.length() == 0)
+            return "";
+
+        char c = text.charAt(i-1);
+        if (c == ' ') {
+            return text.substring(0, i);
+        } else if (Character.isDigit(c) || Character.isLetter(c)){
+            return removeLastWord(i - 1, text);
+        } else {
+            return text.substring(0, i - 1);
+        }
+
+
+    }
+
     private void sendMessage() {
         katlaInstance.setMessage(mainTextView.getText().toString());
         // HUR HANTERA NÄR INTE KONTAKT VALD HÄR? Öppna kontakthanterare och mota input till model?
+        // och senskicka och sen byta till nån konversationsvy?
         katlaInstance.sendMessage();
     }
 
