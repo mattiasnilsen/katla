@@ -51,6 +51,13 @@ public class SendMessage extends Activity {
             }
         });
 
+        findViewById(R.id.sendMessageToCompositeButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toComposeView();
+            }
+        });
+
         sendBtn.setOnClickListener( new View.OnClickListener(){
             /**
              * specifies what happens when send button is clicked.
@@ -62,6 +69,7 @@ public class SendMessage extends Activity {
             }
         });
     }
+
 
 
     @Override
@@ -130,6 +138,10 @@ public class SendMessage extends Activity {
      */
     private void setContactNumber(String s) {
         phoneNumber.setText(s);
+    }
+
+    public void toComposeView() {
+        // Start compose activity.
     }
 
     @Override
