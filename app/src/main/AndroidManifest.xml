@@ -10,11 +10,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.SendMessage"
@@ -24,11 +20,6 @@
         <activity
             android:name=".messageView"
             android:label="@string/title_activity_message_view" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.ReceiveMessage"
@@ -37,6 +28,15 @@
         <activity
             android:name=".activities.TextToSpeechActivity"
             android:label="@string/title_activity_text_to_speech" >
+        </activity>
+        <activity
+            android:name=".activities.ContactService"
+            android:label="@string/title_activity_contact_service" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

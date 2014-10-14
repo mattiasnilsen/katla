@@ -35,13 +35,13 @@ public class messageView extends Activity implements GestureDetector.OnGestureLi
         setContentView(lView);
     }
 
-    private void previousMessage(){
+    /*private void previousMessage(){
         myText.setText(Model.getConversation.getPreviousMessage());
     }
     private void nextMessage(){
         myText.setText(Model.getConversation.getNextMessage());
     }
-
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -76,7 +76,7 @@ public class messageView extends Activity implements GestureDetector.OnGestureLi
 
     @Override
     public boolean onDown(MotionEvent motionEvent) {
-        previousMessage();
+        //previousMessage();
         return true;
     }
 
@@ -97,7 +97,7 @@ public class messageView extends Activity implements GestureDetector.OnGestureLi
 
     @Override
     public void onLongPress(MotionEvent motionEvent) {
-        nextMessage();
+        //nextMessage();
     }
 
     @Override
