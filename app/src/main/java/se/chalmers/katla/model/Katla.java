@@ -22,8 +22,8 @@ public class Katla implements IKatla {
     private final int MAX_SMS_LENGTH = 160;
 
     private static Katla ourInstance;
-    private String message = "Alla vill till himlen men få vill ju dö";
-    private String phone = "666 1337";
+    private String message = "Alla vill till himlen men få vill ju dö hgfghf fhg hgf hgf hgf ghf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf ghf hgf hgf hgffghgf hg fhgf hg fhgf hg fhgf hfjhgf hgfkghfkf ufk h khg khg g hej alla fina getter!";
+    private String phone = "0707833811";
     private String contact = "Satan Elite";
 
     public String getContact() {
@@ -115,7 +115,7 @@ public class Katla implements IKatla {
     public boolean sendMessage() {
         IKatlaSmsManager manager = KatlaSmsManagerFactory.createIKatlaSmsManager();
 
-        if(!(message.length()> MAX_SMS_LENGTH)) {
+        if(message.length() <= MAX_SMS_LENGTH) {
             try {
                 if (manager != null) {
                     // Added so you don't have to call with null null paramters as intents, but you can.
@@ -129,8 +129,9 @@ public class Katla implements IKatla {
             }
         }else{
             ArrayList<String> messageList = divideMessage(message);
+
             try {
-                if (manager != null) {
+                if (manager != null && messageList!= null) {
                     // Added so you don't have to call with null null paramters as intents, but you can.
                     manager.sendMultipartTextMessage(getPhone(), null, messageList);
                     return true;
@@ -152,12 +153,13 @@ public class Katla implements IKatla {
      * @return an arrayList containing the parts of the long message.
      */
     private ArrayList<String> divideMessage(String message){
-        ArrayList<String> list = null;
+        ArrayList<String> list = new ArrayList<String>();
         int index = 0;
         while (index<message.length()){
             list.add(message.substring(index, Math.min(index + MAX_SMS_LENGTH, message.length())));
             index += MAX_SMS_LENGTH;
         }
+
         return list;
     }
 
