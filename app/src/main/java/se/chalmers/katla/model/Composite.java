@@ -34,7 +34,7 @@ public class Composite implements IComposite {
     @Override
     public void setInputs(List<String> inputs) {
         for(String string : inputs) {
-            inputs.add(string);
+            this.inputs.add(string);
         }
     }
 
