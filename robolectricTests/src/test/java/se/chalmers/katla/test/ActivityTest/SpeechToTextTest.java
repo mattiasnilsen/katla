@@ -46,6 +46,12 @@ public class SpeechToTextTest {
         mainText.setText("");
         stt.findViewById(R.id.speechToTextRemoveButton).performClick();
         assertTrue(mainText.getText().equals(""));
+
+        mainText.setText("Ta bort det sista skiljetecknet och de två sista orden!");
+        stt.findViewById(R.id.speechToTextRemoveButton).performClick();
+        stt.findViewById(R.id.speechToTextRemoveButton).performClick();
+        stt.findViewById(R.id.speechToTextRemoveButton).performClick();
+        assertTrue(mainText.getText().equals("Ta bort det sista skiljetecknet och de två "));
     }
 
 }
