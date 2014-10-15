@@ -15,6 +15,7 @@ import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 
 import se.chalmers.katla.R;
 import se.chalmers.katla.views.BlankFragment;
@@ -110,6 +111,11 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
         return true;
     }
 
+    public void scrollUp(){
+        Intent sendMessageIntent = new Intent(SwipeMainActivity.this, SendMessage.class);
+
+        startActivity(sendMessageIntent);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
