@@ -81,12 +81,13 @@ public class SpeechToText extends Activity {
     }
 
     private void onSpeechToTextButton() {
+        kstt.setListener(krl);
         if(isListening) {
             kstt.stopListening();
         } else {
             Intent recognizerIntent = new Intent();
-            recognizerIntent.addCategory(KatlaSpeechToTextParameters.EXTRA_PARTIAL_RESULTS);
-            recognizerIntent.addCategory(KatlaSpeechToTextParameters.EXTRA_PROMPT);
+            recognizerIntent.putExtra(KatlaSpeechToTextParameters.EXTRA_PARTIAL_RESULTS, true);
+            recognizerIntent.putExtra(KatlaSpeechToTextParameters.EXTRA_PROMPT, "Speak now");
 
             kstt.startListening(recognizerIntent);
             isListening = true;
@@ -100,11 +101,11 @@ public class SpeechToText extends Activity {
     }
 
     private String removeLastWord(int i, String text) {
-        if (text.length() == 0)
+        if (text.length() == 0 || text.substring(0, i).length() == 0)
             return "";
 
         char c = text.charAt(i-1);
-        if (c == ' ' || text.length() == i) {
+        if (c == ' ') {
             return text.substring(0, i);
         } else if (Character.isDigit(c) || Character.isLetter(c)){
             return removeLastWord(i - 1, text);
@@ -163,7 +164,7 @@ public class SpeechToText extends Activity {
     private KatlaRecognitionListener krl = new KatlaRecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle bundle) {
-
+            secondaryTextView.setText("");
         }
 
         @Override
@@ -194,17 +195,16 @@ public class SpeechToText extends Activity {
 
         @Override
         public void onResults(Bundle bundle) {
-            secondaryTextView.setText("");
-            List<String> resultsList = bundle.getStringArrayList(KatlaSpeechToTextParameters.RESULTS_RECOGNITION);
-            mainTextView.append(resultsList.get(0));
+
         }
 
         @Override
         public void onPartialResults(Bundle bundle) {
             secondaryTextView.setText("");
             List<String> resultsList = bundle.getStringArrayList(KatlaSpeechToTextParameters.RESULTS_RECOGNITION);
-            secondaryTextView.setText(resultsList.get(0));
-            mainTextView.append(resultsList.get(0));
+            String[] text = resultsList.get(0).split(" ");
+            secondaryTextView.setText(text[text.length - 1]);
+            mainTextView.append(text[text.length - 1]);
         }
 
         @Override
