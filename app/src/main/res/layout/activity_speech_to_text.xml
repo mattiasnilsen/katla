@@ -74,7 +74,9 @@
             android:id="@+id/speechToTextSendButton"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:background="@color/ITtuqos" />
+            android:background="@color/ITtuqos"
+            android:layout_toEndOf="@+id/speechToTextChangeInputButton"
+            android:layout_centerHorizontal="true" />
 
         <Button
             android:layout_width="wrap_content"
@@ -83,7 +85,8 @@
             android:id="@+id/speechToTextRemoveButton"
             android:background="@color/ITtuqos"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/speechToTextChangeInputButton" />
 
         <Button
             android:layout_width="wrap_content"
@@ -93,8 +96,6 @@
             android:background="@color/ITtuqos"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:layout_toEndOf="@+id/speechToTextRemoveButton"
-            android:layout_toStartOf="@+id/speechToTextSendButton"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp" />
 
