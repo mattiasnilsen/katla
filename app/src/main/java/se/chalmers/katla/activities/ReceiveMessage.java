@@ -1,7 +1,9 @@
 package se.chalmers.katla.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.swedspot.automotiveapi.AutomotiveSignal;
@@ -66,7 +68,10 @@ public class ReceiveMessage extends Activity {
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                model.phoneCall();
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                // According to documentation ACTION_CALL can not call emergency numbers?
+                intent.setData(Uri.parse("tel:" + model.getPhone()));
+                startActivity(intent);
             }
         });
 
