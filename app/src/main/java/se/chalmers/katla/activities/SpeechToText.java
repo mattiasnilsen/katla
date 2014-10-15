@@ -7,6 +7,7 @@ import android.speech.RecognitionListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -42,31 +43,28 @@ public class SpeechToText extends Activity {
 
         isListening = false;
 
-        ImageButton speechButton = (ImageButton)findViewById(R.id.speechToTextButton);
-        speechButton.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.speechToTextButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onSpeechToTextButton();
             }
         });
-        ImageButton sendButton = (ImageButton)findViewById(R.id.speechToTextSendButton);
-        sendButton.setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.speechToTextSendButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendMessage();
             }
         });
 
-        ImageButton removeButton = (ImageButton)findViewById(R.id.speechToTextRemoveButton);
-        removeButton.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.speechToTextRemoveButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onRemoveButton();
             }
         });
 
-        ImageButton changeInputButton = (ImageButton)findViewById(R.id.speechToTextChangeInputButton);
-        changeInputButton.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.speechToTextChangeInputButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // To composite screen
@@ -97,7 +95,7 @@ public class SpeechToText extends Activity {
 
     private void onRemoveButton() {
         String text = mainTextView.getText().toString();
-        text.trim();
+        text = text.trim();
         mainTextView.setText(removeLastWord(text.length(), text));
     }
 
