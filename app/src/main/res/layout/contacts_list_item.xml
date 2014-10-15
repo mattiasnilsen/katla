@@ -5,9 +5,13 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listItemText"/>
+        android:id="@+id/listItemText"
+        android:textSize="30dp"
+        android:clickable="true"
+        android:text="hejsan"
+        android:gravity="left" />
 
 </LinearLayout>
