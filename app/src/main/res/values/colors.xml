@@ -3,6 +3,6 @@
     <color name="black_overlay">#66000000</color>
     <color name="ITtuqos">#09CDDA</color>
     <color name="White">#FFFFFF</color>
-    <color name="Medium">FFAE09</color>
-    <color name="Bad">FF0F09</color>
+    <color name="Medium">#FFAE09</color>
+    <color name="Bad">#FF0F09</color>
 </resources>
