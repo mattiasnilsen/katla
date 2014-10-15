@@ -104,7 +104,7 @@ public class SpeechToText extends Activity {
             return "";
 
         char c = text.charAt(i-1);
-        if (c == ' ') {
+        if (c == ' ' || text.length() == i) {
             return text.substring(0, i);
         } else if (Character.isDigit(c) || Character.isLetter(c)){
             return removeLastWord(i - 1, text);
@@ -194,11 +194,14 @@ public class SpeechToText extends Activity {
 
         @Override
         public void onResults(Bundle bundle) {
-
+            secondaryTextView.setText("");
+            List<String> resultsList = bundle.getStringArrayList(KatlaSpeechToTextParameters.RESULTS_RECOGNITION);
+            mainTextView.append(resultsList.get(0));
         }
 
         @Override
         public void onPartialResults(Bundle bundle) {
+            secondaryTextView.setText("");
             List<String> resultsList = bundle.getStringArrayList(KatlaSpeechToTextParameters.RESULTS_RECOGNITION);
             secondaryTextView.setText(resultsList.get(0));
             mainTextView.append(resultsList.get(0));
