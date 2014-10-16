@@ -132,6 +132,8 @@
         android:layout_above="@+id/relativeLayout"
         android:layout_alignParentEnd="true"
         android:src="@drawable/listenicon"
-        android:clickable="true" />
+        android:clickable="true"
+        android:background="@color/White"
+        android:alpha="0.5" />
 
 </RelativeLayout>
