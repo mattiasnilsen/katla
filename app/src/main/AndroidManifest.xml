@@ -10,10 +10,6 @@
         <activity
             android:name=".activities.SwipeMainActivity"
             android:label="@string/title_activity_swipe_main" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.MainActivity"
@@ -30,13 +26,8 @@
             android:parentActivityName=".activities.MainActivity" >
         </activity>
         <activity
-            android:name=".messageView"
+            android:name=".views.messageView"
             android:label="@string/title_activity_message_view" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.ReceiveMessage"
