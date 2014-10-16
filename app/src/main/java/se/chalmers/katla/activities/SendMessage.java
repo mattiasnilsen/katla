@@ -17,6 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import se.chalmers.katla.R;
+import se.chalmers.katla.katlaTextToSpeech.IKatlaTextToSpeech;
+import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechFactory;
+import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechParameters;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
 
@@ -29,12 +32,15 @@ public class SendMessage extends Activity {
     private IKatla katlaInstance;
     private TextView countField;
 
+    private IKatlaTextToSpeech ktts;
+
     private final int MAX_SMS_LENGTH = 160;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         katlaInstance = Katla.getInstance();
+        ktts = KatlaTextToSpeechFactory.createKatlaTextToSpeech(getApplicationContext());
 
         setContentView(R.layout.activity_send_message);
 
@@ -58,6 +64,20 @@ public class SendMessage extends Activity {
             @Override
             public void afterTextChanged(Editable editable) {
 
+            }
+        });
+
+        textMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSpeakPress();
+            }
+        });
+
+        findViewById(R.id.sendMessageListenButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSpeakPress();
             }
         });
 
@@ -95,6 +115,18 @@ public class SendMessage extends Activity {
         });
     }
 
+
+    private void onSpeakPress() {
+        if(ktts.readyToUse()) {
+            // QUEUE_ADD adds this speak to a queue, QUEUE_FLUSH removes everything from the queue
+            // and speaks your message.
+            ktts.speak(textMessage.getText().toString(), KatlaTextToSpeechParameters.QUEUE_FLUSH, null);
+        } else {
+            Toast.makeText(getApplicationContext(), "Text to speech unavailable at this time",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
 
     @Override
@@ -173,12 +205,14 @@ public class SendMessage extends Activity {
     protected void onPause() {
         katlaInstance.setMessage(getMessage());
         katlaInstance.setPhone(getContactNumber());
+        ktts.stop();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         katlaInstance = null;
+        ktts.shutdown();
         super.onDestroy();
     }
 
