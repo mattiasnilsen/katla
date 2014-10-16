@@ -69,7 +69,7 @@ public class SpeechToText extends Activity {
         findViewById(R.id.speechToTextChangeInputButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // To composite screen
+                onToCompositeButton();
             }
         });
 
@@ -86,15 +86,20 @@ public class SpeechToText extends Activity {
     private void onSpeechToTextButton() {
         kstt.setListener(krl);
         if(isListening) {
+            isListening = false;
             kstt.stopListening();
         } else {
-            Intent recognizerIntent = new Intent();
-            recognizerIntent.putExtra(KatlaSpeechToTextParameters.EXTRA_PARTIAL_RESULTS, true);
-            recognizerIntent.putExtra(KatlaSpeechToTextParameters.EXTRA_PROMPT, "Speak now");
-
-            kstt.startListening(recognizerIntent);
+            startListener();
             isListening = true;
         }
+    }
+
+    private void startListener() {
+        Intent recognizerIntent = new Intent();
+        recognizerIntent.putExtra(KatlaSpeechToTextParameters.EXTRA_PARTIAL_RESULTS, true);
+        recognizerIntent.putExtra(KatlaSpeechToTextParameters.EXTRA_PROMPT, "Speak now");
+
+        kstt.startListening(recognizerIntent);
     }
 
     private void onRemoveButton() {
@@ -120,10 +125,19 @@ public class SpeechToText extends Activity {
     }
 
     private void sendMessage() {
+        isListening = false;
+        kstt.stopListening();
         katlaInstance.setMessage(mainTextView.getText().toString());
         // HUR HANTERA NÄR INTE KONTAKT VALD HÄR? Öppna kontakthanterare och mota input till model?
         // och senskicka och sen byta till nån konversationsvy?
+        mainTextView.setText("");
+        secondaryTextView.setText("");
         katlaInstance.sendMessage();
+    }
+
+    private void onToCompositeButton() {
+
+        // Gå till composite
     }
 
     @Override
@@ -135,6 +149,8 @@ public class SpeechToText extends Activity {
     @Override
     protected void onPause() {
         katlaInstance.setMessage(mainTextView.getText().toString());
+        isListening = false;
+        kstt.stopListening();
         kstt.cancel();
         super.onPause();
     }
@@ -187,9 +203,12 @@ public class SpeechToText extends Activity {
 
         @Override
         public void onEndOfSpeech() {
-            isListening = false;
-            secondaryTextView.setText("");
-            Toast.makeText(getApplicationContext(), "Stopped recognition", Toast.LENGTH_LONG);
+            if (isListening) {
+                startListener();
+            } else {
+                secondaryTextView.setText("");
+                Toast.makeText(getApplicationContext(), "Stopped recognition", Toast.LENGTH_LONG);
+            }
         }
 
         @Override
