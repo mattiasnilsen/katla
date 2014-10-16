@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import se.chalmers.katla.R;
@@ -19,11 +22,14 @@ import se.chalmers.katla.model.Katla;
 
 
 public class SendMessage extends Activity {
-    SmsManager smsManager = SmsManager.getDefault();
-    Button sendBtn, callNbrButton;
-    EditText phoneNumber;
-    EditText textMessage;
-    IKatla katlaInstance;
+
+    private Button sendBtn, callNbrButton;
+    private EditText phoneNumber;
+    private EditText textMessage;
+    private IKatla katlaInstance;
+    private TextView countField;
+
+    private final int MAX_SMS_LENGTH = 160;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,25 @@ public class SendMessage extends Activity {
         sendBtn = (Button) findViewById(R.id.sendButton);
         phoneNumber = (EditText) findViewById(R.id.contact);
         textMessage = (EditText) findViewById(R.id.textMessage);
+        countField = (TextView) findViewById(R.id.wordCountField);
+        textMessage.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                countField.setText((charSequence.length()/MAX_SMS_LENGTH + 1) * MAX_SMS_LENGTH -
+                        charSequence.length() + "/" + (charSequence.length()/MAX_SMS_LENGTH + 1));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         // Button to call the number in phoneNumber
         callNbrButton = (Button) findViewById(R.id.call_button);
@@ -163,4 +188,6 @@ public class SendMessage extends Activity {
         this.setContactNumber(katlaInstance.getPhone());
         super.onResume();
     }
+
+
 }
