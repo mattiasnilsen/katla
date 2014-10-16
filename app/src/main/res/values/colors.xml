@@ -2,4 +2,17 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="ITtuqos">#09CDDA</color>
+    <color name="White">#FFFFFF</color>
+    <color name="Grey">#CBCBCB</color>
+    <color name="Orange">#FFB300</color>
+    <color name="Blue">#0C49D6</color>
+    <color name="Green">#9BF600</color>
+    <color name="OrangeDark">#463100</color>
+    <color name="BlueDark">#02102F</color>
+    <color name="GreenDark">#294100</color>
+    <color name="OrangeLight">#FFDA83</color>
+    <color name="BlueLight">#637AAF</color>
+    <color name="GreenLight">#C3ED7A</color>
+
+
 </resources>

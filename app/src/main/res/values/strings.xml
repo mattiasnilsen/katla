@@ -22,6 +22,5 @@
     <string name="hello_blank_fragment2">World</string>
     <string name="hello_blank_fragment1">Hello</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
+    <string name="sendMessageToCompositeButton">Compose message</string>
 </resources>
