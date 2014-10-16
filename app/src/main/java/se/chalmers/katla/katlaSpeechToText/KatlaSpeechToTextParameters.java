@@ -10,4 +10,6 @@ public class KatlaSpeechToTextParameters {
     public final static String RESULTS_RECOGNITION = SpeechRecognizer.RESULTS_RECOGNITION;
     public final static String EXTRA_PARTIAL_RESULTS = RecognizerIntent.EXTRA_PARTIAL_RESULTS;
     public final static String EXTRA_PROMPT = RecognizerIntent.EXTRA_PROMPT;
+    public final static String EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS
+            = RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS;
 }

@@ -30,6 +30,7 @@ public class SpeechToText extends Activity {
     private TextView secondaryTextView;
     private TextView contactTextView;
     private boolean isListening;
+    private String lastResultString;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,8 @@ public class SpeechToText extends Activity {
             Intent recognizerIntent = new Intent();
             recognizerIntent.putExtra(KatlaSpeechToTextParameters.EXTRA_PARTIAL_RESULTS, true);
             recognizerIntent.putExtra(KatlaSpeechToTextParameters.EXTRA_PROMPT, "Speak now");
+            recognizerIntent.putExtra(KatlaSpeechToTextParameters.
+                    EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 500);
 
             kstt.startListening(recognizerIntent);
             isListening = true;
@@ -202,9 +205,13 @@ public class SpeechToText extends Activity {
         public void onPartialResults(Bundle bundle) {
             secondaryTextView.setText("");
             List<String> resultsList = bundle.getStringArrayList(KatlaSpeechToTextParameters.RESULTS_RECOGNITION);
-            String[] text = resultsList.get(0).split(" ");
-            secondaryTextView.setText(text[text.length - 1]);
-            mainTextView.append(text[text.length - 1]);
+            if (!resultsList.get(0).equals(lastResultString)) {
+                lastResultString = resultsList.get(0);
+                String[] text = resultsList.get(0).split(" ");
+                secondaryTextView.setText(text[text.length - 1]);
+                mainTextView.append(text[text.length - 1] + " ");
+            }
+
         }
 
         @Override
