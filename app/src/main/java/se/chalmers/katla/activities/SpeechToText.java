@@ -21,6 +21,9 @@ import se.chalmers.katla.katlaSpeechToText.IKatlaSpeechToText;
 import se.chalmers.katla.katlaSpeechToText.KatlaRecognitionListener;
 import se.chalmers.katla.katlaSpeechToText.KatlaSpeechToTextParameters;
 import se.chalmers.katla.katlaSpeechToText.KatlaSpeechToTextFactory;
+import se.chalmers.katla.katlaTextToSpeech.IKatlaTextToSpeech;
+import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechFactory;
+import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechParameters;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
 
@@ -28,6 +31,7 @@ public class SpeechToText extends Activity {
 
     private IKatla katlaInstance;
     private IKatlaSpeechToText kstt;
+    private IKatlaTextToSpeech ktts;
 
     private TextView mainTextView;
     private TextView secondaryTextView;
@@ -45,6 +49,8 @@ public class SpeechToText extends Activity {
 
         katlaInstance = Katla.getInstance();
         kstt = KatlaSpeechToTextFactory.createKatlaSpeechToText(getApplicationContext());
+
+        ktts = KatlaTextToSpeechFactory.createKatlaTextToSpeech(getApplicationContext());
 
         kstt.setListener(krl);
 
@@ -78,10 +84,23 @@ public class SpeechToText extends Activity {
             }
         });
 
+        findViewById(R.id.speechToTextListenButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onTextToSpeechButton();
+            }
+        });
+
         mainTextView = (TextView)findViewById(R.id.speechToTextMainText);
         secondaryTextView = (TextView)findViewById(R.id.speechToTextSecondText);
         contactTextView = (TextView)findViewById(R.id.speechToTextContactField);
         countTextView = (TextView)findViewById(R.id.speechToTextCountField);
+        mainTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onTextToSpeechButton();
+            }
+        });
         mainTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -101,7 +120,8 @@ public class SpeechToText extends Activity {
         });
         mainTextView.setText(katlaInstance.getMessage());
         secondaryTextView.setText("");
-        Toast.makeText(getApplicationContext(), "To start speaking: Press button", Toast.LENGTH_LONG);
+        Toast.makeText(getApplicationContext(), "To start speaking: Press button",
+                Toast.LENGTH_LONG).show();
         contactTextView.setText(katlaInstance.getPhone());
 
 
@@ -115,6 +135,17 @@ public class SpeechToText extends Activity {
         } else {
             startListener();
             isListening = true;
+        }
+    }
+
+    private void onTextToSpeechButton() {
+        if(ktts.readyToUse()) {
+            // QUEUE_ADD adds this speak to a queue, QUEUE_FLUSH removes everything from the queue
+            // and speaks your message.
+            ktts.speak(mainTextView.getText().toString(), KatlaTextToSpeechParameters.QUEUE_FLUSH, null);
+        } else {
+            Toast.makeText(getApplicationContext(), "Text to speech unavailable at this time",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -167,6 +198,7 @@ public class SpeechToText extends Activity {
     @Override
     protected void onDestroy() {
         kstt.destroy();
+        ktts.shutdown();
         super.onDestroy();
     }
 
@@ -176,6 +208,7 @@ public class SpeechToText extends Activity {
         isListening = false;
         kstt.stopListening();
         kstt.cancel();
+        ktts.stop();
         super.onPause();
     }
 
@@ -231,7 +264,7 @@ public class SpeechToText extends Activity {
                 startListener();
             } else {
                 secondaryTextView.setText("");
-                Toast.makeText(getApplicationContext(), "Stopped recognition", Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(), "Stopped recognition", Toast.LENGTH_LONG).show();
             }
         }
 

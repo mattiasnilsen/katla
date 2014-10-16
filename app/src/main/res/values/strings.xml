@@ -23,5 +23,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sendMessageToCompositeButton">Compose message</string>
     <string name="title_activity_speech_to_text">SpeechToText</string>
-    
+
 </resources>
