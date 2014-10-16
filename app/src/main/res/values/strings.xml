@@ -16,11 +16,12 @@
     <string name="title_activity_receive_message">ReceiveMessage</string>
     <string name="title_activity_text_to_speech">TextToSpeechActivity</string>
     <string name="text_to_speech_text">Hello! Welcome! To Katla speak synthesis. Hope you enjoy your time here as much as we\'ve enjoyed ours at your place. Thank you for your service!"</string>
-
     <string name="title_activity_swipe_main">SwipeMainActivity</string>
     <string name="hello_blank_fragment3">!!!!!!</string>
     <string name="hello_blank_fragment2">World</string>
     <string name="hello_blank_fragment1">Hello</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sendMessageToCompositeButton">Compose message</string>
+    <string name="title_activity_speech_to_text">SpeechToText</string>
+    
 </resources>
