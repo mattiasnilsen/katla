@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -76,7 +77,8 @@ public class SpeechToText extends Activity {
         secondaryTextView = (TextView)findViewById(R.id.speechToTextSecondText);
         contactTextView =(TextView)findViewById(R.id.speechToTextContactField);
         mainTextView.setText(katlaInstance.getMessage());
-        secondaryTextView.setText("To start speaking: press button!");
+        secondaryTextView.setText("");
+        Toast.makeText(getApplicationContext(), "To start speaking: Press button", Toast.LENGTH_LONG);
         contactTextView.setText(katlaInstance.getPhone());
 
     }
@@ -89,8 +91,6 @@ public class SpeechToText extends Activity {
             Intent recognizerIntent = new Intent();
             recognizerIntent.putExtra(KatlaSpeechToTextParameters.EXTRA_PARTIAL_RESULTS, true);
             recognizerIntent.putExtra(KatlaSpeechToTextParameters.EXTRA_PROMPT, "Speak now");
-            recognizerIntent.putExtra(KatlaSpeechToTextParameters.
-                    EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 500);
 
             kstt.startListening(recognizerIntent);
             isListening = true;
@@ -188,7 +188,8 @@ public class SpeechToText extends Activity {
         @Override
         public void onEndOfSpeech() {
             isListening = false;
-            secondaryTextView.setText("To start speaking: press button!");
+            secondaryTextView.setText("");
+            Toast.makeText(getApplicationContext(), "Stopped recognition", Toast.LENGTH_LONG);
         }
 
         @Override
