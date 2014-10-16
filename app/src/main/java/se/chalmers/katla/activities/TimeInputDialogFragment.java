@@ -18,12 +18,14 @@ import java.util.List;
 import se.chalmers.katla.R;
 
 /**
- * Created by kerp on 2014-10-15.
+ * TimeInputDialogFragment is a dialog that contains a TimePicker where the user can select a time.
+ * An activity that instantiates this dialog must implement its interface TimeInputDialogListener.
  */
 public class TimeInputDialogFragment extends DialogFragment {
 
     private static final int TIME_PICKER_INTERVAL = 5;
     private TimeInputDialogListener listener = null;
+    private TimePicker timePicker;
 
     /**
      * The Activity that instantiates this dialog must implement this interface.
@@ -55,9 +57,11 @@ public class TimeInputDialogFragment extends DialogFragment {
         builder.setView(inflater.inflate(R.layout.fragment_time_input, null));
 
         Dialog dialog = builder.create();
+        //The show() method must be called here because of a side effect with dialog.findViewById()
+        //For more information see http://stackoverflow.com/q/7568479
         dialog.show();
 
-        TimePicker timePicker = (TimePicker)dialog.findViewById(R.id.timeDialogTimePicker);
+        timePicker = (TimePicker)dialog.findViewById(R.id.timeDialogTimePicker);
         if(timePicker != null) {
             timePicker.setIs24HourView(true);
             timePicker.setCurrentHour(0);
@@ -65,6 +69,18 @@ public class TimeInputDialogFragment extends DialogFragment {
             setInterval(timePicker, TIME_PICKER_INTERVAL);
         }
 
+
+        final Button doneButton = (Button)dialog.findViewById(R.id.timeDialogDoneButton);
+
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int hours = timePicker.getCurrentHour();
+                int minutes = timePicker.getCurrentMinute() * TIME_PICKER_INTERVAL;
+                listener.onTimeSetClicked(hours, minutes);
+                dismiss();
+            }
+        });
 
         return dialog;
     }
