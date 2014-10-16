@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +34,9 @@ public class SpeechToText extends Activity {
     private TextView contactTextView;
     private boolean isListening;
     private String lastResultString;
+    private TextView countTextView;
+
+    private final int MAX_SMS_LENGTH = 160;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +80,30 @@ public class SpeechToText extends Activity {
 
         mainTextView = (TextView)findViewById(R.id.speechToTextMainText);
         secondaryTextView = (TextView)findViewById(R.id.speechToTextSecondText);
-        contactTextView =(TextView)findViewById(R.id.speechToTextContactField);
+        contactTextView = (TextView)findViewById(R.id.speechToTextContactField);
+        countTextView = (TextView)findViewById(R.id.speechToTextCountField);
+        mainTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                countTextView.setText(((charSequence.length()/MAX_SMS_LENGTH + 1) - 
+                        charSequence.length()) + "/" + (charSequence.length()/MAX_SMS_LENGTH + 1));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         mainTextView.setText(katlaInstance.getMessage());
         secondaryTextView.setText("");
         Toast.makeText(getApplicationContext(), "To start speaking: Press button", Toast.LENGTH_LONG);
         contactTextView.setText(katlaInstance.getPhone());
+
 
     }
 

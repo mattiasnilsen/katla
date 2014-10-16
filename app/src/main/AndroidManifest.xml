@@ -10,6 +10,11 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
         <activity
@@ -32,11 +37,7 @@
         <activity
             android:name=".activities.SpeechToText"
             android:label="@string/title_activity_speech_to_text" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
