@@ -12,11 +12,13 @@ import static android.support.v4.app.ActivityCompat.startActivity;
  */
 public class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
 
-    private final SwipeMainActivity activity;
+    private final Activity activity;
+    private final Intent intent;
 
-    public MyGestureListener(SwipeMainActivity activity) {
+    public MyGestureListener(Activity activity, Intent intent) {
         super();
         this.activity = activity;
+        this.intent=intent;
     }
 
 
@@ -24,7 +26,7 @@ public class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         float sensitvity = 50;
         if((e2.getY() - e1.getY()) > sensitvity){
-            activity.scrollUp();
+            activity.startActivity(intent);
         }
         return super.onFling(e1, e2, velocityX, velocityY);
     }
