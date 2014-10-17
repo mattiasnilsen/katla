@@ -22,7 +22,6 @@ import se.chalmers.katla.R;
 import se.chalmers.katla.model.Katla;
 
 public class ContactService extends Activity {
-    private String searchInput = "";
     private ContactsCursorAdapter contactsCursorAdapter;
     private Katla model = Katla.getInstance();
     @Override
@@ -30,15 +29,8 @@ public class ContactService extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_service);
 
-        ContentResolver contentResolver = getContentResolver();
-        // Create the projection, i.e. the values we want to query from the database
-        String[] projection = {ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME};
-        // The URL for the contacts
-        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, Uri.encode(searchInput));
-        // Create a cursor, i.e. a pointer to a row in the database
-        Cursor cursor = contentResolver.query(uri, projection, null, null, null);
-        // Create the adapter that maps data from the cursor onto the view
-        contactsCursorAdapter = new ContactsCursorAdapter(this,cursor,0);
+
+        contactsCursorAdapter = new ContactsCursorAdapter(this,createDefaultCursor(),0);
 
         // Get the listView and set the above adapter
         ListView contactsListView = (ListView)findViewById(R.id.listView3);
@@ -67,12 +59,19 @@ public class ContactService extends Activity {
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
                 //Get input as it changes
                 EditText input = (EditText)findViewById(R.id.contactInput);
-                searchInput = "" + input.getText();
+                String searchInput = input.getText() + "";
+                Cursor cursor = null;
                 //SearchInput changed, make a new cursor for contactsCursorAdapter
-                ContentResolver contentResolver = getContentResolver();
-                String[] projection = { ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME };
-                Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, Uri.encode(searchInput));
-                Cursor cursor = contentResolver.query(uri, projection, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
+                if(searchInput == ""){
+                    //Get a cursor that shows all contacts
+                    cursor = createDefaultCursor();
+                }else{
+                    ContentResolver contentResolver = getContentResolver();
+                    String[] projection = { ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME };
+                    Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, Uri.encode(searchInput));
+                    cursor = contentResolver.query(uri, projection, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
+                }
+
                 contactsCursorAdapter.swapCursor(cursor);
                 contactsCursorAdapter.notifyDataSetChanged();
             }
@@ -162,5 +161,18 @@ public class ContactService extends Activity {
             }
         }
         return phone;
+    }
+
+    private Cursor createDefaultCursor(){
+        ContentResolver contentResolver = getContentResolver();
+        // Create the projection, i.e. the values we want to query from the database
+        String[] projection = {ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME};
+        // The URL for the contacts
+        Uri uri = ContactsContract.Contacts.CONTENT_URI;
+        // Create a cursor, i.e. a pointer to a row in the database
+        Cursor cursor = contentResolver.query(uri, projection, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
+        // Create the adapter that maps data from the cursor onto the view
+
+        return cursor;
     }
 }
