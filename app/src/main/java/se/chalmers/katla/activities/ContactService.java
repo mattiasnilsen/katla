@@ -22,9 +22,8 @@ import se.chalmers.katla.R;
 import se.chalmers.katla.model.Katla;
 
 public class ContactService extends Activity {
-    private ListView contactsListView;
-    private String search = "+46725164141";
-    private ContacsCursorAdapter contacsCursorAdapter;
+    private String searchInput = "";
+    private ContactsCursorAdapter contactsCursorAdapter;
     private Katla model = Katla.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +32,19 @@ public class ContactService extends Activity {
 
         ContentResolver contentResolver = getContentResolver();
         // Create the projection, i.e. the values we want to query from the database
-        String[] projection = {ContactsContract.Contacts._ID,
-                ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts.LOOKUP_KEY };
+        String[] projection = {ContactsContract.Contacts.DISPLAY_NAME};
         // The URL for the contacts
-        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, Uri.encode(search));
+        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, Uri.encode(searchInput));
         // Create a cursor, i.e. a pointer to a row in the database
         Cursor cursor = contentResolver.query(uri, projection, null, null, null);
         // Create the adapter that maps data from the cursor onto the view
+        contactsCursorAdapter = new ContactsCursorAdapter(this,cursor,0);
 
-        contacsCursorAdapter = new ContacsCursorAdapter(this,cursor,0);
         // Get the listView and set the above adapter
-        contactsListView = (ListView)findViewById(R.id.listView3);
-        contactsListView.setAdapter(contacsCursorAdapter);
+        ListView contactsListView = (ListView)findViewById(R.id.listView3);
+        contactsListView.setAdapter(contactsCursorAdapter);
+
+        //Temp btn
         Button btn = (Button)findViewById(R.id.searchBtnCS);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,33 +53,34 @@ public class ContactService extends Activity {
                 startActivity(receiveMessageIntent);
             }
         });
+
+        //Implement listener for inputchange
         EditText input = (EditText)findViewById(R.id.contactInput);
         input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
                 //Not sure this is necessary
-                contacsCursorAdapter.notifyDataSetChanged();
+                contactsCursorAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                //Get input as it changes
                 EditText input = (EditText)findViewById(R.id.contactInput);
-                search = "" + input.getText();
+                searchInput = "" + input.getText();
+                //SearchInput changed, make a new cursor for contactsCursorAdapter
                 ContentResolver contentResolver = getContentResolver();
-                // Create the projection, i.e. the values we want to query from the database
-                String[] projection = {ContactsContract.Contacts._ID,
-                        ContactsContract.Contacts.DISPLAY_NAME };
-                Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, Uri.encode(search));
-                // Create a cursor, i.e. a pointer to a row in the database
+                String[] projection = { ContactsContract.Contacts.DISPLAY_NAME };
+                Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, Uri.encode(searchInput));
                 Cursor cursor = contentResolver.query(uri, projection, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
-                contacsCursorAdapter.swapCursor(cursor);
-                contacsCursorAdapter.notifyDataSetChanged();
+                contactsCursorAdapter.swapCursor(cursor);
+                contactsCursorAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 //Not sure this is necessary
-                contacsCursorAdapter.notifyDataSetChanged();
+                contactsCursorAdapter.notifyDataSetChanged();
             }
         });
 
@@ -105,14 +106,9 @@ public class ContactService extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class ContacsCursorAdapter extends android.widget.CursorAdapter {
-        /**
-         * Same constructor as CursorAdapter.
-         * @param context
-         * @param c
-         * @param flags
-         */
-        public ContacsCursorAdapter(Context context, Cursor c, int flags) {
+    private class ContactsCursorAdapter extends android.widget.CursorAdapter {
+
+        public ContactsCursorAdapter(Context context, Cursor c, int flags) {
             super(context,c,flags);
         }
 
@@ -136,6 +132,7 @@ public class ContactService extends Activity {
                 public void onClick(View view) {
                     model.setContact(name);
                     model.setPhone(phone);
+                    //TODO change view here
                 }
             });
             if (contact != null && phone!= null) {
@@ -148,10 +145,12 @@ public class ContactService extends Activity {
 
     private String getContactPhoneByContactName(String name){
         String phone = null;
-        Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI, Uri.encode(name));
+        //Create a cursor searching for Phone by Name
         ContentResolver contentResolver = getContentResolver();
+        Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI, Uri.encode(name));
         String[] projection = {ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.NUMBER };
         Cursor phoneLookup = contentResolver.query(uri,projection, null, null, null);
+        
         try {
             if (phoneLookup != null && phoneLookup.getCount() > 0) {
                 phoneLookup.moveToNext();
