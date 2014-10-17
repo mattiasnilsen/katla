@@ -15,11 +15,8 @@
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".activities.SendMessage"
@@ -41,7 +38,10 @@
         <activity
             android:name=".activities.SpeechToText"
             android:label="@string/title_activity_speech_to_text" >
-
+        </activity>
+        <activity
+            android:name=".activities.ContactService"
+            android:label="@string/title_activity_contact_service" >
         </activity>
     </application>
 

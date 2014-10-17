@@ -165,11 +165,7 @@ public class Katla implements IKatla {
 
     @Override
     public void phoneCall() {
-        //Does it work to make an activity to use startActivity method??
-        Activity activity = new Activity();
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        // According to documentation ACTION_CALL can not call emergency numbers?
-        intent.setData(Uri.parse("tel:" + phone));
-        activity.startActivity(intent);
+
+
     }
 }
