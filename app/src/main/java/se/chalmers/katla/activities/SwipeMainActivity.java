@@ -35,7 +35,7 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
         TabAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         viewpager = (MyViewPager) findViewById(R.id.viewpager);
         viewpager.setAdapter(TabAdapter);
-        viewpager.setGestureDetector(new GestureDetector(this, new MyGestureListener(this)));
+        viewpager.setGestureDetector(new GestureDetector(this, new MyGestureListener(this, new Intent(SwipeMainActivity.this, SendMessage.class))));
 
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -111,11 +111,6 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
         return true;
     }
 
-    public void scrollUp(){
-        Intent sendMessageIntent = new Intent(SwipeMainActivity.this, SendMessage.class);
-
-        startActivity(sendMessageIntent);
-    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
