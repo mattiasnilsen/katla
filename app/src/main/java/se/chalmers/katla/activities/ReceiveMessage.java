@@ -14,6 +14,7 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.view.ViewGroup.LayoutParams;
@@ -48,7 +49,7 @@ public class ReceiveMessage extends Activity {
         int width = size.x;
         int height = size.y;
 
-        LinearLayout btnBar = (LinearLayout)findViewById(R.id.buttonBarRM);
+        GridLayout btnBar = (GridLayout)findViewById(R.id.buttonBarRM);
         LayoutParams params = btnBar.getLayoutParams();
         //params.height = size.y;
         params.width = size.x;
