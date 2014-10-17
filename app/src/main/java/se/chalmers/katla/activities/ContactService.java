@@ -32,7 +32,7 @@ public class ContactService extends Activity {
 
         ContentResolver contentResolver = getContentResolver();
         // Create the projection, i.e. the values we want to query from the database
-        String[] projection = {ContactsContract.Contacts.DISPLAY_NAME};
+        String[] projection = {ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME};
         // The URL for the contacts
         Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, Uri.encode(searchInput));
         // Create a cursor, i.e. a pointer to a row in the database
@@ -70,7 +70,7 @@ public class ContactService extends Activity {
                 searchInput = "" + input.getText();
                 //SearchInput changed, make a new cursor for contactsCursorAdapter
                 ContentResolver contentResolver = getContentResolver();
-                String[] projection = { ContactsContract.Contacts.DISPLAY_NAME };
+                String[] projection = { ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME };
                 Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, Uri.encode(searchInput));
                 Cursor cursor = contentResolver.query(uri, projection, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
                 contactsCursorAdapter.swapCursor(cursor);
@@ -150,7 +150,7 @@ public class ContactService extends Activity {
         Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI, Uri.encode(name));
         String[] projection = {ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.NUMBER };
         Cursor phoneLookup = contentResolver.query(uri,projection, null, null, null);
-        
+
         try {
             if (phoneLookup != null && phoneLookup.getCount() > 0) {
                 phoneLookup.moveToNext();
