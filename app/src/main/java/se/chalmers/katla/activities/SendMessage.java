@@ -5,36 +5,81 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import se.chalmers.katla.R;
+import se.chalmers.katla.katlaTextToSpeech.IKatlaTextToSpeech;
+import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechFactory;
+import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechParameters;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
 
 
 public class SendMessage extends Activity {
-    SmsManager smsManager = SmsManager.getDefault();
-    Button sendBtn, callNbrButton;
-    EditText phoneNumber;
-    EditText textMessage;
-    IKatla katlaInstance;
+
+    private Button sendBtn, callNbrButton;
+    private EditText phoneNumber;
+    private EditText textMessage;
+    private IKatla katlaInstance;
+    private TextView countField;
+
+    private IKatlaTextToSpeech ktts;
+
+    private final int MAX_SMS_LENGTH = 160;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         katlaInstance = Katla.getInstance();
+        ktts = KatlaTextToSpeechFactory.createKatlaTextToSpeech(getApplicationContext());
 
         setContentView(R.layout.activity_send_message);
 
         sendBtn = (Button) findViewById(R.id.sendButton);
         phoneNumber = (EditText) findViewById(R.id.contact);
         textMessage = (EditText) findViewById(R.id.textMessage);
+        countField = (TextView) findViewById(R.id.wordCountField);
+        textMessage.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                countField.setText((charSequence.length()/MAX_SMS_LENGTH + 1) * MAX_SMS_LENGTH -
+                        charSequence.length() + "/" + (charSequence.length()/MAX_SMS_LENGTH + 1));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        textMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSpeakPress();
+            }
+        });
+
+        findViewById(R.id.sendMessageListenButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSpeakPress();
+            }
+        });
 
         // Button to call the number in phoneNumber
         callNbrButton = (Button) findViewById(R.id.call_button);
@@ -51,6 +96,13 @@ public class SendMessage extends Activity {
             }
         });
 
+        findViewById(R.id.sendMessageToCompositeButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toComposeView();
+            }
+        });
+
         sendBtn.setOnClickListener( new View.OnClickListener(){
             /**
              * specifies what happens when send button is clicked.
@@ -61,6 +113,19 @@ public class SendMessage extends Activity {
             sendMessage(getMessage(),getContactNumber());
             }
         });
+    }
+
+
+    private void onSpeakPress() {
+        if(ktts.readyToUse()) {
+            // QUEUE_ADD adds this speak to a queue, QUEUE_FLUSH removes everything from the queue
+            // and speaks your message.
+            ktts.speak(textMessage.getText().toString(), KatlaTextToSpeechParameters.QUEUE_FLUSH, null);
+        } else {
+            Toast.makeText(getApplicationContext(), "Text to speech unavailable at this time",
+                    Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
@@ -132,16 +197,22 @@ public class SendMessage extends Activity {
         phoneNumber.setText(s);
     }
 
+    public void toComposeView() {
+        // Start compose activity.
+    }
+
     @Override
     protected void onPause() {
         katlaInstance.setMessage(getMessage());
         katlaInstance.setPhone(getContactNumber());
+        ktts.stop();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         katlaInstance = null;
+        ktts.shutdown();
         super.onDestroy();
     }
 
@@ -151,4 +222,6 @@ public class SendMessage extends Activity {
         this.setContactNumber(katlaInstance.getPhone());
         super.onResume();
     }
+
+
 }
