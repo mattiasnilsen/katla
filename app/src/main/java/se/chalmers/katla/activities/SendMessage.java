@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.GestureDetectorCompat;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,8 +26,9 @@ import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechParameters;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
 
+import static android.view.GestureDetector.SimpleOnGestureListener;
 
-public class SendMessage extends Activity {
+public class SendMessage extends Activity implements GestureDetector.OnGestureListener{
 
     private Button sendBtn, callNbrButton;
     private EditText phoneNumber;
@@ -35,6 +39,7 @@ public class SendMessage extends Activity {
     private IKatlaTextToSpeech ktts;
 
     private final int MAX_SMS_LENGTH = 160;
+    private GestureDetectorCompat mDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +48,8 @@ public class SendMessage extends Activity {
         ktts = KatlaTextToSpeechFactory.createKatlaTextToSpeech(getApplicationContext());
 
         setContentView(R.layout.activity_send_message);
-
+       // gestureDetector = new GestureDetector(this, new MyGestureListener(this, new Intent(SendMessage.this, SwipeMainActivity.class)));
+        mDetector = new GestureDetectorCompat(this,this);
         sendBtn = (Button) findViewById(R.id.sendButton);
         phoneNumber = (EditText) findViewById(R.id.contact);
         textMessage = (EditText) findViewById(R.id.textMessage);
@@ -224,4 +230,46 @@ public class SendMessage extends Activity {
     }
 
 
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        this.mDetector.onTouchEvent(event);
+        // Be sure to call the superclass implementation
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float v1, float v2) {
+        float sensitvity = 50;
+        if((e1.getY() - e2.getY()) > sensitvity){
+            startActivity(new Intent(SendMessage.this, SwipeMainActivity.class));
+            return true;
+        }
+        return false;
+    }
 }

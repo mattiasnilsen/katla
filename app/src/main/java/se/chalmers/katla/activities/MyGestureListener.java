@@ -26,6 +26,7 @@ public class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         float sensitvity = 50;
         if((e2.getY() - e1.getY()) > sensitvity){
+            System.out.println("Nu drar du neråt! :D");
             activity.startActivity(intent);
         }
         return super.onFling(e1, e2, velocityX, velocityY);
