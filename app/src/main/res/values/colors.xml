@@ -2,15 +2,4 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="ITtuqos">#09CDDA</color>
-    <color name="white">#FFFFFF</color>
-    <color name="gray">#CBCBCB</color>
-    <color name="banner_blue">#637AAF</color>
-    <color name="katla_green">#C3ED7A</color>
-    <color name="light_gray">#F3F3F3</color>
-    <color name="green">#9BF600</color>
-    <color name="dark_green">#294100</color>
-    <color name="orange">#FFB300</color>
-    <color name="dark_orange">#463100</color>
-    <color name="blue">#0C49D6</color>
-    <color name="dark_blue">#02102F</color>
 </resources>
