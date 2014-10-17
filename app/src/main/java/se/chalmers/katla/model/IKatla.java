@@ -89,4 +89,6 @@ public interface IKatla {
      */
     public void phoneCall();
 
+    public void loadComposites() throws CompositesXmlParser.ParseException;
+
 }
