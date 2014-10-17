@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.swedspot.automotiveapi.AutomotiveFactory;
 import com.swedspot.automotiveapi.AutomotiveListener;
@@ -26,17 +27,21 @@ import com.swedspot.vil.distraction.DriverDistractionListener;
 import com.swedspot.vil.policy.AutomotiveCertificate;
 
 import se.chalmers.katla.R;
+import se.chalmers.katla.katlaTextToSpeech.IKatlaTextToSpeech;
+import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechFactory;
+import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechParameters;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
 
 public class ReceiveMessage extends Activity {
     IKatla model;
+    private IKatlaTextToSpeech ktts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive_message);
         model = Katla.getInstance();
-
+        ktts = KatlaTextToSpeechFactory.createKatlaTextToSpeech(getApplicationContext());
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -72,6 +77,13 @@ public class ReceiveMessage extends Activity {
                 // According to documentation ACTION_CALL can not call emergency numbers?
                 intent.setData(Uri.parse("tel:" + model.getPhone()));
                 startActivity(intent);
+            }
+        });
+
+        ttsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSpeakPress();
             }
         });
 
@@ -151,5 +163,21 @@ public class ReceiveMessage extends Activity {
         temp.setText(model.getContact());
         temp = (TextView)findViewById(R.id.phoneRM);
         temp.setText(model.getPhone());
+    }
+
+    /**
+     * Handles what happens when you want text to be spoken.
+     */
+    private void onSpeakPress() {
+        if(ktts.readyToUse()) {
+            // QUEUE_ADD adds this speak to a queue, QUEUE_FLUSH removes everything from the queue
+            // and speaks your message.
+            TextView text = (TextView)findViewById(R.id.textMessageRM);
+            ktts.speak(text.getText().toString(), KatlaTextToSpeechParameters.QUEUE_FLUSH, null);
+        } else {
+            Toast.makeText(getApplicationContext(), "Text to speech unavailable at this time",
+                    Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

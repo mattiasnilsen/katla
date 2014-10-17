@@ -9,16 +9,16 @@
     tools:context="se.chalmers.katla.activities.ReceiveMessage"
     android:orientation="vertical"
     android:weightSum="1"
-    android:background="@android:color/darker_gray">
+    android:background="@color/Grey">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@android:color/holo_blue_bright"
         android:weightSum="1"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:background="@color/BlueLight">
 
         <ImageView
             android:layout_width="75dp"
@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Här kan man skriva ett fint sms, som ska vara lätt att läsa från avstånd. Till och med om man använder glasögon som många här i världen faktiskt gör!"
-                android:id="@+id/textView"
+                android:id="@+id/textMessageRM"
                 android:textSize="30dp"
                 android:background="@android:color/background_light" />
         </ScrollView>
