@@ -245,8 +245,9 @@ public class SpeechToText extends Activity {
     }
 
     private void onToCompositeButton() {
+        Intent compositeIntent = new Intent(SpeechToText.this, SwipeMainActivity.class);
 
-        // Gå till composite
+        startActivity(compositeIntent);
     }
 
     @Override
