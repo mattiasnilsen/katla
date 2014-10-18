@@ -2,15 +2,21 @@ package se.chalmers.katla.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +42,7 @@ public class SpeechToText extends Activity {
     private TextView mainTextView;
     private TextView secondaryTextView;
     private TextView contactTextView;
+    private TextView phoneTextView;
     private boolean isListening;
     private String lastResultString;
     private TextView countTextView;
@@ -56,44 +63,89 @@ public class SpeechToText extends Activity {
 
         isListening = false;
 
-        findViewById(R.id.speechToTextButton).setOnClickListener(new View.OnClickListener() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        GridLayout btnBar = (GridLayout)findViewById(R.id.buttonBarSTT);
+        ViewGroup.LayoutParams params = btnBar.getLayoutParams();
+        params.width = size.x;
+        params.height = size.x/3;
+
+
+        LinearLayout contactLayout = (LinearLayout)findViewById(R.id.contactLayoutSTT);
+        ImageButton callBtn = (ImageButton)findViewById(R.id.callBtnSTT);
+        ImageButton speechToTextBtn = (ImageButton)findViewById(R.id.speechToTextButton);
+        ImageButton removeBtn = (ImageButton)findViewById(R.id.removeBtnSTT);
+        ImageButton sendBtn = (ImageButton)findViewById(R.id.sendBtnSTT);
+        ImageButton composeBtn = (ImageButton)findViewById(R.id.composeBtnSTT);
+        params = removeBtn.getLayoutParams();
+        params.width = size.x/3;
+        params.height = size.x/3;
+        params = sendBtn.getLayoutParams();
+        params.width = size.x/3;
+        params.height = size.x/3;
+        params = composeBtn.getLayoutParams();
+        params.width = size.x/3;
+        params.height = size.x/3;
+        params = speechToTextBtn.getLayoutParams();
+        params.width = size.x/6;
+        params.height = size.x/6;
+        params = callBtn.getLayoutParams();
+        params.width = size.x/6;
+        params.height = size.x/6;
+
+
+        contactLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSpeechToTextButton();
+                Intent contactServiceIntent = new Intent(SpeechToText.this, ContactService.class);
+
+                startActivity(contactServiceIntent);
             }
         });
-
-        findViewById(R.id.speechToTextSendButton).setOnClickListener(new View.OnClickListener() {
+        sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendMessage();
             }
         });
 
-        findViewById(R.id.speechToTextRemoveButton).setOnClickListener(new View.OnClickListener() {
+        removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onRemoveButton();
             }
         });
 
-        findViewById(R.id.speechToTextChangeInputButton).setOnClickListener(new View.OnClickListener() {
+        composeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onToCompositeButton();
             }
         });
 
-        findViewById(R.id.speechToTextListenButton).setOnClickListener(new View.OnClickListener() {
+        speechToTextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onTextToSpeechButton();
+                onSpeechToTextButton();
+            }
+        });
+
+        callBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                // According to documentation ACTION_CALL can not call emergency numbers?
+                intent.setData(Uri.parse("tel:" + katlaInstance.getPhone()));
+                startActivity(intent);
             }
         });
 
         mainTextView = (TextView)findViewById(R.id.speechToTextMainText);
         secondaryTextView = (TextView)findViewById(R.id.speechToTextSecondText);
-        contactTextView = (TextView)findViewById(R.id.speechToTextContactField);
+        contactTextView = (TextView)findViewById(R.id.contactSTT);
+        phoneTextView = (TextView)findViewById(R.id.phoneSTT);
         countTextView = (TextView)findViewById(R.id.speechToTextCountField);
         mainTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +174,9 @@ public class SpeechToText extends Activity {
         secondaryTextView.setText("");
         Toast.makeText(getApplicationContext(), "To start speaking: Press button",
                 Toast.LENGTH_LONG).show();
-        contactTextView.setText(katlaInstance.getPhone());
+
+        contactTextView.setText(katlaInstance.getContact());
+        phoneTextView.setText(katlaInstance.getPhone());
 
 
     }
@@ -205,6 +259,8 @@ public class SpeechToText extends Activity {
     @Override
     protected void onPause() {
         katlaInstance.setMessage(mainTextView.getText().toString());
+        katlaInstance.setContact(contactTextView.getText()+"");
+        katlaInstance.setPhone(phoneTextView.getText()+"");
         isListening = false;
         kstt.stopListening();
         kstt.cancel();
@@ -215,6 +271,9 @@ public class SpeechToText extends Activity {
     @Override
     protected void onResume() {
         mainTextView.setText(katlaInstance.getMessage());
+        contactTextView.setText(katlaInstance.getContact());
+        phoneTextView.setText(katlaInstance.getPhone());
+
         super.onResume();
     }
 
