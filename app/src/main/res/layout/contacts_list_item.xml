@@ -3,7 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@color/Grey">
 
     <Button
         android:layout_width="match_parent"
@@ -12,6 +13,7 @@
         android:textSize="30dp"
         android:clickable="true"
         android:text="hejsan"
-        android:gravity="left" />
+        android:gravity="left"
+        android:background="@color/GreenLight" />
 
 </LinearLayout>
