@@ -18,7 +18,7 @@ import se.chalmers.katla.eventBus.EventBus;
  */
 public class AgaListener {
 
-    EventBus eventBusInstance;
+    private EventBus eventBusInstance;
 
     public AgaListener() {
 

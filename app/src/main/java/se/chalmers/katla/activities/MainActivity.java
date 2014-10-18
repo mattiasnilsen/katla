@@ -7,9 +7,11 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,22 +24,30 @@ import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
 import se.chalmers.katla.R;
+import se.chalmers.katla.eventBus.EventBus;
+import se.chalmers.katla.eventBus.EventListener;
+import se.chalmers.katla.model.IKatla;
+import se.chalmers.katla.model.Katla;
 
 /**
  * @author Erik Norlander
  * Created 2014-09-30
  * Launcher activity for the Katla aplication.
  */
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements EventListener {
     private ListView conversationsListView;
+    private IKatla katla;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        katla = Katla.getInstance();
+        EventBus.getInstance().registerListener(this);
         setContentView(R.layout.activity_main);
         //Temp button to get to another view
         final Button receiveSMSButton = (Button)findViewById(R.id.tempBtn);
@@ -77,8 +87,9 @@ public class MainActivity extends Activity {
         // Get the listView and set the above adapter
         conversationsListView = (ListView)findViewById(R.id.conversationListView);
         conversationsListView.setAdapter(contacsCursorAdapter);
-    }
 
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -97,6 +108,16 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void receiveEvent(String s, Object o) {
+        if (s.equals("Speed changed")) {
+            Log.v("Main activity", s + (Float)o);
+        } else if (s.equals("Driver distraction changed")) {
+            Log.v("MainActivity", s + (Integer) o);
+
+        }
     }
 
     /**
