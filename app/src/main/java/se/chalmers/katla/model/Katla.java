@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import se.chalmers.katla.agaListenerService.AgaListener;
 import se.chalmers.katla.kaltaSmsManager.IKatlaSmsManager;
 import se.chalmers.katla.kaltaSmsManager.KatlaSmsManagerFactory;
 
@@ -25,6 +26,9 @@ public class Katla implements IKatla {
     private String message = "Alla vill till himlen men få vill ju dö hgfghf fhg hgf hgf hgf ghf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf ghf hgf hgf hgffghgf hg fhgf hg fhgf hg fhgf hfjhgf hgfkghfkf ufk h khg khg g hej alla fina getter!";
     private String phone = "0707833811";
     private String contact = "Satan Elite";
+
+    private int distractionLevel;
+    private float wheelBasedSpeed;
 
     public String getContact() {
         return contact;
@@ -45,6 +49,8 @@ public class Katla implements IKatla {
 
 
     private Katla() {
+        new AgaListener();
+
         CompositesXmlParser parser = new CompositesXmlParser();
         InputStream in = this.getClass().getClassLoader().getResourceAsStream("res/raw/composites.xml");
 
@@ -168,4 +174,24 @@ public class Katla implements IKatla {
 
 
     }
+
+    @Override
+    public void receiveEvent(String s, Object o) {
+        if (s.equals("Speed changed")) {
+            this.wheelBasedSpeed = (Float)o;
+        } else if (s.equals("Driver distraction changed")) {
+            this.distractionLevel = (Integer)o;
+        }
+    }
+
+    @Override
+    public float getWheelBasedSpeed() {
+        return this.wheelBasedSpeed;
+    }
+
+    @Override
+    public int getDistractionLevel() {
+        return this.distractionLevel;
+    }
 }
+
