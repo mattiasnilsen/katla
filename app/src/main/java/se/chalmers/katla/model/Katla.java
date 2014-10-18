@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import se.chalmers.katla.agaListenerService.AgaListener;
+import se.chalmers.katla.eventBus.EventBus;
 import se.chalmers.katla.kaltaSmsManager.IKatlaSmsManager;
 import se.chalmers.katla.kaltaSmsManager.KatlaSmsManagerFactory;
 
@@ -26,6 +27,7 @@ public class Katla implements IKatla {
     private String message = "Alla vill till himlen men få vill ju dö hgfghf fhg hgf hgf hgf ghf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf ghf hgf hgf hgffghgf hg fhgf hg fhgf hg fhgf hfjhgf hgfkghfkf ufk h khg khg g hej alla fina getter!";
     private String phone = "0707833811";
     private String contact = "Satan Elite";
+    private AgaListener agaListener;
 
     private int distractionLevel;
     private float wheelBasedSpeed;
@@ -49,7 +51,9 @@ public class Katla implements IKatla {
 
 
     private Katla() {
-        new AgaListener();
+        agaListener = new AgaListener();
+
+        EventBus.getInstance().registerListener(this);
 
         CompositesXmlParser parser = new CompositesXmlParser();
         InputStream in = this.getClass().getClassLoader().getResourceAsStream("res/raw/composites.xml");
