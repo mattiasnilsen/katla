@@ -36,18 +36,9 @@ public class ContactService extends Activity {
         ListView contactsListView = (ListView)findViewById(R.id.listView3);
         contactsListView.setAdapter(contactsCursorAdapter);
 
-        //Temp btn
-        Button btn = (Button)findViewById(R.id.searchBtnCS);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent receiveMessageIntent = new Intent(ContactService.this, ReceiveMessage.class);
-                startActivity(receiveMessageIntent);
-            }
-        });
-
         //Implement listener for inputchange
         EditText input = (EditText)findViewById(R.id.contactInput);
+        input.setText(model.getContact());
         input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -131,7 +122,8 @@ public class ContactService extends Activity {
                 public void onClick(View view) {
                     model.setContact(name);
                     model.setPhone(phone);
-                    //TODO change view here
+                    finish();
+
                 }
             });
             if (contact != null && phone!= null) {
