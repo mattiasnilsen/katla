@@ -70,35 +70,50 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Här kan man skriva ett fint sms, som ska vara lätt att läsa från avstånd. Till och med om man använder glasögon som många här i världen faktiskt gör!"
+                android:text="Här kan man skriva ett fint sms, som ska vara lätt att läsa från avstånd. Till och med om man använder glasögon som många här i världen faktiskt gör! Textfyllnad är ju kul för att få vyn att se bättre ut. Vad skriver man i en textfyllnad egentligen? Jag vet faktiskt inte men jag kan ju skriva lite om textfyllnad!"
                 android:id="@+id/textMessageRM"
-                android:textSize="30dp"
+                android:textSize="45dp"
                 android:background="@android:color/background_light" />
         </ScrollView>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <GridLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="1"
         android:id="@+id/buttonBarRM"
-        android:measureWithLargestChild="false"
-        android:layout_weight="0.20">
+        android:background="@color/BlueLight">
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textToSpeechBtnRM"
+            android:adjustViewBounds="false"
             android:src="@drawable/listenicon"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:background="@color/GreenLight"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:padding="2dp"
+            android:layout_margin="1dp"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/callBtnRM"
+            android:adjustViewBounds="false"
             android:scaleType="fitCenter"
-            android:src="@drawable/phoneicon" />
+            android:src="@drawable/phoneicon"
+            android:background="@color/GreenLight"
+            android:baselineAlignBottom="false"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:padding="2dp"
+            android:layout_margin="1dp"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -106,7 +121,13 @@
             android:id="@+id/replyBtnRM"
             android:adjustViewBounds="false"
             android:src="@drawable/replyicon"
-            android:scaleType="fitCenter" />
-    </LinearLayout>
+            android:scaleType="fitCenter"
+            android:baselineAlignBottom="false"
+            android:background="@color/GreenLight"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:padding="2dp"
+            android:layout_margin="1dp" />
+    </GridLayout>Layout>
 
 </LinearLayout>

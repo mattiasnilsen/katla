@@ -20,6 +20,7 @@ import se.chalmers.katla.kaltaSmsManager.KatlaSmsManagerFactory;
 public class Katla implements IKatla {
 
     private final int MAX_SMS_LENGTH = 160;
+    private final String COMPOSITES_XML_FILE = "res/raw/composites.xml";
 
     private static Katla ourInstance;
     private String message = "Alla vill till himlen men få vill ju dö hgfghf fhg hgf hgf hgf ghf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf ghf hgf hgf hgffghgf hg fhgf hg fhgf hg fhgf hfjhgf hgfkghfkf ufk h khg khg g hej alla fina getter!";
@@ -45,16 +46,20 @@ public class Katla implements IKatla {
 
 
     private Katla() {
+
+    }
+
+    @Override
+    public void loadComposites() throws CompositesXmlParser.ParseException{
         CompositesXmlParser parser = new CompositesXmlParser();
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream("res/raw/composites.xml");
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream(COMPOSITES_XML_FILE);
 
         try {
             categories = parser.parse(in);
         } catch (IOException e) {
-            //TODO proper exception handling
-            System.out.println(e);
+            throw new CompositesXmlParser.ParseException("Can't load file");
         } catch (XmlPullParserException e) {
-            System.out.println(e);
+            throw new CompositesXmlParser.ParseException(e.getMessage());
         }
     }
 
