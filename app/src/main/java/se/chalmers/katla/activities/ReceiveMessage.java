@@ -1,5 +1,6 @@
 package se.chalmers.katla.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
@@ -49,6 +50,8 @@ public class ReceiveMessage extends Activity {
         int width = size.x;
         int height = size.y;
 
+
+
         GridLayout btnBar = (GridLayout)findViewById(R.id.buttonBarRM);
         LayoutParams params = btnBar.getLayoutParams();
         //params.height = size.y;
@@ -60,6 +63,7 @@ public class ReceiveMessage extends Activity {
         ImageButton callBtn = (ImageButton)findViewById(R.id.callBtnRM);
         ImageButton replyBtn = (ImageButton)findViewById(R.id.replyBtnRM);
         ImageButton ttsBtn = (ImageButton)findViewById(R.id.textToSpeechBtnRM);
+        LinearLayout contactLayout = (LinearLayout)findViewById(R.id.contactLayoutRM);
 
         params = callBtn.getLayoutParams();
         params.width = size.x/3;
@@ -70,7 +74,14 @@ public class ReceiveMessage extends Activity {
         params = ttsBtn.getLayoutParams();
         params.width = size.x/3;
         params.height = size.x/3;
+        replyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent speechToTextIntent = new Intent(ReceiveMessage.this, SpeechToText.class);
 
+                startActivity(speechToTextIntent);
+            }
+        });
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +96,14 @@ public class ReceiveMessage extends Activity {
             @Override
             public void onClick(View view) {
                 onSpeakPress();
+            }
+        });
+        contactLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent contactServiceIntent = new Intent(ReceiveMessage.this, ContactService.class);
+
+                startActivity(contactServiceIntent);
             }
         });
 
