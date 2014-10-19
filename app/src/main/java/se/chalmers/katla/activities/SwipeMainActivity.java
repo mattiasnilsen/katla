@@ -26,13 +26,17 @@ import se.chalmers.katla.model.IComposite;
 import se.chalmers.katla.model.Katla;
 import se.chalmers.katla.views.CompositeFragment;
 
-public class SwipeMainActivity extends FragmentActivity implements ActionBar.TabListener, CompositeFragment.CompositeFragmentInteractionListener {
+public class SwipeMainActivity extends FragmentActivity implements ActionBar.TabListener,
+                                                                   CompositeFragment.CompositeFragmentInteractionListener,
+                                                                   InputDialogListener {
 
     private MyViewPager viewpager;
     private PagerAdapter tabAdapter;
     private ActionBar actionBar;
     private Katla katlaInstance = null;
-    private List<Fragment> fragments = new ArrayList<Fragment>();
+    private List<CompositeFragment> fragments = new ArrayList<CompositeFragment>();
+
+    private String textString = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +81,7 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
             }
             args.putSerializable("composites", (Serializable)compositeList);
 
-            Fragment compositeFragment = new CompositeFragment();
+            CompositeFragment compositeFragment = new CompositeFragment();
             compositeFragment.setArguments(args);
             fragments.add(compositeFragment);
         }
@@ -115,9 +119,21 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
     }
 
     @Override
-    public void onCompositeUsed(String text) {
-        System.out.println(text);
-        katlaInstance.addStringToMessage(text);
+    public void onCompositeUsed(String text, boolean containsUserInput) {
+       if(containsUserInput) {
+           textString = text;
+       } else {
+           katlaInstance.addStringToMessage(text);
+       }
+    }
+
+    @Override
+    public void receiveInput(String input) {
+         if(textString != null) {
+             textString.replace("%s", input);
+             katlaInstance.addStringToMessage(textString);
+             textString = null;
+         }
     }
 
     public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

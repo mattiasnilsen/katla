@@ -1,6 +1,7 @@
 package se.chalmers.katla.views;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,6 +17,9 @@ import java.util.List;
 
 import se.chalmers.katla.R;
 
+import se.chalmers.katla.activities.DateInputDialogFragment;
+import se.chalmers.katla.activities.InputDialogListener;
+import se.chalmers.katla.activities.TimeInputDialogFragment;
 import se.chalmers.katla.model.IComposite;
 
 /**
@@ -94,10 +98,23 @@ public class CompositeFragment extends Fragment implements AbsListView.OnItemCli
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (null != listener) {
+        if (listener != null) {
+            IComposite selectedComposite = composites.get(position);
+            boolean containsUserInput = false;
+            for(String input : selectedComposite.getInputs()) {
+                if(input.equals("time")) {
+                    DialogFragment dialog = new TimeInputDialogFragment();
+                    dialog.show(getActivity().getFragmentManager(), "TimeInputDialogFragment");
+                    containsUserInput = true;
+                } else if(input.equals("date")) {
+                    DialogFragment dialog = new DateInputDialogFragment();
+                    dialog.show(getActivity().getFragmentManager(), "DateInputDialogFragment");
+                    containsUserInput = true;
+                }
+            }
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            listener.onCompositeUsed(composites.get(position).getText());
+            listener.onCompositeUsed(composites.get(position).getText(), containsUserInput);
         }
     }
 
@@ -113,7 +130,6 @@ public class CompositeFragment extends Fragment implements AbsListView.OnItemCli
             ((TextView) emptyView).setText(emptyText);
         }
     }
-
     /**
     * This interface must be implemented by activities that contain this
     * fragment to allow an interaction in this fragment to be communicated
@@ -121,7 +137,7 @@ public class CompositeFragment extends Fragment implements AbsListView.OnItemCli
     * activity.
     */
     public interface CompositeFragmentInteractionListener {
-        public void onCompositeUsed(String message);
+        public void onCompositeUsed(String message, boolean containsUserInput);
     }
 
 }
