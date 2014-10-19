@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
-import android.speech.RecognitionListener;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Display;
@@ -13,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -43,7 +41,7 @@ public class SpeechToText extends Activity {
     private TextView secondaryTextView;
     private TextView contactTextView;
     private TextView phoneTextView;
-    private boolean isListening;
+    private boolean isListeningToSpeech;
     private String lastResultString;
     private TextView countTextView;
 
@@ -55,13 +53,14 @@ public class SpeechToText extends Activity {
         setContentView(R.layout.activity_speech_to_text);
 
         katlaInstance = Katla.getInstance();
-        kstt = KatlaSpeechToTextFactory.createKatlaSpeechToText(getApplicationContext());
+        if (KatlaSpeechToTextFactory.isRecognitionAvailable(getApplicationContext())) {
+            kstt = KatlaSpeechToTextFactory.createKatlaSpeechToText(getApplicationContext());
+            kstt.setListener(krl);
+        }
 
         ktts = KatlaTextToSpeechFactory.createKatlaTextToSpeech(getApplicationContext());
 
-        kstt.setListener(krl);
-
-        isListening = false;
+        isListeningToSpeech = false;
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -161,7 +160,7 @@ public class SpeechToText extends Activity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                countTextView.setText(((charSequence.length()/MAX_SMS_LENGTH + 1) - 
+                countTextView.setText(((charSequence.length()/MAX_SMS_LENGTH + 1) * MAX_SMS_LENGTH -
                         charSequence.length()) + "/" + (charSequence.length()/MAX_SMS_LENGTH + 1));
             }
 
@@ -172,8 +171,6 @@ public class SpeechToText extends Activity {
         });
         mainTextView.setText(katlaInstance.getMessage());
         secondaryTextView.setText("");
-        Toast.makeText(getApplicationContext(), "To start speaking: Press button",
-                Toast.LENGTH_LONG).show();
 
         contactTextView.setText(katlaInstance.getContact());
         phoneTextView.setText(katlaInstance.getPhone());
@@ -182,13 +179,19 @@ public class SpeechToText extends Activity {
     }
 
     private void onSpeechToTextButton() {
-        kstt.setListener(krl);
-        if(isListening) {
-            isListening = false;
-            kstt.stopListening();
+        if (KatlaSpeechToTextFactory.isRecognitionAvailable(getApplicationContext())) {
+            kstt.setListener(krl);
+            if (isListeningToSpeech) {
+                isListeningToSpeech = false;
+                kstt.stopListening();
+            } else {
+                startListener();
+                isListeningToSpeech = true;
+                Toast.makeText(getApplicationContext(), "Start speaking now", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            startListener();
-            isListening = true;
+            Toast.makeText(getApplicationContext(), "Speech to text is unavailable at this time",
+                    Toast.LENGTH_LONG).show();
         }
     }
 
@@ -234,7 +237,7 @@ public class SpeechToText extends Activity {
     }
 
     private void sendMessage() {
-        isListening = false;
+        isListeningToSpeech = false;
         kstt.stopListening();
         katlaInstance.setMessage(mainTextView.getText().toString());
         // HUR HANTERA NÄR INTE KONTAKT VALD HÄR? Öppna kontakthanterare och mota input till model?
@@ -252,7 +255,9 @@ public class SpeechToText extends Activity {
 
     @Override
     protected void onDestroy() {
-        kstt.destroy();
+        if (KatlaSpeechToTextFactory.isRecognitionAvailable(getApplicationContext())) {
+            kstt.destroy();
+        }
         ktts.shutdown();
         super.onDestroy();
     }
@@ -262,9 +267,11 @@ public class SpeechToText extends Activity {
         katlaInstance.setMessage(mainTextView.getText().toString());
         katlaInstance.setContact(contactTextView.getText()+"");
         katlaInstance.setPhone(phoneTextView.getText()+"");
-        isListening = false;
-        kstt.stopListening();
-        kstt.cancel();
+        if (KatlaSpeechToTextFactory.isRecognitionAvailable(getApplicationContext())) {
+            isListeningToSpeech = false;
+            kstt.stopListening();
+            kstt.cancel();
+        }
         ktts.stop();
         super.onPause();
     }
@@ -320,7 +327,7 @@ public class SpeechToText extends Activity {
 
         @Override
         public void onEndOfSpeech() {
-            if (isListening) {
+            if (isListeningToSpeech) {
                 startListener();
             } else {
                 secondaryTextView.setText("");
