@@ -73,10 +73,9 @@ public class CompositesXmlParser {
                     insideInputTag = false;
                 }
             } else if(eventType == XmlPullParser.TEXT) {
-                if(currentComposite != null) {
+                if(currentComposite != null && currentComposite.getBaseText().isEmpty()) {
                     currentComposite.setBaseText(parser.getText());
-                }
-                if(insideInputTag) {
+                } else if(insideInputTag) {
                     List<String> inputs = getInputTypes(parser.getText());
                     currentComposite.setInputs(inputs);
                 }
