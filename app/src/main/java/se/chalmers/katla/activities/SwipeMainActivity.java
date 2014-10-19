@@ -27,11 +27,10 @@ import se.chalmers.katla.model.Katla;
 import se.chalmers.katla.views.CompositeFragment;
 
 public class SwipeMainActivity extends FragmentActivity implements ActionBar.TabListener, CompositeFragment.CompositeFragmentInteractionListener {
-    MyViewPager viewpager;
-    PagerAdapter tabAdapter;
-    ActionBar actionBar;
 
-
+    private MyViewPager viewpager;
+    private PagerAdapter tabAdapter;
+    private ActionBar actionBar;
     private Katla katlaInstance = null;
     private List<Fragment> fragments = new ArrayList<Fragment>();
 
