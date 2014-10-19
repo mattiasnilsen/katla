@@ -18,16 +18,8 @@ import se.chalmers.katla.R;
  */
 public class DateInputDialogFragment extends DialogFragment {
 
-    private DateInputDialogListener listener = null;
+    private InputDialogListener listener = null;
     private DatePicker datePicker = null;
-
-    /**
-     * The Activity that instantiates this dialog must implement this interface.
-     * The method will be called when the user has chosen a time and presses the done button.
-     */
-    public interface DateInputDialogListener {
-        public void onDateSetClicked(int year, int month, int dayOfMonth);
-    }
 
     /**
      * Override the onAttach method in order to instantiate the listener.
@@ -38,9 +30,9 @@ public class DateInputDialogFragment extends DialogFragment {
         super.onAttach(activity);
 
         try {
-            listener = (DateInputDialogListener)activity;
+            listener = (InputDialogListener)activity;
         } catch(ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement DateInputDialogListener");
+            throw new ClassCastException(activity.toString() + " must implement InputDialogListener");
         }
     }
 
@@ -69,7 +61,7 @@ public class DateInputDialogFragment extends DialogFragment {
                 int year = datePicker.getYear();
                 int month = datePicker.getMonth();
                 int dayOfMonth = datePicker.getDayOfMonth();
-                listener.onDateSetClicked(year, month, dayOfMonth);
+                listener.receiveInput(year + "-" + month + "-" + dayOfMonth);
                 dismiss();
             }
         });
