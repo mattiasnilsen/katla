@@ -8,33 +8,39 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import se.chalmers.katla.R;
+import se.chalmers.katla.model.CompositesXmlParser;
+import se.chalmers.katla.model.ICategory;
+import se.chalmers.katla.model.Katla;
 import se.chalmers.katla.views.BlankFragment;
 import se.chalmers.katla.views.BlankFragment2;
 import se.chalmers.katla.views.BlankFragment3;
 
 public class SwipeMainActivity extends FragmentActivity implements ActionBar.TabListener{
     MyViewPager viewpager;
-    PagerAdapter TabAdapter;
+    PagerAdapter tabAdapter;
     ActionBar actionBar;
     Fragment bf= new BlankFragment(), bf2 = new BlankFragment2(), bf3 = new BlankFragment3();
+
+    List<Fragment> fragments = new ArrayList<Fragment>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe_main);
-        TabAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        tabAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         viewpager = (MyViewPager) findViewById(R.id.viewpager);
-        viewpager.setAdapter(TabAdapter);
+        viewpager.setAdapter(tabAdapter);
         viewpager.setGestureDetector(new GestureDetector(this, new MyGestureListener(this, new Intent(SwipeMainActivity.this, SendMessage.class))));
 
         actionBar = getActionBar();
@@ -48,9 +54,25 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
                     }
                 });
 
-       actionBar.addTab(actionBar.newTab().setText("sida ett").setTabListener(this));
-       actionBar.addTab(actionBar.newTab().setText("sida två").setTabListener(this));
-       actionBar.addTab(actionBar.newTab().setText("sida tre").setTabListener(this));
+        Katla katla = Katla.getInstance();
+        try {
+            katla.loadComposites();
+        } catch (CompositesXmlParser.ParseException e) {
+            System.out.println(e.getMessage());
+        }
+
+        for(Iterator<ICategory> iterator = katla.getCategories(); iterator.hasNext();) {
+            ICategory category = iterator.next();
+            ActionBar.Tab tab = actionBar.newTab();
+
+            tab.setText(category.getName());
+            tab.setTabListener(this);
+            actionBar.addTab(tab);
+
+            fragments.add(new BlankFragment());
+        }
+
+        tabAdapter.notifyDataSetChanged();
     }
 
 
@@ -89,17 +111,16 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
-                case 0: return bf;
-                case 1: return bf2;
-                case 2: return bf3;
-                default: return new Fragment();
+            if(position < fragments.size()) {
+                return fragments.get(position);
+            } else {
+                return null;
             }
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return fragments.size();
         }
     }
 
