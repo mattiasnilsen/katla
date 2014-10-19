@@ -14,6 +14,7 @@ import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,18 +22,18 @@ import java.util.List;
 import se.chalmers.katla.R;
 import se.chalmers.katla.model.CompositesXmlParser;
 import se.chalmers.katla.model.ICategory;
+import se.chalmers.katla.model.IComposite;
 import se.chalmers.katla.model.Katla;
-import se.chalmers.katla.views.BlankFragment;
-import se.chalmers.katla.views.BlankFragment2;
-import se.chalmers.katla.views.BlankFragment3;
+import se.chalmers.katla.views.CompositeFragment;
 
-public class SwipeMainActivity extends FragmentActivity implements ActionBar.TabListener{
+public class SwipeMainActivity extends FragmentActivity implements ActionBar.TabListener, CompositeFragment.CompositeFragmentInteractionListener {
     MyViewPager viewpager;
     PagerAdapter tabAdapter;
     ActionBar actionBar;
-    Fragment bf= new BlankFragment(), bf2 = new BlankFragment2(), bf3 = new BlankFragment3();
 
-    List<Fragment> fragments = new ArrayList<Fragment>();
+
+    private Katla katlaInstance = null;
+    private List<Fragment> fragments = new ArrayList<Fragment>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +55,14 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
                     }
                 });
 
-        Katla katla = Katla.getInstance();
+        katlaInstance = Katla.getInstance();
         try {
-            katla.loadComposites();
+            katlaInstance.loadComposites();
         } catch (CompositesXmlParser.ParseException e) {
             System.out.println(e.getMessage());
         }
 
-        for(Iterator<ICategory> iterator = katla.getCategories(); iterator.hasNext();) {
+        for(Iterator<ICategory> iterator = katlaInstance.getCategories(); iterator.hasNext();) {
             ICategory category = iterator.next();
             ActionBar.Tab tab = actionBar.newTab();
 
@@ -69,7 +70,17 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
             tab.setTabListener(this);
             actionBar.addTab(tab);
 
-            fragments.add(new BlankFragment());
+            Bundle args = new Bundle();
+            List<IComposite> compositeList = new ArrayList<IComposite>();
+
+            for(Iterator<IComposite> composites = category.getComposites(); composites.hasNext();) {
+                compositeList.add(composites.next());
+            }
+            args.putSerializable("composites", (Serializable)compositeList);
+
+            Fragment compositeFragment = new CompositeFragment();
+            compositeFragment.setArguments(args);
+            fragments.add(compositeFragment);
         }
 
         tabAdapter.notifyDataSetChanged();
@@ -104,7 +115,13 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
 
     }
 
-       public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+    @Override
+    public void onCompositeUsed(String text) {
+        System.out.println(text);
+        katlaInstance.addStringToMessage(text);
+    }
+
+    public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
