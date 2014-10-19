@@ -36,6 +36,12 @@ public class DateInputDialogFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
     public Dialog onCreateDialog(Bundle savedInstance) {
         DatePickerDialog.Builder builder = new DatePickerDialog.Builder(getActivity());
 

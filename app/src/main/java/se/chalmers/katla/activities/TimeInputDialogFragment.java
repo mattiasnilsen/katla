@@ -42,6 +42,12 @@ public class TimeInputDialogFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
     public Dialog onCreateDialog(Bundle savedInstance) {
         TimePickerDialog.Builder builder = new TimePickerDialog.Builder(getActivity());
 
