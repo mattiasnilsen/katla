@@ -120,34 +120,16 @@
             android:foreground="@drawable/listenicon"
             android:foregroundGravity="bottom|right">
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Large Text"
                 android:id="@+id/speechToTextMainText"
-                android:textSize="45dp" />
-        </ScrollView>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/relativeLayout"
-            android:layout_above="@+id/relativeLayout2"
-            android:layout_alignParentStart="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
-                android:id="@+id/speechToTextSecondText"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:textSize="32dp" />
-
-        </RelativeLayout>
+                android:textSize="32dp"
+                android:editable="false"
+                android:textIsSelectable="true"
+                android:inputType="textMultiLine" />
+        </ScrollView>
 
         <GridLayout
             android:layout_width="fill_parent"
