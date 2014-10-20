@@ -38,7 +38,6 @@ public class SpeechToText extends Activity {
     private IKatlaTextToSpeech ktts;
 
     private TextView mainTextView;
-    private TextView secondaryTextView;
     private TextView contactTextView;
     private TextView phoneTextView;
     private boolean isListeningToSpeech;
@@ -142,7 +141,6 @@ public class SpeechToText extends Activity {
         });
 
         mainTextView = (TextView)findViewById(R.id.speechToTextMainText);
-        secondaryTextView = (TextView)findViewById(R.id.speechToTextSecondText);
         contactTextView = (TextView)findViewById(R.id.contactSTT);
         phoneTextView = (TextView)findViewById(R.id.phoneSTT);
         countTextView = (TextView)findViewById(R.id.speechToTextCountField);
@@ -170,7 +168,6 @@ public class SpeechToText extends Activity {
             }
         });
         mainTextView.setText(katlaInstance.getMessage());
-        secondaryTextView.setText("");
 
         contactTextView.setText(katlaInstance.getContact());
         phoneTextView.setText(katlaInstance.getPhone());
@@ -243,7 +240,6 @@ public class SpeechToText extends Activity {
         // HUR HANTERA NÄR INTE KONTAKT VALD HÄR? Öppna kontakthanterare och mota input till model?
         // och senskicka och sen byta till nån konversationsvy?
         mainTextView.setText("");
-        secondaryTextView.setText("");
         katlaInstance.sendMessage();
     }
 
@@ -307,7 +303,7 @@ public class SpeechToText extends Activity {
     private KatlaRecognitionListener krl = new KatlaRecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle bundle) {
-            secondaryTextView.setText("");
+
         }
 
         @Override
@@ -330,7 +326,6 @@ public class SpeechToText extends Activity {
             if (isListeningToSpeech) {
                 startListener();
             } else {
-                secondaryTextView.setText("");
                 Toast.makeText(getApplicationContext(), "Stopped recognition", Toast.LENGTH_LONG).show();
             }
         }
@@ -347,12 +342,10 @@ public class SpeechToText extends Activity {
 
         @Override
         public void onPartialResults(Bundle bundle) {
-            secondaryTextView.setText("");
             List<String> resultsList = bundle.getStringArrayList(KatlaSpeechToTextParameters.RESULTS_RECOGNITION);
             if (!resultsList.get(0).equals(lastResultString)) {
                 lastResultString = resultsList.get(0);
                 String[] text = resultsList.get(0).split(" ");
-                secondaryTextView.setText(text[text.length - 1]);
                 mainTextView.append(text[text.length - 1] + " ");
             }
 
