@@ -74,7 +74,7 @@
                 android:text="Här kan man skriva ett fint sms, som ska vara lätt att läsa från avstånd. Till och med om man använder glasögon som många här i världen faktiskt gör! Textfyllnad är ju kul för att få vyn att se bättre ut. Vad skriver man i en textfyllnad egentligen? Jag vet faktiskt inte men jag kan ju skriva lite om textfyllnad!"
                 android:id="@+id/textMessageRM"
                 android:textSize="45dp"
-                android:background="@android:color/background_light" />
+                android:background="@color/White" />
         </ScrollView>
 
     </LinearLayout>

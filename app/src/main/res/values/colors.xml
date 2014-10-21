@@ -12,5 +12,6 @@
     <color name="GreenDark">#294100</color>
     <color name="OrangeLight">#FFDA83</color>
     <color name="BlueLight">#637AAF</color>
+    <color name="LightBlue">#C8D9FF</color>
     <color name="GreenLight">#C3ED7A</color>
 </resources>
