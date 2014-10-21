@@ -4,7 +4,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <!--<item name ="android:windowTitleStyle">@style/BigActionBar</item>-->
+        <item name="android:actionBarStyle">@style/BlueActionbar</item>
+        <item name="android:actionBarTabBarStyle">@style/BlueTabBar</item>
+        
 
     </style>
 
@@ -12,14 +14,22 @@
 
     </style>
 
-    <style name="BigActionBar" parent="android:Theme">
-        <item name ="android:windowTitleSize">100dip</item>
+    <style name="BlueTitle" parent="android:Theme">
         <item name ="android:windowTitleBackgroundStyle">@style/TitleBackgroundBlue</item>
     </style>
 
     <style name="TitleBackgroundBlue">
         <item name ="android:background">@color/BlueLight</item>
     </style>
+
+    <style name="BlueActionbar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name ="android:background">@color/BlueLight</item>
+    </style>
+
+    <style name="BlueTabBar" parent="android:Widget.ActionBar.TabBar">
+        <item name="android:background">@color/BlueLight</item>
+    </style>
+
 
     <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
         <item name="android:windowContentOverlay">@null</item>
