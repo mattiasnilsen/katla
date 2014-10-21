@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -124,14 +125,16 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
            textString = text;
        } else {
            katlaInstance.addStringToMessage(" " + text.replace("\n", "").trim());
+           Toast.makeText(getApplicationContext(), "Added text to message", Toast.LENGTH_SHORT).show();
        }
     }
 
     @Override
     public void receiveInput(String input) {
          if(textString != null) {
-             textString.replace("%s", input);
+             textString = textString.replace("%s", input);
              katlaInstance.addStringToMessage(" " + textString.replace("\n", "").trim());
+             Toast.makeText(getApplicationContext(), "Added text to message", Toast.LENGTH_SHORT).show();
              textString = null;
          }
     }
