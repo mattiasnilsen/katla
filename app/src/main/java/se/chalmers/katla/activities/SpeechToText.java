@@ -6,14 +6,12 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -177,7 +175,6 @@ public class SpeechToText extends Activity implements EventListener{
 
         if (katlaInstance.getDistractionLevel() == 0) {
             mainTextView.setFocusable(true);
-            mainTextView.setFocusable(false);
         } else {
             mainTextView.setFocusable(false);
         }
