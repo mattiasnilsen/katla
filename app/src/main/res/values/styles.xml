@@ -6,7 +6,7 @@
         <!-- Customize your theme here. -->
         <item name="android:actionBarStyle">@style/BlueActionbar</item>
         <item name="android:actionBarTabBarStyle">@style/BlueTabBar</item>
-        
+
 
     </style>
 
