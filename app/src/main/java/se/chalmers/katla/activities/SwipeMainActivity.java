@@ -123,7 +123,7 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
        if(containsUserInput) {
            textString = text;
        } else {
-           katlaInstance.addStringToMessage(text);
+           katlaInstance.addStringToMessage(" " + text.replace("\n", "").trim());
        }
     }
 
@@ -131,10 +131,12 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
     public void receiveInput(String input) {
          if(textString != null) {
              textString.replace("%s", input);
-             katlaInstance.addStringToMessage(textString);
+             katlaInstance.addStringToMessage(" " + textString.replace("\n", "").trim());
              textString = null;
          }
     }
+
+
 
     public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
