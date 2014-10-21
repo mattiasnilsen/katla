@@ -45,6 +45,6 @@ public class Composite implements IComposite {
 
     @Override
     public String toString() {
-        return getBaseText();
+        return getBaseText().replace("%s", "...");
     }
 }
