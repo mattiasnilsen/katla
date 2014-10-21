@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
-import android.speech.RecognitionListener;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Display;
@@ -13,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -23,6 +21,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import se.chalmers.katla.R;
+import se.chalmers.katla.eventBus.EventListener;
 import se.chalmers.katla.katlaSpeechToText.IKatlaSpeechToText;
 import se.chalmers.katla.katlaSpeechToText.KatlaRecognitionListener;
 import se.chalmers.katla.katlaSpeechToText.KatlaSpeechToTextParameters;
@@ -33,17 +32,16 @@ import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechParameters;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
 
-public class SpeechToText extends Activity {
+public class SpeechToText extends Activity implements EventListener{
 
     private IKatla katlaInstance;
     private IKatlaSpeechToText kstt;
     private IKatlaTextToSpeech ktts;
 
     private TextView mainTextView;
-    private TextView secondaryTextView;
     private TextView contactTextView;
     private TextView phoneTextView;
-    private boolean isListening;
+    private boolean isListeningToSpeech;
     private String lastResultString;
     private TextView countTextView;
 
@@ -55,45 +53,46 @@ public class SpeechToText extends Activity {
         setContentView(R.layout.activity_speech_to_text);
 
         katlaInstance = Katla.getInstance();
-        kstt = KatlaSpeechToTextFactory.createKatlaSpeechToText(getApplicationContext());
+        if (KatlaSpeechToTextFactory.isRecognitionAvailable(getApplicationContext())) {
+            kstt = KatlaSpeechToTextFactory.createKatlaSpeechToText(getApplicationContext());
+            kstt.setListener(krl);
+        }
 
         ktts = KatlaTextToSpeechFactory.createKatlaTextToSpeech(getApplicationContext());
 
-        kstt.setListener(krl);
-
-        isListening = false;
+        isListeningToSpeech = false;
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
 
-        GridLayout btnBar = (GridLayout)findViewById(R.id.buttonBarSTT);
+        GridLayout btnBar = (GridLayout) findViewById(R.id.buttonBarSTT);
         ViewGroup.LayoutParams params = btnBar.getLayoutParams();
         params.width = size.x;
-        params.height = size.x/3;
+        params.height = size.x / 3;
 
 
-        LinearLayout contactLayout = (LinearLayout)findViewById(R.id.contactLayoutSTT);
-        ImageButton callBtn = (ImageButton)findViewById(R.id.callBtnSTT);
-        ImageButton speechToTextBtn = (ImageButton)findViewById(R.id.speechToTextButton);
-        ImageButton removeBtn = (ImageButton)findViewById(R.id.removeBtnSTT);
-        ImageButton sendBtn = (ImageButton)findViewById(R.id.sendBtnSTT);
-        ImageButton composeBtn = (ImageButton)findViewById(R.id.composeBtnSTT);
+        LinearLayout contactLayout = (LinearLayout) findViewById(R.id.contactLayoutSTT);
+        ImageButton callBtn = (ImageButton) findViewById(R.id.callBtnSTT);
+        ImageButton speechToTextBtn = (ImageButton) findViewById(R.id.speechToTextButton);
+        ImageButton removeBtn = (ImageButton) findViewById(R.id.removeBtnSTT);
+        ImageButton sendBtn = (ImageButton) findViewById(R.id.sendBtnSTT);
+        ImageButton composeBtn = (ImageButton) findViewById(R.id.composeBtnSTT);
         params = removeBtn.getLayoutParams();
-        params.width = size.x/3;
-        params.height = size.x/3;
+        params.width = size.x / 3;
+        params.height = size.x / 3;
         params = sendBtn.getLayoutParams();
-        params.width = size.x/3;
-        params.height = size.x/3;
+        params.width = size.x / 3;
+        params.height = size.x / 3;
         params = composeBtn.getLayoutParams();
-        params.width = size.x/3;
-        params.height = size.x/3;
+        params.width = size.x / 3;
+        params.height = size.x / 3;
         params = speechToTextBtn.getLayoutParams();
-        params.width = size.x/6;
-        params.height = size.x/6;
+        params.width = size.x / 6;
+        params.height = size.x / 6;
         params = callBtn.getLayoutParams();
-        params.width = size.x/6;
-        params.height = size.x/6;
+        params.width = size.x / 6;
+        params.height = size.x / 6;
 
 
         contactLayout.setOnClickListener(new View.OnClickListener() {
@@ -142,11 +141,10 @@ public class SpeechToText extends Activity {
             }
         });
 
-        mainTextView = (TextView)findViewById(R.id.speechToTextMainText);
-        secondaryTextView = (TextView)findViewById(R.id.speechToTextSecondText);
-        contactTextView = (TextView)findViewById(R.id.contactSTT);
-        phoneTextView = (TextView)findViewById(R.id.phoneSTT);
-        countTextView = (TextView)findViewById(R.id.speechToTextCountField);
+        mainTextView = (TextView) findViewById(R.id.speechToTextMainText);
+        contactTextView = (TextView) findViewById(R.id.contactSTT);
+        phoneTextView = (TextView) findViewById(R.id.phoneSTT);
+        countTextView = (TextView) findViewById(R.id.speechToTextCountField);
         mainTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,8 +159,8 @@ public class SpeechToText extends Activity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                countTextView.setText(((charSequence.length()/MAX_SMS_LENGTH + 1) - 
-                        charSequence.length()) + "/" + (charSequence.length()/MAX_SMS_LENGTH + 1));
+                countTextView.setText(((charSequence.length() / MAX_SMS_LENGTH + 1) * MAX_SMS_LENGTH -
+                        charSequence.length()) + "/" + (charSequence.length() / MAX_SMS_LENGTH + 1));
             }
 
             @Override
@@ -171,24 +169,31 @@ public class SpeechToText extends Activity {
             }
         });
         mainTextView.setText(katlaInstance.getMessage());
-        secondaryTextView.setText("");
-        Toast.makeText(getApplicationContext(), "To start speaking: Press button",
-                Toast.LENGTH_LONG).show();
-
         contactTextView.setText(katlaInstance.getContact());
         phoneTextView.setText(katlaInstance.getPhone());
 
 
+        if (katlaInstance.getDistractionLevel() == 0) {
+            mainTextView.setFocusable(true);
+        } else {
+            mainTextView.setFocusable(false);
+        }
     }
 
     private void onSpeechToTextButton() {
-        kstt.setListener(krl);
-        if(isListening) {
-            isListening = false;
-            kstt.stopListening();
+        if (KatlaSpeechToTextFactory.isRecognitionAvailable(getApplicationContext())) {
+            kstt.setListener(krl);
+            if (isListeningToSpeech) {
+                isListeningToSpeech = false;
+                kstt.stopListening();
+            } else {
+                startListener();
+                isListeningToSpeech = true;
+                Toast.makeText(getApplicationContext(), "Start speaking now", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            startListener();
-            isListening = true;
+            Toast.makeText(getApplicationContext(), "Speech to text is unavailable at this time",
+                    Toast.LENGTH_LONG).show();
         }
     }
 
@@ -234,13 +239,14 @@ public class SpeechToText extends Activity {
     }
 
     private void sendMessage() {
-        isListening = false;
-        kstt.stopListening();
+        isListeningToSpeech = false;
+        if (KatlaSpeechToTextFactory.isRecognitionAvailable(getApplicationContext())) {
+            kstt.stopListening();
+        }
         katlaInstance.setMessage(mainTextView.getText().toString());
         // HUR HANTERA NÄR INTE KONTAKT VALD HÄR? Öppna kontakthanterare och mota input till model?
         // och senskicka och sen byta till nån konversationsvy?
         mainTextView.setText("");
-        secondaryTextView.setText("");
         katlaInstance.sendMessage();
     }
 
@@ -252,7 +258,9 @@ public class SpeechToText extends Activity {
 
     @Override
     protected void onDestroy() {
-        kstt.destroy();
+        if (KatlaSpeechToTextFactory.isRecognitionAvailable(getApplicationContext())) {
+            kstt.destroy();
+        }
         ktts.shutdown();
         super.onDestroy();
     }
@@ -262,9 +270,11 @@ public class SpeechToText extends Activity {
         katlaInstance.setMessage(mainTextView.getText().toString());
         katlaInstance.setContact(contactTextView.getText()+"");
         katlaInstance.setPhone(phoneTextView.getText()+"");
-        isListening = false;
-        kstt.stopListening();
-        kstt.cancel();
+        if (KatlaSpeechToTextFactory.isRecognitionAvailable(getApplicationContext())) {
+            isListeningToSpeech = false;
+            kstt.stopListening();
+            kstt.cancel();
+        }
         ktts.stop();
         super.onPause();
     }
@@ -300,7 +310,7 @@ public class SpeechToText extends Activity {
     private KatlaRecognitionListener krl = new KatlaRecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle bundle) {
-            secondaryTextView.setText("");
+
         }
 
         @Override
@@ -320,10 +330,9 @@ public class SpeechToText extends Activity {
 
         @Override
         public void onEndOfSpeech() {
-            if (isListening) {
+            if (isListeningToSpeech) {
                 startListener();
             } else {
-                secondaryTextView.setText("");
                 Toast.makeText(getApplicationContext(), "Stopped recognition", Toast.LENGTH_LONG).show();
             }
         }
@@ -340,12 +349,10 @@ public class SpeechToText extends Activity {
 
         @Override
         public void onPartialResults(Bundle bundle) {
-            secondaryTextView.setText("");
             List<String> resultsList = bundle.getStringArrayList(KatlaSpeechToTextParameters.RESULTS_RECOGNITION);
             if (!resultsList.get(0).equals(lastResultString)) {
                 lastResultString = resultsList.get(0);
                 String[] text = resultsList.get(0).split(" ");
-                secondaryTextView.setText(text[text.length - 1]);
                 mainTextView.append(text[text.length - 1] + " ");
             }
 
@@ -359,4 +366,14 @@ public class SpeechToText extends Activity {
     };
 
 
+    @Override
+    public void receiveEvent(String s, Object o) {
+        if (s == "Driver distraction changed") {
+            if ((Integer)o == 0) {
+                mainTextView.setFocusable(true);
+            } else {
+                mainTextView.setFocusable(false);
+            }
+        }
+    }
 }
