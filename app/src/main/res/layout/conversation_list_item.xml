@@ -5,16 +5,11 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/address_view"
-        android:textStyle="bold" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/body_view"
-        android:textStyle="italic"
-        android:editable="false" />
+        android:id="@+id/conversationTextField"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.10"
+        android:textSize="45dp" />
 </LinearLayout>

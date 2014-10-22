@@ -3,31 +3,27 @@ package se.chalmers.katla.activities;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.ResourceCursorAdapter;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import se.chalmers.katla.R;
 
 /**
+ * The Launcher activity of Katla.
  * @author Erik Norlander
  * Created 2014-09-30
  * Launcher activity for the Katla aplication.
@@ -117,6 +113,7 @@ public class MainActivity extends Activity {
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
             View v = inflater.inflate(R.layout.conversation_list_item, parent, false);
+
             return v;
         }
 
@@ -124,24 +121,24 @@ public class MainActivity extends Activity {
         /**
          * Binds the data to the correct views.
          */
-        public void bindView(View view, Context context, Cursor cursor) {
+        public void bindView(View view, Context context, final Cursor cursor) {
 
-            TextView name = (TextView)view.findViewById(R.id.address_view);
+
             int addressIndex = cursor.getColumnIndex("address");
-            String number = cursor.getString(addressIndex);
+            final String number = cursor.getString(addressIndex);
             String nameOfContact = getContactDisplayNameByNumber(number);
+            final String nameToBeUsed;
             if (nameOfContact != null) {
                 // If the contact doesnt exist use the phone number:
-                name.setText(nameOfContact);
+                nameToBeUsed = nameOfContact;
             } else {
-                name.setText(number);
+                nameToBeUsed = number;
             }
-            name.setKeyListener(null);
 
-            TextView bodyText = (TextView)view.findViewById(R.id.body_view);
+
             int bodyIndex = cursor.getColumnIndex("body");
             String body = cursor.getString(bodyIndex);
-            int nbrOfCharShown = 25;
+            int nbrOfCharShown = 20;
             String showText;
             if(body.length() > nbrOfCharShown) {
                 showText = body.substring(0,nbrOfCharShown) + "...";
@@ -149,8 +146,26 @@ public class MainActivity extends Activity {
                 showText = body;
             }
             showText = showText.replace("\n", " ");
-            bodyText.setText(showText);
-            bodyText.setKeyListener(null);
+
+
+            TextView conversationText = (TextView) view.findViewById(R.id.conversationTextField);
+            conversationText.setText(Html.fromHtml("<b>" + nameToBeUsed + "</b>" + "<br />" + showText));
+            //conversationText.setTextSize(38f);
+
+            conversationText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent showConversationIntent = new Intent(MainActivity.this, DrivingConversationActivity.class);
+                    showConversationIntent.putExtra("phoneNumber", number);
+                    int id_index = cursor.getColumnIndex("thread_id");
+                    int id = cursor.getInt(id_index);
+                    showConversationIntent.putExtra("id", id);
+                    showConversationIntent.putExtra("nameOfConversation",nameToBeUsed);
+                    startActivity(showConversationIntent);
+                }
+            });
+
+
         }
 
         private String getContactDisplayNameByNumber(String number) {
