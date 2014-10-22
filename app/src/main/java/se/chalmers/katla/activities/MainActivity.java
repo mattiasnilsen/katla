@@ -150,15 +150,19 @@ public class MainActivity extends Activity {
             int nbrOfCharShown = 20;
             String showText;
             if(body.length() > nbrOfCharShown) {
-                showText = body.substring(0,nbrOfCharShown) + "...";
+                //showText = body.substring(0,nbrOfCharShown) + "...";
+                showText = body;
             } else {
                 showText = body;
             }
-            showText = showText.replace("\n", " ");
+            //showText = showText.replace("\n", " ");
 
 
             TextView conversationText = (TextView) view.findViewById(R.id.conversationTextField);
-            conversationText.setText(Html.fromHtml("<b>" + nameToBeUsed + "</b>" + "<br />" + showText));
+            TextView contact = (TextView) view.findViewById(R.id.drivingContactText);
+            //conversationText.setText(Html.fromHtml("<b>" + nameToBeUsed + "</b>" + "<br />" + showText));
+            conversationText.setText(showText);
+            contact.setText(nameToBeUsed);
             //conversationText.setTextSize(38f);
 
             conversationText.setOnClickListener(new View.OnClickListener() {

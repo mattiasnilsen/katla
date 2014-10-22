@@ -31,7 +31,6 @@ ArrayList<String> allSms;
         setContentView(R.layout.activity_drivingconversation);
         Intent myIntent = getIntent();
         String nameOfConversation = myIntent.getStringExtra("nameOfConversation");
-        String phoneNbr = myIntent.getStringExtra("phoneNumber");
         // Get the id for the conversation that is opened.
         int conversation_id = myIntent.getIntExtra("id",0);
 
@@ -49,16 +48,12 @@ ArrayList<String> allSms;
         // Create the ArrayList that holds all sms in this conversation
         allSms = new ArrayList<String>();
 
-        int antal = 1;
+
         // Get the body text for each sms in the conversation and save it to the list
         int bodyIndex = convCursor.getColumnIndex("body");
         for(convCursor.moveToLast() ;!convCursor.isBeforeFirst(); convCursor.moveToPrevious()) {
-
             String j = convCursor.getString(bodyIndex);
             allSms.add(0,j);
-
-            System.out.println(antal + " " + j);
-            antal++;
         }
         // Create the textView and make sure it's scrollable
         TextView currentSms = (TextView)findViewById(R.id.currentSmsView);
@@ -73,12 +68,12 @@ ArrayList<String> allSms;
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_ndconversation, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_ndconversation, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
