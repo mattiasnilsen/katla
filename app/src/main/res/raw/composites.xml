@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<category name = "categoryName">
-    <composite>
-        I'm there in %s min
-        <input>time</input>
-    </composite>
-    <composite>
-        I'll be there soon
-        <input>time,is,money</input>
-    </composite>
-    <composite>
-        I'm on my way
-    </composite>
-    <composite>
-        It will be a while
-    </composite>
-    
-</category>
+<composites>
+    <category name = "Category 1">
+        <composite>
+            I'm there in %s min
+            <input>time</input>
+        </composite>
+        <composite>
+            I'll be there soon
+            <input>time,is,money</input>
+        </composite>
+        <composite>
+            I'm on my way
+        </composite>
+        <composite>
+            It will be a while
+        </composite>
+
+    </category>
+    <category name = "Category 2">
+        <composite>
+            Sure
+            <input>time</input>
+        </composite>
+        <composite>
+            Yes
+        </composite>
+        <composite>
+            No
+        </composite>
+        <composite>
+            Of course
+        </composite>
+
+    </category>
+</composites>
