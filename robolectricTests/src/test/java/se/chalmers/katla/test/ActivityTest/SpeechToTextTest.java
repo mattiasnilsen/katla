@@ -70,9 +70,8 @@ public class SpeechToTextTest {
     public void testToCompositeButton() throws AssertionError {
         SpeechToText stt = controller.create().start().resume().get();
 
-        Button btn = (Button)stt.findViewById(R.id.composeBtnSTT);
+        stt.findViewById(R.id.composeBtnSTT).performClick();;
 
-        btn.performClick();
         Intent expectedIntent = new Intent(stt, SwipeMainActivity.class);
         assertTrue(shadowOf(stt).getNextStartedActivity().equals(expectedIntent));
     }
@@ -85,7 +84,7 @@ public class SpeechToTextTest {
         TextView textView = (TextView) stt.findViewById(R.id.speechToTextMainText);
         String s = "Hej nu testar vi at skicka ett sms, får se om det funkar";
         textView.setText(s);
-        String number = katla.getMessage();
+        String number = katla.getPhone();
 
         stt.findViewById(R.id.sendBtnSTT).performClick();
 
