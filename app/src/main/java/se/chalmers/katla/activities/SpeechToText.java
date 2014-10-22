@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -38,7 +39,7 @@ public class SpeechToText extends Activity implements EventListener{
     private IKatlaSpeechToText kstt;
     private IKatlaTextToSpeech ktts;
 
-    private TextView mainTextView;
+    private EditText mainTextView;
     private TextView contactTextView;
     private TextView phoneTextView;
     private boolean isListeningToSpeech;
@@ -141,7 +142,7 @@ public class SpeechToText extends Activity implements EventListener{
             }
         });
 
-        mainTextView = (TextView) findViewById(R.id.speechToTextMainText);
+        mainTextView = (EditText) findViewById(R.id.speechToTextMainText);
         contactTextView = (TextView) findViewById(R.id.contactSTT);
         phoneTextView = (TextView) findViewById(R.id.phoneSTT);
         countTextView = (TextView) findViewById(R.id.speechToTextCountField);
@@ -172,6 +173,7 @@ public class SpeechToText extends Activity implements EventListener{
         contactTextView.setText(katlaInstance.getContact());
         phoneTextView.setText(katlaInstance.getPhone());
 
+        mainTextView.setSelection(mainTextView.getText().length());
 
         if (katlaInstance.getDistractionLevel() == 0) {
             mainTextView.setFocusable(true);
@@ -220,6 +222,7 @@ public class SpeechToText extends Activity implements EventListener{
         String text = mainTextView.getText().toString();
         text = text.trim();
         mainTextView.setText(removeLastWord(text.length(), text));
+        mainTextView.setSelection(mainTextView.getText().length());
     }
 
     private String removeLastWord(int i, String text) {
