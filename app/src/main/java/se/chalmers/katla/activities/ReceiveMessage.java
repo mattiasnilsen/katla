@@ -1,7 +1,10 @@
 package se.chalmers.katla.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.swedspot.automotiveapi.AutomotiveSignal;
@@ -12,10 +15,12 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.swedspot.automotiveapi.AutomotiveFactory;
 import com.swedspot.automotiveapi.AutomotiveListener;
@@ -24,24 +29,30 @@ import com.swedspot.vil.distraction.DriverDistractionListener;
 import com.swedspot.vil.policy.AutomotiveCertificate;
 
 import se.chalmers.katla.R;
+import se.chalmers.katla.katlaTextToSpeech.IKatlaTextToSpeech;
+import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechFactory;
+import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechParameters;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
 
 public class ReceiveMessage extends Activity {
     IKatla model;
+    private IKatlaTextToSpeech ktts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive_message);
         model = Katla.getInstance();
-
+        ktts = KatlaTextToSpeechFactory.createKatlaTextToSpeech(getApplicationContext());
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
         int height = size.y;
 
-        LinearLayout btnBar = (LinearLayout)findViewById(R.id.buttonBarRM);
+
+
+        GridLayout btnBar = (GridLayout)findViewById(R.id.buttonBarRM);
         LayoutParams params = btnBar.getLayoutParams();
         //params.height = size.y;
         params.width = size.x;
@@ -52,6 +63,7 @@ public class ReceiveMessage extends Activity {
         ImageButton callBtn = (ImageButton)findViewById(R.id.callBtnRM);
         ImageButton replyBtn = (ImageButton)findViewById(R.id.replyBtnRM);
         ImageButton ttsBtn = (ImageButton)findViewById(R.id.textToSpeechBtnRM);
+        LinearLayout contactLayout = (LinearLayout)findViewById(R.id.contactLayoutRM);
 
         params = callBtn.getLayoutParams();
         params.width = size.x/3;
@@ -62,11 +74,36 @@ public class ReceiveMessage extends Activity {
         params = ttsBtn.getLayoutParams();
         params.width = size.x/3;
         params.height = size.x/3;
+        replyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent speechToTextIntent = new Intent(ReceiveMessage.this, SpeechToText.class);
 
+                startActivity(speechToTextIntent);
+            }
+        });
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                model.phoneCall();
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                // According to documentation ACTION_CALL can not call emergency numbers?
+                intent.setData(Uri.parse("tel:" + model.getPhone()));
+                startActivity(intent);
+            }
+        });
+
+        ttsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSpeakPress();
+            }
+        });
+        contactLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent contactServiceIntent = new Intent(ReceiveMessage.this, ContactService.class);
+
+                startActivity(contactServiceIntent);
             }
         });
 
@@ -146,5 +183,21 @@ public class ReceiveMessage extends Activity {
         temp.setText(model.getContact());
         temp = (TextView)findViewById(R.id.phoneRM);
         temp.setText(model.getPhone());
+    }
+
+    /**
+     * Handles what happens when you want text to be spoken.
+     */
+    private void onSpeakPress() {
+        if(ktts.readyToUse()) {
+            // QUEUE_ADD adds this speak to a queue, QUEUE_FLUSH removes everything from the queue
+            // and speaks your message.
+            TextView text = (TextView)findViewById(R.id.textMessageRM);
+            ktts.speak(text.getText().toString(), KatlaTextToSpeechParameters.QUEUE_FLUSH, null);
+        } else {
+            Toast.makeText(getApplicationContext(), "Text to speech unavailable at this time",
+                    Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

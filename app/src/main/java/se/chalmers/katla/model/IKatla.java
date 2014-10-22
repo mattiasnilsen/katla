@@ -3,10 +3,12 @@ package se.chalmers.katla.model;
 
 import java.util.Iterator;
 
+import se.chalmers.katla.eventBus.EventListener;
+
 /**
  * Created by Anton on 2014-10-03.
  */
-public interface IKatla {
+public interface IKatla extends EventListener {
     /**
      * Gets a string representation of the current contact
      * @return current contact
@@ -88,5 +90,20 @@ public interface IKatla {
      * Calls the selected contact or phone number
      */
     public void phoneCall();
+
+    public void loadComposites() throws CompositesXmlParser.ParseException;
+
+    /**
+     * Gets the current wheel based speed.
+     * @return the wheel based speed stored in katla.
+     */
+    public float getWheelBasedSpeed();
+
+    /**
+     * Gets the current driver distraction level.
+     * @return the driver distraction level stored in katla.
+     */
+    public int getDistractionLevel();
+
 
 }

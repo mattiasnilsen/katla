@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import se.chalmers.katla.agaListenerService.AgaListener;
+import se.chalmers.katla.eventBus.EventBus;
 import se.chalmers.katla.kaltaSmsManager.IKatlaSmsManager;
 import se.chalmers.katla.kaltaSmsManager.KatlaSmsManagerFactory;
 
@@ -20,11 +22,16 @@ import se.chalmers.katla.kaltaSmsManager.KatlaSmsManagerFactory;
 public class Katla implements IKatla {
 
     private final int MAX_SMS_LENGTH = 160;
+    private final String COMPOSITES_XML_FILE = "res/raw/composites.xml";
 
     private static Katla ourInstance;
     private String message = "Alla vill till himlen men få vill ju dö hgfghf fhg hgf hgf hgf ghf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf hgf ghf hgf hgf hgffghgf hg fhgf hg fhgf hg fhgf hfjhgf hgfkghfkf ufk h khg khg g hej alla fina getter!";
     private String phone = "0707833811";
     private String contact = "Satan Elite";
+    private AgaListener agaListener;
+
+    private int distractionLevel;
+    private float wheelBasedSpeed;
 
     public String getContact() {
         return contact;
@@ -45,16 +52,23 @@ public class Katla implements IKatla {
 
 
     private Katla() {
+        agaListener = new AgaListener();
+
+        EventBus.getInstance().registerListener(this);
+
+    }
+
+    @Override
+    public void loadComposites() throws CompositesXmlParser.ParseException{
         CompositesXmlParser parser = new CompositesXmlParser();
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream("res/raw/composites.xml");
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream(COMPOSITES_XML_FILE);
 
         try {
             categories = parser.parse(in);
         } catch (IOException e) {
-            //TODO proper exception handling
-            System.out.println(e);
+            throw new CompositesXmlParser.ParseException("Can't load file");
         } catch (XmlPullParserException e) {
-            System.out.println(e);
+            throw new CompositesXmlParser.ParseException(e.getMessage());
         }
     }
 
@@ -165,11 +179,27 @@ public class Katla implements IKatla {
 
     @Override
     public void phoneCall() {
-        //Does it work to make an activity to use startActivity method??
-        Activity activity = new Activity();
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        // According to documentation ACTION_CALL can not call emergency numbers?
-        intent.setData(Uri.parse("tel:" + phone));
-        activity.startActivity(intent);
+
+
+    }
+
+    @Override
+    public void receiveEvent(String s, Object o) {
+        if (s.equals("Speed changed")) {
+            this.wheelBasedSpeed = (Float)o;
+        } else if (s.equals("Driver distraction changed")) {
+            this.distractionLevel = (Integer)o;
+        }
+    }
+
+    @Override
+    public float getWheelBasedSpeed() {
+        return this.wheelBasedSpeed;
+    }
+
+    @Override
+    public int getDistractionLevel() {
+        return this.distractionLevel;
     }
 }
+

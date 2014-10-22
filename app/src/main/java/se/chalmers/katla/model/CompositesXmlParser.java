@@ -22,7 +22,14 @@ public class CompositesXmlParser {
     private final String CATEGORY_TAG = "category";
     private final String INPUT_TAG = "input";
 
-    public List parse(InputStream in)  throws XmlPullParserException, IOException{
+    public static class ParseException extends Exception {
+        public ParseException() { super(); }
+        public ParseException(String message) { super(message); }
+        public ParseException(String message, Throwable cause) { super(message, cause); }
+        public ParseException(Throwable cause) { super(cause); }
+    }
+
+    public List parse(InputStream in)  throws XmlPullParserException, IOException, ParseException{
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             XmlPullParser parser = factory.newPullParser();
@@ -35,7 +42,7 @@ public class CompositesXmlParser {
         }
     }
 
-    private List readComposites(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private List readComposites(XmlPullParser parser) throws XmlPullParserException, IOException, ParseException {
         List categories = new ArrayList<IComposite>();
         int eventType = parser.getEventType();
 
@@ -46,7 +53,7 @@ public class CompositesXmlParser {
             if(eventType == XmlPullParser.START_TAG) {
                 if(parser.getName().equals(CATEGORY_TAG)) {
                     if(currentCategory != null) {
-                        //TODO throw exception?
+                        throw new ParseException("XML file error: invalid syntax");
                     } else {
                         currentCategory = new Category(parser.getAttributeValue(0));
                     }
@@ -66,10 +73,9 @@ public class CompositesXmlParser {
                     insideInputTag = false;
                 }
             } else if(eventType == XmlPullParser.TEXT) {
-                if(currentComposite != null) {
+                if(currentComposite != null && currentComposite.getBaseText().isEmpty()) {
                     currentComposite.setBaseText(parser.getText());
-                }
-                if(insideInputTag) {
+                } else if(insideInputTag) {
                     List<String> inputs = getInputTypes(parser.getText());
                     currentComposite.setInputs(inputs);
                 }

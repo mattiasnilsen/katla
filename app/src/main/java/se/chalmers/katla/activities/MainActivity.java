@@ -6,10 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.text.Html;
+
+import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,8 +23,10 @@ import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import se.chalmers.katla.R;
+
 
 /**
  * The Launcher activity of Katla.
@@ -34,6 +40,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
         //Temp button to get to another view
         final Button receiveSMSButton = (Button)findViewById(R.id.tempBtn);
@@ -73,8 +81,9 @@ public class MainActivity extends Activity {
         // Get the listView and set the above adapter
         conversationsListView = (ListView)findViewById(R.id.conversationListView);
         conversationsListView.setAdapter(contacsCursorAdapter);
-    }
 
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
