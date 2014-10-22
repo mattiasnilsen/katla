@@ -1,12 +1,13 @@
 package se.chalmers.katla.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Interface for the Composite object in the model.
  * Created by Mattias on 2014-10-03.
  */
-public interface IComposite {
+public interface IComposite extends Serializable {
 
     /**
      * Returns the baseText that contains both the predefined baseText and any user input if there is any.

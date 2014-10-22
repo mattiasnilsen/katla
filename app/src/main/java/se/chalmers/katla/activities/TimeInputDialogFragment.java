@@ -24,16 +24,8 @@ import se.chalmers.katla.R;
 public class TimeInputDialogFragment extends DialogFragment {
 
     private static final int TIME_PICKER_INTERVAL = 5;
-    private TimeInputDialogListener listener = null;
+    private InputDialogListener listener = null;
     private TimePicker timePicker;
-
-    /**
-     * The Activity that instantiates this dialog must implement this interface.
-     * The method will be called when the user has chosen a time and presses the done button.
-     */
-    public interface TimeInputDialogListener {
-        public void onTimeSetClicked(int hours, int minutes);
-    }
 
     /**
      * Override the onAttach method in order to instantiate the listener.
@@ -44,10 +36,16 @@ public class TimeInputDialogFragment extends DialogFragment {
         super.onAttach(activity);
 
         try {
-            listener = (TimeInputDialogListener)activity;
+            listener = (InputDialogListener)activity;
         } catch(ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement TimeInputDialogListener");
+            throw new ClassCastException(activity.toString() + " must implement InputDialogListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
     }
 
     public Dialog onCreateDialog(Bundle savedInstance) {
@@ -77,7 +75,11 @@ public class TimeInputDialogFragment extends DialogFragment {
             public void onClick(View view) {
                 int hours = timePicker.getCurrentHour();
                 int minutes = timePicker.getCurrentMinute() * TIME_PICKER_INTERVAL;
-                listener.onTimeSetClicked(hours, minutes);
+                if(hours == 0) {
+                    listener.receiveInput("" + minutes);
+                } else {
+                    listener.receiveInput("" + hours + "h " + minutes);
+                }
                 dismiss();
             }
         });

@@ -42,4 +42,9 @@ public class Composite implements IComposite {
     public List<String> getInputs() {
         return inputs;
     }
+
+    @Override
+    public String toString() {
+        return getBaseText().replace("%s", "...");
+    }
 }
