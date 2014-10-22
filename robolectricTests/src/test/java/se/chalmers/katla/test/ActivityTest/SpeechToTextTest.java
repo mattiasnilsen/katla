@@ -1,19 +1,23 @@
 package se.chalmers.katla.test.ActivityTest;
 
 import android.content.Intent;
+import android.telephony.SmsManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.shadows.ShadowSmsManager;
 import org.robolectric.util.ActivityController;
 
 import se.chalmers.katla.R;
 import se.chalmers.katla.activities.SpeechToText;
 import se.chalmers.katla.activities.SwipeMainActivity;
+import se.chalmers.katla.model.Katla;
 import se.chalmers.katla.test.RobolectricKatlaTestRunner;
 
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertThat;
 import static org.robolectric.Robolectric.buildActivity;
@@ -73,5 +77,22 @@ public class SpeechToTextTest {
         assertTrue(shadowOf(stt).getNextStartedActivity().equals(expectedIntent));
     }
 
-    
+    @Test
+    public void testSendMessageButton() {
+        SpeechToText stt = controller.create().start().resume().get();
+        Katla katla = Katla.getInstance();
+
+        TextView textView = (TextView) stt.findViewById(R.id.speechToTextMainText);
+        String s = "Hej nu testar vi at skicka ett sms, får se om det funkar";
+        textView.setText(s);
+        String number = katla.getMessage();
+
+        stt.findViewById(R.id.sendBtnSTT).performClick();
+
+        ShadowSmsManager shadowSmsManager = shadowOf(SmsManager.getDefault());
+        ShadowSmsManager.TextSmsParams lastSendTextMessageParams = shadowSmsManager.getLastSentTextMessageParams();
+
+        assertEquals(s, lastSendTextMessageParams.getText());
+        assertEquals(number, lastSendTextMessageParams.getDestinationAddress());
+    }
 }
