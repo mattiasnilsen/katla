@@ -45,6 +45,7 @@ public class SpeechToText extends Activity implements EventListener{
     private boolean isListeningToSpeech;
     private String lastResultString;
     private TextView countTextView;
+    private ImageButton speechToTextBtn;
 
     private final int MAX_SMS_LENGTH = 160;
     
@@ -75,7 +76,7 @@ public class SpeechToText extends Activity implements EventListener{
 
         LinearLayout contactLayout = (LinearLayout) findViewById(R.id.contactLayoutSTT);
         ImageButton callBtn = (ImageButton) findViewById(R.id.callBtnSTT);
-        ImageButton speechToTextBtn = (ImageButton) findViewById(R.id.speechToTextButton);
+        speechToTextBtn = (ImageButton) findViewById(R.id.speechToTextButton);
         ImageButton removeBtn = (ImageButton) findViewById(R.id.removeBtnSTT);
         ImageButton sendBtn = (ImageButton) findViewById(R.id.sendBtnSTT);
         ImageButton composeBtn = (ImageButton) findViewById(R.id.composeBtnSTT);
@@ -189,6 +190,7 @@ public class SpeechToText extends Activity implements EventListener{
                 isListeningToSpeech = false;
                 kstt.stopListening();
             } else {
+                speechToTextBtn.setBackgroundColor(getResources().getColor(R.color.BlueDark));
                 startListener();
                 isListeningToSpeech = true;
                 Toast.makeText(getApplicationContext(), "Start speaking now", Toast.LENGTH_SHORT).show();
@@ -288,6 +290,7 @@ public class SpeechToText extends Activity implements EventListener{
         contactTextView.setText(katlaInstance.getContact());
         phoneTextView.setText(katlaInstance.getPhone());
 
+
         super.onResume();
     }
 
@@ -336,6 +339,7 @@ public class SpeechToText extends Activity implements EventListener{
             if (isListeningToSpeech) {
                 startListener();
             } else {
+                speechToTextBtn.setBackgroundColor(getResources().getColor(R.color.BlueLight));
                 Toast.makeText(getApplicationContext(), "Stopped recognition", Toast.LENGTH_LONG).show();
             }
         }
