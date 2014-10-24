@@ -290,6 +290,7 @@ public class SpeechToText extends Activity implements EventListener{
         contactTextView.setText(katlaInstance.getContact());
         phoneTextView.setText(katlaInstance.getPhone());
 
+        driverDistractionUpdate(katlaInstance.getDistractionLevel());
 
         super.onResume();
     }
@@ -372,15 +373,19 @@ public class SpeechToText extends Activity implements EventListener{
 
     };
 
+    private void driverDistractionUpdate(int i) {
+        if (i <= 0) {
+            mainTextView.setFocusable(true);
+        } else {
+            mainTextView.setFocusable(false);
+        }
+    }
+
 
     @Override
     public void receiveEvent(String s, Object o) {
         if (s == "Driver distraction changed") {
-            if ((Integer)o == 0) {
-                mainTextView.setFocusable(true);
-            } else {
-                mainTextView.setFocusable(false);
-            }
+            driverDistractionUpdate((Integer) o);
         }
     }
 }
