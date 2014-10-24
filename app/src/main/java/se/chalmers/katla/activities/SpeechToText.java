@@ -251,8 +251,13 @@ public class SpeechToText extends Activity implements EventListener{
         katlaInstance.setMessage(mainTextView.getText().toString());
         // HUR HANTERA NÄR INTE KONTAKT VALD HÄR? Öppna kontakthanterare och mota input till model?
         // och senskicka och sen byta till nån konversationsvy?
-        mainTextView.setText("");
-        katlaInstance.sendMessage();
+
+        if(katlaInstance.sendMessage()) {
+            mainTextView.setText("");
+            Toast.makeText(getApplicationContext(), "Message sent!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Message failed to send!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void onToCompositeButton() {
