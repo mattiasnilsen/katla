@@ -46,9 +46,8 @@ public class MainActivity extends Activity {
         receiveSMSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Katla.getInstance().readyForNewMessage();
                 
-                Intent receiveMessageIntent = new Intent(MainActivity.this, SpeechToText.class);
+                Intent receiveMessageIntent = new Intent(MainActivity.this, ReceiveMessage.class);
 
                 startActivity(receiveMessageIntent);
             }
@@ -60,7 +59,8 @@ public class MainActivity extends Activity {
         createSMSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sendMessageIntent = new Intent(MainActivity.this, SendMessage.class);
+                Katla.getInstance().readyForNewMessage();
+                Intent sendMessageIntent = new Intent(MainActivity.this, SpeechToText.class);
 
                 startActivity(sendMessageIntent);
             }
