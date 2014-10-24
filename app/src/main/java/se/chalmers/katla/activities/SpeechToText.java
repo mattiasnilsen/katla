@@ -171,8 +171,14 @@ public class SpeechToText extends Activity implements EventListener{
             }
         });
         mainTextView.setText(katlaInstance.getMessage());
-        contactTextView.setText(katlaInstance.getContact());
+        if (katlaInstance.getContact().equals("")) {
+            contactTextView.setText("No contact chosen");
+        } else {
+            contactTextView.setText(katlaInstance.getContact());
+        }
+
         phoneTextView.setText(katlaInstance.getPhone());
+
 
         mainTextView.setSelection(mainTextView.getText().length());
 
@@ -278,8 +284,6 @@ public class SpeechToText extends Activity implements EventListener{
     @Override
     protected void onPause() {
         katlaInstance.setMessage(mainTextView.getText().toString());
-        katlaInstance.setContact(contactTextView.getText()+"");
-        katlaInstance.setPhone(phoneTextView.getText()+"");
         if (KatlaSpeechToTextFactory.isRecognitionAvailable(getApplicationContext())) {
             isListeningToSpeech = false;
             kstt.stopListening();
@@ -292,7 +296,11 @@ public class SpeechToText extends Activity implements EventListener{
     @Override
     protected void onResume() {
         mainTextView.setText(katlaInstance.getMessage());
-        contactTextView.setText(katlaInstance.getContact());
+        if (katlaInstance.getContact().equals("")) {
+            contactTextView.setText("Choose contact");
+        } else {
+            contactTextView.setText(katlaInstance.getContact());
+        }
         phoneTextView.setText(katlaInstance.getPhone());
 
         driverDistractionUpdate(katlaInstance.getDistractionLevel());
