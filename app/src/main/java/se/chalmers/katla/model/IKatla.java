@@ -105,5 +105,9 @@ public interface IKatla extends EventListener {
      */
     public int getDistractionLevel();
 
+    /**
+     * Readies the model for a new message
+     */
+    public void readyForNewMessage();
 
 }

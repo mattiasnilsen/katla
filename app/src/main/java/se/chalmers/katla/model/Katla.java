@@ -2,9 +2,6 @@ package se.chalmers.katla.model;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -200,6 +197,13 @@ public class Katla implements IKatla {
     @Override
     public int getDistractionLevel() {
         return this.distractionLevel;
+    }
+
+    @Override
+    public void readyForNewMessage() {
+        this.message = "";
+        this.contact = "";
+        this.phone = "";
     }
 }
 
