@@ -162,14 +162,13 @@ public class MainActivity extends Activity {
             conversationText.setText(showText);
             contact.setText(nameToBeUsed);
             //conversationText.setTextSize(38f);
-
+            final int id_index = cursor.getColumnIndex("thread_id");
+            final int id = cursor.getInt(id_index);
             conversationText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent showConversationIntent = new Intent(MainActivity.this, DrivingConversationActivity.class);
                     showConversationIntent.putExtra("phoneNumber", number);
-                    int id_index = cursor.getColumnIndex("thread_id");
-                    int id = cursor.getInt(id_index);
                     showConversationIntent.putExtra("id", id);
                     showConversationIntent.putExtra("nameOfConversation",nameToBeUsed);
                     startActivity(showConversationIntent);
