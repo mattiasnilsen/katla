@@ -1,6 +1,5 @@
 package se.chalmers.katla.activities;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
@@ -77,7 +76,7 @@ public class ReceiveMessage extends Activity {
         replyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent speechToTextIntent = new Intent(ReceiveMessage.this, SpeechToText.class);
+                Intent speechToTextIntent = new Intent(ReceiveMessage.this, ViewMessage.class);
 
                 startActivity(speechToTextIntent);
             }

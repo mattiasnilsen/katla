@@ -33,7 +33,7 @@ import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechParameters;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
 
-public class SpeechToText extends Activity implements EventListener{
+public class ViewMessage extends Activity implements EventListener{
 
     private IKatla katlaInstance;
     private IKatlaSpeechToText kstt;
@@ -52,7 +52,7 @@ public class SpeechToText extends Activity implements EventListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_speech_to_text);
+        setContentView(R.layout.activity_view_message);
 
         katlaInstance = Katla.getInstance();
         if (KatlaSpeechToTextFactory.isRecognitionAvailable(getApplicationContext())) {
@@ -100,7 +100,7 @@ public class SpeechToText extends Activity implements EventListener{
         contactLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent contactServiceIntent = new Intent(SpeechToText.this, ContactService.class);
+                Intent contactServiceIntent = new Intent(ViewMessage.this, ContactService.class);
 
                 startActivity(contactServiceIntent);
             }
@@ -267,7 +267,7 @@ public class SpeechToText extends Activity implements EventListener{
     }
 
     private void onToCompositeButton() {
-        Intent compositeIntent = new Intent(SpeechToText.this, SwipeMainActivity.class);
+        Intent compositeIntent = new Intent(ViewMessage.this, SwipeMainActivity.class);
 
         startActivity(compositeIntent);
     }

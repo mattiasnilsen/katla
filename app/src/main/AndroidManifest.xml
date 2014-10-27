@@ -47,7 +47,7 @@
         </activity>
         <activity
 
-            android:name=".activities.SpeechToText"
+            android:name=".activities.ViewMessage"
             android:theme="@style/NoActionBar"
 
             android:label="@string/title_activity_speech_to_text" >
