@@ -45,6 +45,7 @@ public class SpeechToText extends Activity implements EventListener{
     private boolean isListeningToSpeech;
     private String lastResultString;
     private TextView countTextView;
+    private ImageButton speechToTextBtn;
 
     private final int MAX_SMS_LENGTH = 160;
     
@@ -75,7 +76,7 @@ public class SpeechToText extends Activity implements EventListener{
 
         LinearLayout contactLayout = (LinearLayout) findViewById(R.id.contactLayoutSTT);
         ImageButton callBtn = (ImageButton) findViewById(R.id.callBtnSTT);
-        ImageButton speechToTextBtn = (ImageButton) findViewById(R.id.speechToTextButton);
+        speechToTextBtn = (ImageButton) findViewById(R.id.speechToTextButton);
         ImageButton removeBtn = (ImageButton) findViewById(R.id.removeBtnSTT);
         ImageButton sendBtn = (ImageButton) findViewById(R.id.sendBtnSTT);
         ImageButton composeBtn = (ImageButton) findViewById(R.id.composeBtnSTT);
@@ -170,8 +171,14 @@ public class SpeechToText extends Activity implements EventListener{
             }
         });
         mainTextView.setText(katlaInstance.getMessage());
-        contactTextView.setText(katlaInstance.getContact());
+        if (katlaInstance.getContact().equals("")) {
+            contactTextView.setText("No contact chosen");
+        } else {
+            contactTextView.setText(katlaInstance.getContact());
+        }
+
         phoneTextView.setText(katlaInstance.getPhone());
+
 
         mainTextView.setSelection(mainTextView.getText().length());
 
@@ -189,6 +196,7 @@ public class SpeechToText extends Activity implements EventListener{
                 isListeningToSpeech = false;
                 kstt.stopListening();
             } else {
+                speechToTextBtn.setBackgroundColor(getResources().getColor(R.color.BlueDark));
                 startListener();
                 isListeningToSpeech = true;
                 Toast.makeText(getApplicationContext(), "Start speaking now", Toast.LENGTH_SHORT).show();
@@ -249,8 +257,13 @@ public class SpeechToText extends Activity implements EventListener{
         katlaInstance.setMessage(mainTextView.getText().toString());
         // HUR HANTERA NÄR INTE KONTAKT VALD HÄR? Öppna kontakthanterare och mota input till model?
         // och senskicka och sen byta till nån konversationsvy?
-        mainTextView.setText("");
-        katlaInstance.sendMessage();
+
+        if(katlaInstance.sendMessage()) {
+            mainTextView.setText("");
+            Toast.makeText(getApplicationContext(), "Message sent!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Message failed to send!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void onToCompositeButton() {
@@ -271,8 +284,6 @@ public class SpeechToText extends Activity implements EventListener{
     @Override
     protected void onPause() {
         katlaInstance.setMessage(mainTextView.getText().toString());
-        katlaInstance.setContact(contactTextView.getText()+"");
-        katlaInstance.setPhone(phoneTextView.getText()+"");
         if (KatlaSpeechToTextFactory.isRecognitionAvailable(getApplicationContext())) {
             isListeningToSpeech = false;
             kstt.stopListening();
@@ -285,8 +296,14 @@ public class SpeechToText extends Activity implements EventListener{
     @Override
     protected void onResume() {
         mainTextView.setText(katlaInstance.getMessage());
-        contactTextView.setText(katlaInstance.getContact());
+        if (katlaInstance.getContact().equals("")) {
+            contactTextView.setText("Choose contact");
+        } else {
+            contactTextView.setText(katlaInstance.getContact());
+        }
         phoneTextView.setText(katlaInstance.getPhone());
+
+        driverDistractionUpdate(katlaInstance.getDistractionLevel());
 
         super.onResume();
     }
@@ -336,6 +353,7 @@ public class SpeechToText extends Activity implements EventListener{
             if (isListeningToSpeech) {
                 startListener();
             } else {
+                speechToTextBtn.setBackgroundColor(getResources().getColor(R.color.BlueLight));
                 Toast.makeText(getApplicationContext(), "Stopped recognition", Toast.LENGTH_LONG).show();
             }
         }
@@ -368,15 +386,19 @@ public class SpeechToText extends Activity implements EventListener{
 
     };
 
+    private void driverDistractionUpdate(int i) {
+        if (i <= 0) {
+            mainTextView.setFocusable(true);
+        } else {
+            mainTextView.setFocusable(false);
+        }
+    }
+
 
     @Override
     public void receiveEvent(String s, Object o) {
         if (s == "Driver distraction changed") {
-            if ((Integer)o == 0) {
-                mainTextView.setFocusable(true);
-            } else {
-                mainTextView.setFocusable(false);
-            }
+            driverDistractionUpdate((Integer) o);
         }
     }
 }

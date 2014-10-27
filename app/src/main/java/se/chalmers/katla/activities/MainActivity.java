@@ -6,13 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
-import android.text.Html;
-
-import android.util.Log;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,9 +19,9 @@ import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import se.chalmers.katla.R;
+import se.chalmers.katla.model.Katla;
 
 
 /**
@@ -50,6 +46,7 @@ public class MainActivity extends Activity {
         receiveSMSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                
                 Intent receiveMessageIntent = new Intent(MainActivity.this, ReceiveMessage.class);
 
                 startActivity(receiveMessageIntent);
@@ -62,7 +59,8 @@ public class MainActivity extends Activity {
         createSMSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sendMessageIntent = new Intent(MainActivity.this, SendMessage.class);
+                Katla.getInstance().readyForNewMessage();
+                Intent sendMessageIntent = new Intent(MainActivity.this, SpeechToText.class);
 
                 startActivity(sendMessageIntent);
             }
