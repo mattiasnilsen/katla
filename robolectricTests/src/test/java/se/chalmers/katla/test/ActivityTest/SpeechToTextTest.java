@@ -2,7 +2,6 @@ package se.chalmers.katla.test.ActivityTest;
 
 import android.content.Intent;
 import android.telephony.SmsManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 import org.junit.Test;
@@ -11,6 +10,7 @@ import org.robolectric.shadows.ShadowSmsManager;
 import org.robolectric.util.ActivityController;
 
 import se.chalmers.katla.R;
+import se.chalmers.katla.activities.ContactService;
 import se.chalmers.katla.activities.SpeechToText;
 import se.chalmers.katla.activities.SwipeMainActivity;
 import se.chalmers.katla.model.Katla;
@@ -19,7 +19,6 @@ import se.chalmers.katla.test.RobolectricKatlaTestRunner;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertThat;
 import static org.robolectric.Robolectric.buildActivity;
 import static org.robolectric.Robolectric.shadowOf;
 
@@ -93,5 +92,16 @@ public class SpeechToTextTest {
 
         assertEquals(s, lastSendTextMessageParams.getText());
         assertEquals(number, lastSendTextMessageParams.getDestinationAddress());
+    }
+
+    @Test
+    public void testToContactChooser() {
+        SpeechToText stt = controller.create().start().resume().get();
+
+        Intent expectedIntent = new Intent(stt, ContactService.class);
+
+        stt.findViewById(R.id.contactLayoutSTT).performClick();
+
+        assertTrue(shadowOf(stt).getNextStartedActivity().equals(expectedIntent));
     }
 }
