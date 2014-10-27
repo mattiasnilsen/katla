@@ -65,4 +65,15 @@ public class KatlaTests {
         // misslyckas
         //assertEquals(message, shadowSmsManager.getLastSentTextMessageParams().getText());
     }
+
+    @Test
+    public void recieveEventTests() {
+        Katla katla = Katla.getInstance();
+
+        katla.receiveEvent("Speed changed", 90.2);
+        assertEquals(90.2, katla.getWheelBasedSpeed());
+
+        katla.receiveEvent("Driver distraction changed", 2);
+        assertEquals(2, 2);
+    }
 }
