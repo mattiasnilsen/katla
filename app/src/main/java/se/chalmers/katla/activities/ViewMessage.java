@@ -221,7 +221,6 @@ public class ViewMessage extends Activity implements EventListener{
     private void startListener() {
         Intent recognizerIntent = new Intent();
         recognizerIntent.putExtra(KatlaSpeechToTextParameters.EXTRA_PARTIAL_RESULTS, true);
-        recognizerIntent.putExtra(KatlaSpeechToTextParameters.EXTRA_PROMPT, "Speak now");
 
         kstt.startListening(recognizerIntent);
     }
@@ -350,12 +349,9 @@ public class ViewMessage extends Activity implements EventListener{
 
         @Override
         public void onEndOfSpeech() {
-            if (isListeningToSpeech) {
-                startListener();
-            } else {
-                speechToTextBtn.setBackgroundColor(getResources().getColor(R.color.BlueLight));
-                Toast.makeText(getApplicationContext(), "Stopped recognition", Toast.LENGTH_LONG).show();
-            }
+            speechToTextBtn.setBackgroundColor(getResources().getColor(R.color.LightBlue));
+            Toast.makeText(getApplicationContext(), "Stopped recognition", Toast.LENGTH_LONG).show();
+
         }
 
         @Override
