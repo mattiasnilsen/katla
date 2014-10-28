@@ -27,7 +27,7 @@ import se.chalmers.katla.model.IComposite;
 import se.chalmers.katla.model.Katla;
 import se.chalmers.katla.views.CompositeFragment;
 
-public class SwipeMainActivity extends FragmentActivity implements ActionBar.TabListener,
+public class ComposeActivity extends FragmentActivity implements ActionBar.TabListener,
                                                                    CompositeFragment.CompositeFragmentInteractionListener,
                                                                    InputDialogListener {
 
@@ -42,7 +42,7 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_swipe_main);
+        setContentView(R.layout.activity_compose);
         tabAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         viewpager = (MyViewPager) findViewById(R.id.viewpager);
         viewpager.setAdapter(tabAdapter);

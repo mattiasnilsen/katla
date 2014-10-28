@@ -266,7 +266,7 @@ public class ViewMessage extends Activity implements EventListener{
     }
 
     private void onToCompositeButton() {
-        Intent compositeIntent = new Intent(ViewMessage.this, SwipeMainActivity.class);
+        Intent compositeIntent = new Intent(ViewMessage.this, ComposeActivity.class);
 
         startActivity(compositeIntent);
     }
