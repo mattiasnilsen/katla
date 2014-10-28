@@ -12,7 +12,7 @@ import org.robolectric.util.ActivityController;
 
 import se.chalmers.katla.R;
 import se.chalmers.katla.activities.ViewMessage;
-import se.chalmers.katla.activities.SwipeMainActivity;
+import se.chalmers.katla.activities.ComposeActivity;
 import se.chalmers.katla.model.Katla;
 import se.chalmers.katla.test.RobolectricKatlaTestRunner;
 
@@ -73,7 +73,7 @@ public class ViewMessageTest {
         Button btn = (Button)stt.findViewById(R.id.composeBtnSTT);
 
         btn.performClick();
-        Intent expectedIntent = new Intent(stt, SwipeMainActivity.class);
+        Intent expectedIntent = new Intent(stt, ComposeActivity.class);
         assertTrue(shadowOf(stt).getNextStartedActivity().equals(expectedIntent));
     }
 

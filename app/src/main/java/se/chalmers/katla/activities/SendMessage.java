@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
-import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -25,8 +24,6 @@ import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechFactory;
 import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechParameters;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
-
-import static android.view.GestureDetector.SimpleOnGestureListener;
 
 public class SendMessage extends Activity implements GestureDetector.OnGestureListener{
 
@@ -267,7 +264,7 @@ public class SendMessage extends Activity implements GestureDetector.OnGestureLi
     public boolean onFling(MotionEvent e1, MotionEvent e2, float v1, float v2) {
         float sensitvity = 50;
         if((e1.getY() - e2.getY()) > sensitvity){
-            startActivity(new Intent(SendMessage.this, SwipeMainActivity.class));
+            startActivity(new Intent(SendMessage.this, ComposeActivity.class));
             return true;
         }
         return false;
