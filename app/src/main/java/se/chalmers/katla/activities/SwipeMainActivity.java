@@ -46,7 +46,6 @@ public class SwipeMainActivity extends FragmentActivity implements ActionBar.Tab
         tabAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         viewpager = (MyViewPager) findViewById(R.id.viewpager);
         viewpager.setAdapter(tabAdapter);
-        viewpager.setGestureDetector(new GestureDetector(this, new MyGestureListener(this, new Intent(SwipeMainActivity.this, SendMessage.class))));
 
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
