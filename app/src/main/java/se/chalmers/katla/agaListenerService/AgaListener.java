@@ -32,7 +32,7 @@ public class AgaListener {
                         new AutomotiveListener() {
                             @Override
                             public void receive(AutomotiveSignal automotiveSignal) {
-                                onSpeedChanged(((SCSFloat) automotiveSignal.getData()).getFloatValue());
+
                             }
 
                             @Override
@@ -49,14 +49,10 @@ public class AgaListener {
                                 onDistractionChanged(driverDistractionLevel.getLevel());
                             }
                         }
-                ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED);
+                ).register();
                 return null;
             }
         }.execute();
-    }
-
-    private void onSpeedChanged(float f) {
-        eventBusInstance.sendEvent("Speed changed", f);
     }
 
     private void onDistractionChanged(int i) {

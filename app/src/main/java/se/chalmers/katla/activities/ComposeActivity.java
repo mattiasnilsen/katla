@@ -2,7 +2,6 @@ package se.chalmers.katla.activities;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -24,7 +22,8 @@ import se.chalmers.katla.R;
 import se.chalmers.katla.model.CompositesXmlParser;
 import se.chalmers.katla.model.ICategory;
 import se.chalmers.katla.model.IComposite;
-import se.chalmers.katla.model.Katla;
+import se.chalmers.katla.model.IKatla;
+import se.chalmers.katla.model.KatlaFactory;
 import se.chalmers.katla.views.CompositeFragment;
 
 public class ComposeActivity extends FragmentActivity implements ActionBar.TabListener,
@@ -34,7 +33,7 @@ public class ComposeActivity extends FragmentActivity implements ActionBar.TabLi
     private MyViewPager viewpager;
     private PagerAdapter tabAdapter;
     private ActionBar actionBar;
-    private Katla katlaInstance = null;
+    private IKatla katlaInstance = null;
     private List<CompositeFragment> fragments = new ArrayList<CompositeFragment>();
 
     private String textString = null;
@@ -58,7 +57,7 @@ public class ComposeActivity extends FragmentActivity implements ActionBar.TabLi
                     }
                 });
 
-        katlaInstance = Katla.getInstance();
+        katlaInstance = KatlaFactory.createKatla();
         try {
             katlaInstance.loadComposites();
         } catch (CompositesXmlParser.ParseException e) {

@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import se.chalmers.katla.R;
 import se.chalmers.katla.model.IKatla;
-import se.chalmers.katla.model.Katla;
+import se.chalmers.katla.model.KatlaFactory;
 import se.chalmers.katla.reciever.Counter;
 
 
@@ -34,7 +34,7 @@ import se.chalmers.katla.reciever.Counter;
  */
 public class MainActivity extends Activity {
     private ListView conversationsListView;
-    private IKatla katla = Katla.getInstance();
+    private IKatla katlaInstance = KatlaFactory.createKatla();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
         createSMSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Katla.getInstance().readyForNewMessage();
+                katlaInstance.readyForNewMessage();
                 Intent sendMessageIntent = new Intent(MainActivity.this, SendMessage.class);
 
                 startActivity(sendMessageIntent);
@@ -163,8 +163,8 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     Intent showConversationIntent = new Intent(MainActivity.this, ReceiveMessage.class);
-                    katla.setContact(nameToBeUsed);
-                    katla.setPhone(number);
+                    katlaInstance.setContact(nameToBeUsed);
+                    katlaInstance.setPhone(number);
                     showConversationIntent.putExtra("id", id);
                     startActivity(showConversationIntent);
                 }
