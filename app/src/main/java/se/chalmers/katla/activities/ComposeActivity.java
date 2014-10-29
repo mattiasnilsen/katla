@@ -64,8 +64,8 @@ public class ComposeActivity extends FragmentActivity implements ActionBar.TabLi
         } catch (CompositesXmlParser.ParseException e) {
             System.out.println(e.getMessage());
         }
-
-        for(Iterator<ICategory> iterator = katlaInstance.getCategories(); iterator.hasNext();) {
+        Iterator<ICategory> iterator = katlaInstance.getCategories();
+        while(iterator.hasNext()) {
             ICategory category = iterator.next();
             ActionBar.Tab tab = actionBar.newTab();
 
@@ -75,8 +75,8 @@ public class ComposeActivity extends FragmentActivity implements ActionBar.TabLi
 
             Bundle args = new Bundle();
             List<IComposite> compositeList = new ArrayList<IComposite>();
-
-            for(Iterator<IComposite> composites = category.getComposites(); composites.hasNext();) {
+            Iterator<IComposite> composites = category.getComposites();
+            while(composites.hasNext()) {
                 compositeList.add(composites.next());
             }
             args.putSerializable("composites", (Serializable)compositeList);
