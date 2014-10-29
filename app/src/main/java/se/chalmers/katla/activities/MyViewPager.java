@@ -22,7 +22,7 @@ public class MyViewPager extends ViewPager {
     public MyViewPager(Context context) {
         super(context);
     }
-
+    
     public MyViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -33,7 +33,9 @@ public class MyViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        gestureDetector.onTouchEvent(e);
+        // We do not need this because android is acting up when using
+        // both vertical and horisontal swipes with a scrollview
+        //gestureDetector.onTouchEvent(e);
         return super.onTouchEvent(e);
     }
 
