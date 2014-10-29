@@ -37,7 +37,7 @@ public class TestCompositeXmlParser {
     }
 
     @Test
-    public void testReadingComposites() {
+    public void testReadingComposites() throws CompositesXmlParser.ParseException {
         CompositesXmlParser parser = new CompositesXmlParser();
         List<Category> categories = null;
         try {
