@@ -35,6 +35,15 @@ public class ContactService extends Activity {
         // Get the listView and set the above adapter
         ListView contactsListView = (ListView)findViewById(R.id.listView3);
         contactsListView.setAdapter(contactsCursorAdapter);
+        //Listener for done button
+        findViewById(R.id.doneBtnCS).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText input =(EditText)findViewById(R.id.contactInput);
+                katlaInstance.setPhone(input.getText().toString());
+                finish();
+            }
+        });
 
         //Implement listener for inputchange
         EditText input = (EditText)findViewById(R.id.contactInput);
@@ -45,6 +54,7 @@ public class ContactService extends Activity {
                 //Not sure this is necessary
                 contactsCursorAdapter.notifyDataSetChanged();
             }
+
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
