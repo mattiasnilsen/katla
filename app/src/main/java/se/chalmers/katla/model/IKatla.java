@@ -94,12 +94,6 @@ public interface IKatla extends EventListener {
     public void loadComposites() throws CompositesXmlParser.ParseException;
 
     /**
-     * Gets the current wheel based speed.
-     * @return the wheel based speed stored in katla.
-     */
-    public float getWheelBasedSpeed();
-
-    /**
      * Gets the current driver distraction level.
      * @return the driver distraction level stored in katla.
      */

@@ -28,7 +28,6 @@ public class Katla implements IKatla {
     private AgaListener agaListener;
 
     private int distractionLevel;
-    private float wheelBasedSpeed;
 
     public String getContact() {
         return contact;
@@ -182,16 +181,9 @@ public class Katla implements IKatla {
 
     @Override
     public void receiveEvent(String s, Object o) {
-        if (s.equals("Speed changed")) {
-            this.wheelBasedSpeed = (Float)o;
-        } else if (s.equals("Driver distraction changed")) {
+        if (s.equals("Driver distraction changed")) {
             this.distractionLevel = (Integer)o;
         }
-    }
-
-    @Override
-    public float getWheelBasedSpeed() {
-        return this.wheelBasedSpeed;
     }
 
     @Override
