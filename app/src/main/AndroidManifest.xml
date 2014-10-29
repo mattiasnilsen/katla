@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.BROADCAST_SMS"/>
     <uses-permission android:name="android.permission.BROADCAST_WAP_PUSH"/>
 
@@ -21,7 +22,7 @@
 
         <!-- BroadcastReciever that listens for incoimnig sMS messages -->
         <receiver
-            android:name="reciever.SmsReciever"
+            android:name=".reciever.SmsReciever"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_DELIVER" />
