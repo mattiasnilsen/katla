@@ -33,7 +33,7 @@ import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechParameters;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
 
-public class ViewMessage extends Activity implements EventListener{
+public class SendMessage extends Activity implements EventListener{
 
     private IKatla katlaInstance;
     private IKatlaSpeechToText kstt;
@@ -100,7 +100,7 @@ public class ViewMessage extends Activity implements EventListener{
         contactLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent contactServiceIntent = new Intent(ViewMessage.this, ContactService.class);
+                Intent contactServiceIntent = new Intent(SendMessage.this, ContactService.class);
 
                 startActivity(contactServiceIntent);
             }
@@ -266,7 +266,7 @@ public class ViewMessage extends Activity implements EventListener{
     }
 
     private void onToCompositeButton() {
-        Intent compositeIntent = new Intent(ViewMessage.this, ComposeActivity.class);
+        Intent compositeIntent = new Intent(SendMessage.this, ComposeActivity.class);
 
         startActivity(compositeIntent);
     }

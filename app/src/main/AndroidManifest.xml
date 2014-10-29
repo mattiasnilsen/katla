@@ -45,7 +45,7 @@
 
         <!-- Activity that alows the user to send new SMS/MMS messages -->
         <activity
-            android:name=".activities.ViewMessage"
+            android:name=".activities.SendMessage"
             android:label="view message"
             android:theme="@style/NoActionBar">
             <intent-filter>

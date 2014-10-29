@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Katla.getInstance().readyForNewMessage();
-                Intent sendMessageIntent = new Intent(MainActivity.this, ViewMessage.class);
+                Intent sendMessageIntent = new Intent(MainActivity.this, SendMessage.class);
 
                 startActivity(sendMessageIntent);
             }

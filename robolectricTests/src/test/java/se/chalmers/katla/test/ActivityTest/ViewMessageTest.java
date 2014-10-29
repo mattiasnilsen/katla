@@ -11,7 +11,7 @@ import org.robolectric.shadows.ShadowSmsManager;
 import org.robolectric.util.ActivityController;
 
 import se.chalmers.katla.R;
-import se.chalmers.katla.activities.ViewMessage;
+import se.chalmers.katla.activities.SendMessage;
 import se.chalmers.katla.activities.ComposeActivity;
 import se.chalmers.katla.model.Katla;
 import se.chalmers.katla.test.RobolectricKatlaTestRunner;
@@ -29,10 +29,10 @@ import static org.robolectric.Robolectric.shadowOf;
 @RunWith(RobolectricKatlaTestRunner.class)
 public class ViewMessageTest {
 
-    private final ActivityController<ViewMessage> controller = buildActivity(ViewMessage.class);
+    private final ActivityController<SendMessage> controller = buildActivity(SendMessage.class);
     @Test
     public void removeWordTest() throws AssertionError{
-        ViewMessage stt = controller.create().start().resume().get();
+        SendMessage stt = controller.create().start().resume().get();
 
         TextView mainText = (TextView)stt.findViewById(R.id.speechToTextMainText);
         mainText.setText("Hej! Välkommen! Det sista ordet här ska tas bort");
@@ -68,7 +68,7 @@ public class ViewMessageTest {
 
     @Test
     public void testToCompositeButton() throws AssertionError {
-        ViewMessage stt = controller.create().start().resume().get();
+        SendMessage stt = controller.create().start().resume().get();
 
         Button btn = (Button)stt.findViewById(R.id.composeBtnSTT);
 
@@ -79,7 +79,7 @@ public class ViewMessageTest {
 
     @Test
     public void testSendMessageButton() {
-        ViewMessage stt = controller.create().start().resume().get();
+        SendMessage stt = controller.create().start().resume().get();
         Katla katla = Katla.getInstance();
 
         TextView textView = (TextView) stt.findViewById(R.id.speechToTextMainText);
