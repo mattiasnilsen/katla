@@ -68,6 +68,14 @@ public class MainActivity extends Activity {
             }
         });
 
+
+
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        
         // Get the SMS-conversations
         ContentResolver contentResolver = getContentResolver();
         // Create the projection, i.e. the values we want to query from the database
@@ -81,10 +89,7 @@ public class MainActivity extends Activity {
         // Get the listView and set the above adapter
         conversationsListView = (ListView)findViewById(R.id.conversationListView);
         conversationsListView.setAdapter(contacsCursorAdapter);
-
-
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
