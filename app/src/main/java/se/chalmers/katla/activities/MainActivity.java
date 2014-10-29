@@ -23,6 +23,7 @@ import android.widget.TextView;
 import se.chalmers.katla.R;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
+import se.chalmers.katla.reciever.Counter;
 
 
 /**
@@ -75,7 +76,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        
+        Counter.reset();
         // Get the SMS-conversations
         ContentResolver contentResolver = getContentResolver();
         // Create the projection, i.e. the values we want to query from the database
