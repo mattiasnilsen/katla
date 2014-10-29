@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
         createSMSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Katla.getInstance().readyForNewMessage();
+                katla.readyForNewMessage();
                 Intent sendMessageIntent = new Intent(MainActivity.this, SendMessage.class);
 
                 startActivity(sendMessageIntent);
