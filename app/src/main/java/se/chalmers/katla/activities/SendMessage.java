@@ -260,7 +260,7 @@ public class SendMessage extends Activity implements EventListener{
         // HUR HANTERA NÄR INTE KONTAKT VALD HÄR? Öppna kontakthanterare och mota input till model?
         // och senskicka och sen byta till nån konversationsvy?
 
-        if(katlaInstance.sendMessage() {
+        if(katlaInstance.sendMessage()) {
             mainTextView.setText("");
             Toast.makeText(getApplicationContext(), "Message sent!", Toast.LENGTH_SHORT).show();
             //If we are the default SMS app we need to save the message to the sms provider.
