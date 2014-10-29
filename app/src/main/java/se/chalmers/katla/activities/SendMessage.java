@@ -403,7 +403,7 @@ public class SendMessage extends Activity implements EventListener{
 
     @Override
     public void receiveEvent(String s, Object o) {
-        if (s == "Driver distraction changed") {
+        if (s.equals("Driver distraction changed")) {
             driverDistractionUpdate((Integer) o);
         }
     }
