@@ -1,10 +1,12 @@
 package se.chalmers.katla.activities;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Display;
@@ -258,9 +260,16 @@ public class SendMessage extends Activity implements EventListener{
         // HUR HANTERA NÄR INTE KONTAKT VALD HÄR? Öppna kontakthanterare och mota input till model?
         // och senskicka och sen byta till nån konversationsvy?
 
-        if(katlaInstance.sendMessage()) {
+        if(katlaInstance.sendMessage() {
             mainTextView.setText("");
             Toast.makeText(getApplicationContext(), "Message sent!", Toast.LENGTH_SHORT).show();
+            //If we are the default SMS app we need to save the message to the sms provider.
+            if(Telephony.Sms.getDefaultSmsPackage(getApplicationContext()).equals(getApplicationContext().getPackageName())) {
+                ContentValues values = new ContentValues();
+                values.put(Telephony.Sms.ADDRESS, katlaInstance.getPhone());
+                values.put(Telephony.Sms.BODY, katlaInstance.getMessage());
+                getApplicationContext().getContentResolver().insert(Telephony.Sms.Sent.CONTENT_URI, values);
+            }
         } else {
             Toast.makeText(getApplicationContext(), "Message failed to send!", Toast.LENGTH_SHORT).show();
         }
