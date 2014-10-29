@@ -23,6 +23,7 @@ import android.widget.TextView;
 import se.chalmers.katla.R;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
+import se.chalmers.katla.reciever.Counter;
 
 
 /**
@@ -62,12 +63,20 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Katla.getInstance().readyForNewMessage();
-                Intent sendMessageIntent = new Intent(MainActivity.this, ViewMessage.class);
+                Intent sendMessageIntent = new Intent(MainActivity.this, SendMessage.class);
 
                 startActivity(sendMessageIntent);
             }
         });
 
+
+
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Counter.reset();
         // Get the SMS-conversations
         ContentResolver contentResolver = getContentResolver();
         // Create the projection, i.e. the values we want to query from the database
@@ -81,10 +90,7 @@ public class MainActivity extends Activity {
         // Get the listView and set the above adapter
         conversationsListView = (ListView)findViewById(R.id.conversationListView);
         conversationsListView.setAdapter(contacsCursorAdapter);
-
-
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
