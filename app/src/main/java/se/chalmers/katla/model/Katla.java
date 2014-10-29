@@ -143,8 +143,12 @@ public class Katla implements IKatla {
 
             try {
                 if (manager != null && messageList!= null) {
+                    for(String mess: messageList){
+                        manager.sendTextMessage(getPhone(), null, mess);
+                    }
                     // Added so you don't have to call with null null paramters as intents, but you can.
-                    manager.sendMultipartTextMessage(getPhone(), null, messageList);
+                    //manager.sendMultipartTextMessage(getPhone(), null, messageList);
+
                     return true;
                 }
 
