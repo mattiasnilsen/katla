@@ -4,11 +4,13 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.telephony.SmsManager;
@@ -43,9 +45,14 @@ public class SmsReciever extends BroadcastReceiver {
                     String msgBody = currentMessage.getMessageBody();
                     String msgSource = currentMessage.getOriginatingAddress();
 
-                    //TODO something with the message?
+                    ContentValues values = new ContentValues();
+                    values.put(Telephony.Sms.ADDRESS, msgSource);
+                    values.put(Telephony.Sms.BODY, msgBody);
+                    context.getContentResolver().insert(Telephony.Sms.Inbox.CONTENT_URI, values);
                     //trigger the notification
                    notification(context, msgBody, msgSource);
+
+
                 }
             }//bundle is null
         } catch (Exception e){
