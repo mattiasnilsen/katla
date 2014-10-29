@@ -31,11 +31,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="se.chalmers.katla.activities.SendMessage"
-            android:label="@string/title_activity_send_message"
-            android:parentActivityName="se.chalmers.katla.activities.MainActivity" >
-        </activity>
-        <activity
             android:name=".activities.ReceiveMessage"
             android:theme="@style/NoActionBar"
             android:label="@string/title_activity_receive_message" >
