@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public interface IKatlaSmsManager {
 
     /**
-     * Send a text based sms.
+     * Send a text based sms. If the message is longer than 160 signs multiple messages might get sent.
      * @param destinationAddress the address to send the message to.
      * @param scAddress is the service center address or null to use the current default SMSC.
      * @param text the body of the message to send.
@@ -24,7 +24,7 @@ public interface IKatlaSmsManager {
                                 PendingIntent sentIntent, PendingIntent deliveryIntent);
 
     /**
-     * Send a text based sms.
+     * Send a text based sms. If the message is longer than 160 signs multiple messages might get sent.
      * @param destinationAddress the address to send the message to.
      * @param scAddress is the service center address or null to use the current default SMSC.
      * @param text the body of the message to send.

@@ -18,7 +18,6 @@ import se.chalmers.katla.kaltaSmsManager.KatlaSmsManagerFactory;
  */
 public class Katla implements IKatla {
 
-    private final int MAX_SMS_LENGTH = 160;
     private final String COMPOSITES_XML_FILE = "res/raw/composites.xml";
 
     private static Katla ourInstance;
@@ -125,56 +124,16 @@ public class Katla implements IKatla {
     public boolean sendMessage() {
         IKatlaSmsManager manager = KatlaSmsManagerFactory.createIKatlaSmsManager();
 
-        if(message.length() <= MAX_SMS_LENGTH) {
-            try {
-                if (manager != null) {
-                    // Added so you don't have to call with null null paramters as intents, but you can.
-                    manager.sendTextMessage(getPhone(), null, message);
-                    return true;
-                }
-
-            } catch (Exception e) {
-                System.out.println("Stack trace for failure" + e.getStackTrace());
-                return false;
+        try {
+            if (manager != null) {
+                manager.sendTextMessage(getPhone(), null, message);
+                return true;
             }
-        }else{
-            ArrayList<String> messageList = divideMessage(message);
-
-            try {
-                if (manager != null && messageList!= null) {
-                    for(String mess: messageList){
-                        manager.sendTextMessage(getPhone(), null, mess);
-                    }
-                    // Added so you don't have to call with null null paramters as intents, but you can.
-                    //manager.sendMultipartTextMessage(getPhone(), null, messageList);
-
-                    return true;
-                }
-
-            } catch (Exception e) {
-                System.out.println("Stack trace for failure" + e.getStackTrace());
-                return false;
-            }
+        } catch (Exception e) {
+            System.out.println("Stack trace for failure" + e.getStackTrace());
+            return false;
         }
-
         return true;
-        //TODO pendng intents for delivery report m.m
-    }
-
-    /**
-     * Divides a long message into 160 character length chunks.
-     * @param message the long message to divide
-     * @return an arrayList containing the parts of the long message.
-     */
-    private ArrayList<String> divideMessage(String message){
-        ArrayList<String> list = new ArrayList<String>();
-        int index = 0;
-        while (index<message.length()){
-            list.add(message.substring(index, Math.min(index + MAX_SMS_LENGTH, message.length())));
-            index += MAX_SMS_LENGTH;
-        }
-
-        return list;
     }
 
     @Override

@@ -9,6 +9,8 @@ import java.util.ArrayList;
  * Created by Joel on 10/10/2014.
  */
 public class KatlaSmsManager implements IKatlaSmsManager{
+    private final int MAX_SMS_LENGTH = 160;
+
     SmsManager manager;
     public KatlaSmsManager() {
        manager = SmsManager.getDefault();
@@ -19,7 +21,17 @@ public class KatlaSmsManager implements IKatlaSmsManager{
      */
     @Override
     public void sendTextMessage(String destinationAddress, String scAddress, String text, PendingIntent sentIntent, PendingIntent deliveryIntent) {
-        manager.sendTextMessage(destinationAddress, scAddress, text, sentIntent, deliveryIntent);
+        if(text.length() <= MAX_SMS_LENGTH) {
+            manager.sendTextMessage(destinationAddress, scAddress, text, sentIntent, deliveryIntent);
+        } else {
+            ArrayList<String> messageList = divideMessage(text);
+            if (messageList!= null) {
+                for(String mess: messageList){
+                    manager.sendTextMessage(destinationAddress, scAddress, mess, sentIntent, deliveryIntent);
+                    // sendMultipartTextMessage seems to strangely not be working properly.
+                }
+            }
+        }
     }
 
     /**
@@ -27,7 +39,7 @@ public class KatlaSmsManager implements IKatlaSmsManager{
      */
     @Override
     public void sendTextMessage(String destinationAddress, String scAddress, String text) {
-        manager.sendTextMessage(destinationAddress, scAddress, text, null, null);
+        sendTextMessage(destinationAddress, scAddress, text, null, null);
     }
 
     /**
@@ -44,5 +56,21 @@ public class KatlaSmsManager implements IKatlaSmsManager{
     @Override
     public void sendMultipartTextMessage(String destinationAddress, String scAddress, ArrayList<String> parts) {
         manager.sendMultipartTextMessage(destinationAddress, scAddress, parts, null, null);
+    }
+
+    /**
+     * Divides a long message into 160 character length chunks.
+     * @param message the long message to divide
+     * @return an arrayList containing the parts of the long message.
+     */
+    private ArrayList<String> divideMessage(String message){
+        ArrayList<String> list = new ArrayList<String>();
+        int index = 0;
+        while (index<message.length()){
+            list.add(message.substring(index, Math.min(index + MAX_SMS_LENGTH, message.length())));
+            index += MAX_SMS_LENGTH;
+        }
+
+        return list;
     }
 }
