@@ -1,7 +1,9 @@
 package se.chalmers.katla.activities;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.swedspot.automotiveapi.AutomotiveSignal;
 import android.swedspot.automotiveapi.AutomotiveSignalId;
 import android.swedspot.scs.data.SCSFloat;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
@@ -18,6 +21,8 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,20 +32,56 @@ import com.swedspot.vil.distraction.DriverDistractionLevel;
 import com.swedspot.vil.distraction.DriverDistractionListener;
 import com.swedspot.vil.policy.AutomotiveCertificate;
 
+import java.util.ArrayList;
+
 import se.chalmers.katla.R;
 import se.chalmers.katla.katlaTextToSpeech.IKatlaTextToSpeech;
 import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechFactory;
 import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechParameters;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
+import se.chalmers.katla.util.ActivitySwipeDetector;
+import se.chalmers.katla.util.SwipeInterface;
 
-public class ReceiveMessage extends Activity {
-    IKatla model;
+public class ReceiveMessage extends Activity implements SwipeInterface {
+    private IKatla model;
+    private ArrayList<String> allSms;
     private IKatlaTextToSpeech ktts;
+    private TextView currentSms;
+    private ScrollView scrollView;
+    private int conversationID;
+    private int currentTextIndex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive_message);
+        Intent myIntent = getIntent();
+        // Get the id for the conversation that is opened.
+        conversationID = myIntent.getIntExtra("id",0);
+
+
+
+        currentSms = (TextView)findViewById(R.id.textMessageRM);
+        scrollView = (ScrollView)findViewById(R.id.scrollView);
+        // Create the SwipeDetector that handles moving backwards text by text
+        ActivitySwipeDetector swipeDetector = new ActivitySwipeDetector(this);
+        currentSms.setOnTouchListener(swipeDetector);
+        scrollView.setOnTouchListener(swipeDetector);
+
+        // Create the ArrayList that holds all sms in this conversation
+        allSms = new ArrayList<String>();
+
+
+
+        // Create the textView and make sure it's scrollable
+
+        currentSms.setMovementMethod(new ScrollingMovementMethod());
+        // Show the latest sms
+        //TextView currentContact = (TextView)findViewById(R.id.conversationContactText);
+        //currentContact.setText(nameOfConversation);
+        //====================================================================
+
+
         model = Katla.getInstance();
         ktts = KatlaTextToSpeechFactory.createKatlaTextToSpeech(getApplicationContext());
         Display display = getWindowManager().getDefaultDisplay();
@@ -105,54 +146,6 @@ public class ReceiveMessage extends Activity {
                 startActivity(contactServiceIntent);
             }
         });
-
-        new AsyncTask() {      //Network operation must be run on separate thread than main thread
-            @Override
-            protected Object doInBackground(Object... objects) {
-                AutomotiveFactory.createAutomotiveManagerInstance(
-                        new AutomotiveCertificate(new byte[0]), //Provided certificate
-                        new AutomotiveListener() {
-                            @Override
-                            public void receive(AutomotiveSignal automotiveSignal) {
-                                Log.v("Demo", "Speed is: " + ((SCSFloat) automotiveSignal.getData()).getFloatValue());
-                            }
-
-                            @Override
-                            public void timeout(int i) {
-                            }
-
-                            @Override
-                            public void notAllowed(int i) {
-                            }
-                        },
-                        new DriverDistractionListener() {       //Listener for driver distraction level
-                            @Override
-                            public void levelChanged(DriverDistractionLevel driverDistractionLevel) {
-                                Log.v("Demo", "Driver distraction level is: " + driverDistractionLevel.getLevel());
-                            }
-                        }
-                ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED);
-                return null;
-            }
-        }.execute();
-
-        AutomotiveListener automotiveListener = new AutomotiveListener() {
-            @Override
-            public void receive(AutomotiveSignal automotiveSignal) {
-                System.out.println(automotiveSignal.getData().toString());
-            }
-
-            @Override
-            public void timeout(int i) {
-
-            }
-
-            @Override
-            public void notAllowed(int i) {
-
-            }
-        };
-
     }
 
 
@@ -182,6 +175,21 @@ public class ReceiveMessage extends Activity {
         temp.setText(model.getContact());
         temp = (TextView)findViewById(R.id.phoneRM);
         temp.setText(model.getPhone());
+
+        Uri uri = Uri.parse("content://sms/");
+        ContentResolver contentResolver = getContentResolver();
+        String searchFor = "thread_id = " + conversationID;
+        // Create a cursor that searches for all sms with that conversation id
+        Cursor convCursor = contentResolver.query(uri, null, searchFor, null, null);
+
+        // Get the body text for each sms in the conversation and save it to the list
+        int bodyIndex = convCursor.getColumnIndex("body");
+        for(convCursor.moveToLast() ;!convCursor.isBeforeFirst(); convCursor.moveToPrevious()) {
+            String j = convCursor.getString(bodyIndex);
+            allSms.add(0,j);
+        }
+        currentTextIndex = 0;
+        currentSms.setText(allSms.get(currentTextIndex));
     }
 
     /**
@@ -197,6 +205,32 @@ public class ReceiveMessage extends Activity {
             Toast.makeText(getApplicationContext(), "Text to speech unavailable at this time",
                     Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    @Override
+    public void bottom2top(View v) {
+
+    }
+
+    @Override
+    public void left2right(View v) {
+        if(currentTextIndex<=(allSms.size()-2)) {
+            currentTextIndex++;
+            currentSms.setText(allSms.get(currentTextIndex));
+        }
+    }
+
+    @Override
+    public void right2left(View v) {
+        if(currentTextIndex>=1) {
+            currentTextIndex--;
+            currentSms.setText(allSms.get(currentTextIndex));
+        }
+    }
+
+    @Override
+    public void top2bottom(View v) {
 
     }
 }

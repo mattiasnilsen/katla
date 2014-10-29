@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import se.chalmers.katla.R;
+import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
 
 
@@ -32,6 +33,7 @@ import se.chalmers.katla.model.Katla;
  */
 public class MainActivity extends Activity {
     private ListView conversationsListView;
+    private IKatla katla = Katla.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,10 +169,10 @@ public class MainActivity extends Activity {
             conversationText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent showConversationIntent = new Intent(MainActivity.this, DrivingConversationActivity.class);
-                    showConversationIntent.putExtra("phoneNumber", number);
+                    Intent showConversationIntent = new Intent(MainActivity.this, ReceiveMessage.class);
+                    katla.setContact(nameToBeUsed);
+                    katla.setPhone(number);
                     showConversationIntent.putExtra("id", id);
-                    showConversationIntent.putExtra("nameOfConversation",nameToBeUsed);
                     startActivity(showConversationIntent);
                 }
             });
