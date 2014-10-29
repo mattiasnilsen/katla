@@ -3,7 +3,6 @@ package se.chalmers.katla.activities;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,11 +18,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import se.chalmers.katla.R;
-import se.chalmers.katla.model.Katla;
+import se.chalmers.katla.model.IKatla;
+import se.chalmers.katla.model.KatlaFactory;
 
 public class ContactService extends Activity {
     private ContactsCursorAdapter contactsCursorAdapter;
-    private Katla model = Katla.getInstance();
+    private IKatla katlaInstance = KatlaFactory.createKatla();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +38,7 @@ public class ContactService extends Activity {
 
         //Implement listener for inputchange
         EditText input = (EditText)findViewById(R.id.contactInput);
-        input.setText(model.getContact());
+        input.setText(katlaInstance.getContact());
         input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -120,8 +120,8 @@ public class ContactService extends Activity {
             contact.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    model.setContact(name);
-                    model.setPhone(phone);
+                    katlaInstance.setContact(name);
+                    katlaInstance.setPhone(phone);
                     finish();
 
                 }

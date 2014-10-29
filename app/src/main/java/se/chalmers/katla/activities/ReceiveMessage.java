@@ -27,12 +27,12 @@ import se.chalmers.katla.katlaTextToSpeech.IKatlaTextToSpeech;
 import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechFactory;
 import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechParameters;
 import se.chalmers.katla.model.IKatla;
-import se.chalmers.katla.model.Katla;
+import se.chalmers.katla.model.KatlaFactory;
 import se.chalmers.katla.util.ActivitySwipeDetector;
 import se.chalmers.katla.util.SwipeInterface;
 
 public class ReceiveMessage extends Activity implements SwipeInterface {
-    private IKatla model;
+    private IKatla katlaInstance;
     private ArrayList<String> allSms;
     private IKatlaTextToSpeech ktts;
     private TextView currentSms;
@@ -70,7 +70,7 @@ public class ReceiveMessage extends Activity implements SwipeInterface {
         //====================================================================
 
 
-        model = Katla.getInstance();
+        katlaInstance = KatlaFactory.createKatla();
         ktts = KatlaTextToSpeechFactory.createKatlaTextToSpeech(getApplicationContext());
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -115,7 +115,7 @@ public class ReceiveMessage extends Activity implements SwipeInterface {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_CALL);
                 // According to documentation ACTION_CALL can not call emergency numbers?
-                intent.setData(Uri.parse("tel:" + model.getPhone()));
+                intent.setData(Uri.parse("tel:" + katlaInstance.getPhone()));
                 startActivity(intent);
             }
         });
@@ -160,9 +160,9 @@ public class ReceiveMessage extends Activity implements SwipeInterface {
     protected void onResume() {
         super.onResume();
         TextView temp = (TextView)findViewById(R.id.contactRM);
-        temp.setText(model.getContact());
+        temp.setText(katlaInstance.getContact());
         temp = (TextView)findViewById(R.id.phoneRM);
-        temp.setText(model.getPhone());
+        temp.setText(katlaInstance.getPhone());
 
         Uri uri = Uri.parse("content://sms/");
         ContentResolver contentResolver = getContentResolver();

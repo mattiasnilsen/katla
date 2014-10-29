@@ -32,6 +32,7 @@ import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechFactory;
 import se.chalmers.katla.katlaTextToSpeech.KatlaTextToSpeechParameters;
 import se.chalmers.katla.model.IKatla;
 import se.chalmers.katla.model.Katla;
+import se.chalmers.katla.model.KatlaFactory;
 
 public class SendMessage extends Activity implements EventListener{
 
@@ -54,7 +55,7 @@ public class SendMessage extends Activity implements EventListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_message);
 
-        katlaInstance = Katla.getInstance();
+        katlaInstance = KatlaFactory.createKatla();
         if (KatlaSpeechToTextFactory.isRecognitionAvailable(getApplicationContext())) {
             kstt = KatlaSpeechToTextFactory.createKatlaSpeechToText(getApplicationContext());
             kstt.setListener(krl);
