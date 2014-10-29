@@ -39,6 +39,7 @@ public class ReceiveMessage extends Activity implements SwipeInterface {
     private ScrollView scrollView;
     private int conversationID;
     private int currentTextIndex;
+    private ActivitySwipeDetector swipeDetector;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,7 @@ public class ReceiveMessage extends Activity implements SwipeInterface {
         currentSms = (TextView)findViewById(R.id.textMessageRM);
         scrollView = (ScrollView)findViewById(R.id.scrollView);
         // Create the SwipeDetector that handles moving backwards text by text
-        ActivitySwipeDetector swipeDetector = new ActivitySwipeDetector(this);
+        swipeDetector = new ActivitySwipeDetector(this);
         currentSms.setOnTouchListener(swipeDetector);
         scrollView.setOnTouchListener(swipeDetector);
 
