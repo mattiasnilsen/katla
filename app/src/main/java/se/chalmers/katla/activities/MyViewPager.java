@@ -1,16 +1,10 @@
 package se.chalmers.katla.activities;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-
-import se.chalmers.katla.views.BlankFragment;
-import se.chalmers.katla.views.BlankFragment2;
 
 /**
  * Created by Anna on 2014-10-06.
