@@ -16,7 +16,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
@@ -42,8 +42,8 @@
         <!-- Activity that alows the user to send new SMS/MMS messages -->
         <activity
             android:name=".activities.SendMessage"
-            android:label="view message"
-            android:theme="@style/NoActionBar">
+            android:label="Send message"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SENDTO" />
@@ -78,7 +78,7 @@
         <activity
 
             android:name=".activities.MainActivity"
-            android:theme="@style/NoActionBar"
+            android:theme="@style/AppTheme"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -87,12 +87,12 @@
         </activity>
         <activity
             android:name=".activities.ReceiveMessage"
-            android:theme="@style/NoActionBar"
+            android:theme="@style/AppTheme"
             android:label="@string/title_activity_receive_message" >
         </activity>
         <activity
             android:name=".activities.ContactService"
-            android:theme="@style/NoActionBar"
+            android:theme="@style/AppTheme"
             android:label="@string/title_activity_contact_service" >
         </activity>
     </application>

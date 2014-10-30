@@ -78,12 +78,6 @@ public class MainActivity extends Activity {
         conversationsListView = (ListView)findViewById(R.id.conversationListView);
         conversationsListView.setAdapter(contacsCursorAdapter);
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
