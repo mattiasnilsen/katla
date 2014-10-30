@@ -70,10 +70,7 @@ public class KatlaTests {
     public void recieveEventTests() {
         Katla katla = Katla.getInstance();
 
-        katla.receiveEvent("Speed changed", 90.2);
-        assertEquals(90.2, katla.getWheelBasedSpeed());
-
         katla.receiveEvent("Driver distraction changed", 2);
-        assertEquals(2, 2);
+        assertEquals(katla.getDistractionLevel(), 2);
     }
 }
