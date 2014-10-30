@@ -26,7 +26,7 @@ import static org.robolectric.Robolectric.shadowOf;
  * Created by Joel on 14/10/2014.
  */
 @RunWith(RobolectricKatlaTestRunner.class)
-public class ViewMessageTest {
+public class SendMessageText {
 
     private final ActivityController<SendMessage> controller = buildActivity(SendMessage.class);
     @Test
