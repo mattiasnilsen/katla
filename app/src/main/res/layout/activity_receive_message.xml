@@ -20,13 +20,6 @@
         android:baselineAligned="false"
         android:background="@color/BlueLight">
 
-        <ImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:id="@+id/imageView"
-            android:src="@drawable/icon"
-            android:layout_weight="0.07" />
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
