@@ -1,0 +1,189 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="se.chalmers.katla.activities.SendMessage"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:background="@color/Grey">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="0dp"
+        android:paddingTop="0dp"
+        android:paddingRight="0dp"
+        android:paddingBottom="0dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:weightSum="1"
+            android:baselineAligned="false"
+            android:background="@color/BlueLight"
+            android:id="@+id/linearLayout"
+            android:columnCount="5"
+            android:rowCount="1">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="0"
+                android:layout_row="0"
+                android:layout_gravity="left|center"
+                android:clickable="true"
+                android:id="@+id/contactLayoutSTT">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Anton Freudenthaler"
+                    android:id="@+id/contactSTT"
+                    android:textSize="30dp"
+                    android:textIsSelectable="false"
+                    android:textColor="@color/White" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0739995218"
+                    android:id="@+id/phoneSTT"
+                    android:textSize="30dp"
+                    android:textColor="@color/White" />
+            </LinearLayout>
+
+            <GridLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:columnCount="3"
+                android:rowCount="1">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/speechToTextButton"
+                    android:clickable="true"
+                    android:layout_below="@+id/speechToTextSecondText"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/micicon"
+                    android:layout_weight="0.07"
+                    android:layout_column="1"
+                    android:layout_row="0"
+                    android:scaleType="fitCenter"
+                    android:background="@color/LightBlue"
+                    android:adjustViewBounds="false"
+                    android:layout_margin="1dp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/callBtnSTT"
+                    android:layout_weight="0.57"
+                    android:src="@drawable/phoneicon"
+                    android:layout_column="2"
+                    android:layout_row="0"
+                    android:scaleType="fitCenter"
+                    android:background="@color/LightBlue"
+                    android:adjustViewBounds="false"
+                    android:baselineAlignBottom="false"
+                    android:cropToPadding="false"
+                    android:layout_margin="1dp" />
+            </GridLayout>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView"
+            android:layout_below="@+id/speechToTextContactField"
+            android:layout_alignParentStart="true"
+            android:background="#FFFFFF"
+            android:layout_above="@+id/relativeLayout"
+            android:clickable="true"
+            android:fillViewport="false"
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:foreground="@drawable/listenicon"
+            android:foregroundGravity="bottom|right">
+
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+               <EditText
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/speechToTextMainText"
+                   android:text="Large Text"
+                   android:textSize="40dp"
+                   android:editable="false"
+                   android:textIsSelectable="true"
+                   android:inputType="textMultiLine" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Large Text"
+                    android:id="@+id/speechToTextCountField"
+                    android:layout_gravity="right"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+        </ScrollView>
+
+        <GridLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonBarSTT"
+            android:layout_alignTop="@+id/relativeLayout2"
+            android:layout_alignParentStart="true"
+            android:columnCount="3"
+            android:rowCount="1"
+            android:background="@color/BlueLight"
+            android:padding="1dp">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/removeBtnSTT"
+                android:src="@drawable/backspaceicon"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:background="@color/GreenLight"
+                android:scaleType="fitCenter"
+                android:padding="2dp"
+                android:layout_margin="1dp" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/composeBtnSTT"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:background="@color/GreenLight"
+                android:src="@drawable/replyicon"
+                android:scaleType="fitCenter"
+                android:padding="2dp"
+                android:layout_margin="1dp" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sendBtnSTT"
+                android:src="@drawable/sendicon"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:background="@color/GreenLight"
+                android:scaleType="fitCenter"
+                android:padding="2dp"
+                android:layout_margin="1dp" />
+        </GridLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

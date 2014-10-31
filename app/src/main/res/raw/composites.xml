@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<composites>
+    <category name = "Time">
+        <composite>
+            I'm there in %s min.
+            <input>time</input>
+        </composite>
+        <composite>
+            I'll be there soon.
+        </composite>
+        <composite>
+            I'm on my way.
+        </composite>
+        <composite>
+            It will be a while.
+        </composite>
+        <composite>
+            Call me when you get this
+        </composite>
+
+    </category>
+    <category name = "Interjections">
+        <composite>
+            Sure
+        </composite>
+        <composite>
+            Yes
+        </composite>
+        <composite>
+            No
+        </composite>
+        <composite>
+            Of course
+        </composite>
+        <composite>
+            Maybe
+        </composite>
+
+    </category>
+    <category name = "Questions">
+        <composite>
+            Where are you?
+        </composite>
+        <composite>
+           How are you?
+        </composite>
+        <composite>
+            When are you home?
+        </composite>
+    </category>
+</composites>
